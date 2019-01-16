@@ -1,9 +1,4 @@
-from flask import Flask
-app = Flask(__name__)
+from application import app
 
-@app.route("/")
-def hello():
-    return "Hei maailma!"
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
