@@ -9,3 +9,5 @@ Kun sivulle on rekisteröitynyt, pystyy sen avulla hallitsemaan omia kirjoja eri
   - kirjojen merkitseminen luetuiksi, lukemattomiksi tai luettavana oleviksi
   - arvostelujen jättäminen
   - lukutavoitteiden asettaminen ja seuraaminen
+
+Sovellus löytyy osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
