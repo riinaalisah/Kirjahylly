@@ -9,8 +9,10 @@ Kirjahyllysovellukseen rekisteröidytään sähköpostin avulla. Kun sivuille on
   - omien lukutavoitteiden asettaminen ja seuraaminen
 
 
+##### Linkkejä
+
 Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
 
-Muita linkkejä:
 [Sovelluksen tietokantakaavio](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/kirjahylly_tietokantakaavio.png)
+
 [User storyt](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/user_stories.md)
