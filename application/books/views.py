@@ -12,6 +12,7 @@ def books_form():
 
 @app.route("/books/<book_id>/", methods=["POST"])
 def books_set_read(book_id):
+
     b = Book.query.get(book_id)
     b.read = True
     db.session().commit()
