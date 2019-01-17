@@ -1,13 +1,17 @@
-# Kirjahylly
-Tsoha-kurssin työ
+## Kirjahylly
 
-Kirjahyllysovellus on sinun kirjahyllysi netissä!
+Kirjahyllysovellukseen rekisteröidytään sähköpostin avulla. Kun sivuille on rekisteröitynyt, pystyy sen avulla hallitsemaan omia kirjoja erilaisin toiminnoin
 
-Kun sivulle on rekisteröitynyt, pystyy sen avulla hallitsemaan omia kirjoja erilaisin toiminnoin:
   - kirjojen lisääminen ja poistaminen
   - kirjojen selaaminen
   - kirjojen merkitseminen luetuiksi, lukemattomiksi tai luettavana oleviksi
-  - arvostelujen jättäminen
-  - lukutavoitteiden asettaminen ja seuraaminen
+  - kirja-arvostelujen jättäminen (sekä numeroasteikko että kirjallinen arvostelu)
+  - omien lukutavoitteiden asettaminen ja seuraaminen
 
-Sovellus löytyy osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
+
+Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
+
+Muita linkkejä:
+[Sovelluksen tietokantakaavio](ja tähän tulee linkki)
+[User storyt](ja tähän myös) 
+
