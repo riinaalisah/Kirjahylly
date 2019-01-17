@@ -13,5 +13,5 @@ Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/
 
 Muita linkkejä:
 [Sovelluksen tietokantakaavio](ja tähän tulee linkki)
-[User storyt](ja tähän myös) 
+[User storyt](.../documentation/user_stories.md) 
 
