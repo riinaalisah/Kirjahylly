@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form method="POST" action="{{ url_for('authors_create') }}">
+  <table>
+    <tr>
+      <td>
+        {{ form.firstname.label }}
+      </td>
+      <td>
+        {{ form.firstname }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.firstname.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.lastname.label }}
+      </td>
+      <td>
+        {{ form.lastname }}
+      </td>
+      <td>
+        <ul>
+          {% for error in form.lastname.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <input type="submit" value="Lisää uusi kirjailija"/>
+      </td>
+    </tr>
+  </table>
+</form>
+{% endblock %}

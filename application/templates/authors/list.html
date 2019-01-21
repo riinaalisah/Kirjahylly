@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Etunimi</th>
+      <th>Sukunimi</th>
+    </tr>
+    {% for author in authors %}
+    <tr>
+      <td>{{ author.firstname }}</td>
+      <td>{{ author.lastname }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
