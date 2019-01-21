@@ -4,8 +4,15 @@ app = Flask(__name__)
 
 #tietokanta
 from flask_sqlalchemy import SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
-app.config["SQLALCHEMY_ECHO"] = True
+
+import os
+
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///books.db"
+    app.config["SQLALCHEMY_ECHO"] = True
+
 
 db = SQLAlchemy(app)
 
@@ -35,4 +42,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 # taulut tarvittaessa tietokantaan
-db.create_all()
+try:
+    db.create_all()
+except:
+    pass
