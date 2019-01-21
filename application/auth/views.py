@@ -4,8 +4,13 @@ from flask_login import login_user, logout_user
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm
+from application.auth.forms import UserForm
 
-@app.route("/auth/login", methods = ["GET", "POST"])
+@app.route("/auth/", methods=["GET"])
+def auth_index():
+    return render_template("auth/list.html", users = User.query.all())
+
+@app.route("/auth/login/", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
         return render_template("auth/loginform.html", form = LoginForm())
@@ -22,7 +27,19 @@ def auth_login():
     login_user(user)
     return redirect(url_for("index"))
 
-@app.route("/auth/logout")
+@app.route("/auth/logout/")
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
+
+@app.route("/auth/new/")
+def auth_form():
+    return render_template("auth/new.html", form = UserForm())
+
+@app.route("/auth/", methods=["POST"])
+def auth_create():
+    u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
+
+    db.session().add(u)
+    db.session().commit()
+    return redirect(url_for("auth_index"))

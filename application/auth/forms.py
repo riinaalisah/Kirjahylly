@@ -7,3 +7,11 @@ class LoginForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class UserForm(FlaskForm):
+    name = StringField("Nimi")
+    username = StringField("Käyttäjänimi")
+    password = StringField("Salasana")
+
+    class Meta:
+        csrf = False
