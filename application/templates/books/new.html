@@ -5,6 +5,22 @@
   <table>
     <tr>
       <td>
+        {{ form.author_firstname.label }}
+      </td>
+      <td>
+        {{ form.author_firstname }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ form.author_lastname.label }}
+      </td>
+      <td>
+        {{ form.author_lastname }}
+      </td>
+    </tr>
+    <tr>
+      <td>
         {{ form.name.label }}
       </td>
       <td>
@@ -33,5 +49,6 @@
         <input type="submit" value="Lisää uusi kirja"/>
       </td>
     </tr>
+  </table>
 </form>
 {% endblock %}
