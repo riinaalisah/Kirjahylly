@@ -5,6 +5,8 @@ from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
+from application.books.models import Book
+
 
 @app.route("/auth/", methods=["GET"])
 def auth_index():
@@ -52,3 +54,13 @@ def auth_info(username):
     user = User.query.filter_by(username=username).first_or_404()
 
     return render_template("auth/userinfo.html", user=user, books=user.mybooks)
+
+@app.route("/books/<username>/<book_id>/", methods=["POST"])
+@login_required
+def books_set_read(username, book_id):
+
+    book = Book.query.get(book_id)
+    book.read = True
+    db.session().commit()
+
+    return redirect(url_for('auth_info', username=username))

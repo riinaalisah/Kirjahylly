@@ -4,8 +4,8 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.books.models import Book
 from application.books.forms import BookForm
-from application.authors.models import Author, authors_books
-from application.auth.models import User, users_books
+from application.authors.models import Author
+from application.auth.models import User
 
 @app.route("/books/", methods=["GET"])
 def books_index():
@@ -16,15 +16,6 @@ def books_index():
 def books_form():
     return render_template("books/new.html", form = BookForm())
 
-@app.route("/books/<book_id>/", methods=["POST"])
-@login_required
-def books_set_read(book_id):
-
-    b = Book.query.get(book_id)
-    b.read = True
-    db.session().commit()
-
-    return redirect(url_for("books_index"))
 
 @app.route("/books/", methods=["POST"])
 @login_required

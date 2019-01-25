@@ -4,19 +4,11 @@
   <table>
     <tr>
       <th>Kirjan nimi</th>
-      <th>Luettu</th>
-      <th></th>
       <th>Kirjailijan nimi</th>
     </tr>
     {% for book in books %}
     <tr>
       <td>{{ book.name }}</td>
-      <td>{{ book.read }}</td>
-      <td>
-        <form method="POST" action="{{ url_for('books_set_read', book_id=book.id) }}">
-          <input type="submit" value="Merkitse luetuksi"/>
-        </form>
-      </td>
     </tr>
     {% endfor %}
   </table>

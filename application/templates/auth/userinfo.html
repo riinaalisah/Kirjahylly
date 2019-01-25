@@ -7,10 +7,24 @@
     <p>Käyttäjänimi: {{ user.username }}</p>
     <p></p>
     <h5>Omat kirjat</h5>
-    <ul>
+    <table>
+        <tr>
+            <th>Kirjan nimi</th>
+            <th>Luettu</th>
+            <th></th>
+            <th>Kirjailijan nimi</th>
+        </tr>
         {% for book in books %}
-            <li>{{ book.name }}</li>
+        <tr>
+            <td>{{ book.name }}</td>
+            <td>{{ book.read }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
+                    <input type="submit" value="Merkitse luetuksi"/>
+                </form>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 </form>
 {% endblock %}
