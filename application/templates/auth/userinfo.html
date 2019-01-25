@@ -2,25 +2,15 @@
 
 {% block body %}
 <form method="GET" action="{{ url_for('auth_info', username=user.username) }}">
-    <h2>Käyttäjänimi: {{ user.username }}</h2>
-    <table>
-        <tr>
-            <td>
-                {{ user.name }}
-            </td>
-        </tr>
-        <tr>
-           <td>
-                {{ user.username }}
-           </td>
-        </tr>
-        <tr>
+    <h3>Käyttäjän {{ user.name }} tiedot</h3>
+    <p></p>
+    <p>Käyttäjänimi: {{ user.username }}</p>
+    <p></p>
+    <h5>Omat kirjat</h5>
+    <ul>
         {% for book in books %}
-            {% if book.user_id == user.id %}
-                <td>{{ book.name }}</td>
-            {% endif %}
+            <li>{{ book.name }}</li>
         {% endfor %}
-        </tr>
-    </table>
+    </ul>
 </form>
 {% endblock %}

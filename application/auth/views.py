@@ -51,4 +51,4 @@ def auth_info(username):
 
     user = User.query.filter_by(username=username).first_or_404()
 
-    return render_template("auth/userinfo.html", user=user)
+    return render_template("auth/userinfo.html", user=user, books=user.mybooks)

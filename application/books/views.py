@@ -4,8 +4,8 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.books.models import Book
 from application.books.forms import BookForm
-from application.authors.models import Author
-from application.auth.models import User
+from application.authors.models import Author, authors_books
+from application.auth.models import User, users_books
 
 @app.route("/books/", methods=["GET"])
 def books_index():
@@ -42,6 +42,8 @@ def books_create():
     book.account_id = user.id
     book.author_id = author.id
 
+    user.mybooks.append(book)
+    author.books.append(book)
     db.session().add(book)
     db.session().commit()
 
