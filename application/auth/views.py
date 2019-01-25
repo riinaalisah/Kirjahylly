@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
 from application import app, db
 from application.auth.models import User
@@ -43,3 +43,12 @@ def auth_create():
     db.session().add(u)
     db.session().commit()
     return redirect(url_for("auth_index"))
+
+
+@app.route("/auth/<username>/", methods=["GET"])
+@login_required
+def auth_info(username):
+
+    user = User.query.filter_by(username=username).first_or_404()
+
+    return render_template("auth/userinfo.html", user=user)
