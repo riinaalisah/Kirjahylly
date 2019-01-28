@@ -5,6 +5,8 @@
     <h3>Käyttäjän {{ user.name }} tiedot</h3>
     <p></p>
     <p>Käyttäjänimi: {{ user.username }}</p>
+    <p>Kirjoja kirjahyllyssä: </p>
+    <p>Luettuja kirjoja: </p>
     <p></p>
     <h5>Omat kirjat</h5>
     <table>
@@ -20,15 +22,23 @@
             <td>{{ book.read }}</td>
             <td>
                 {% if book.read == False %}
-                    <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
-                        <input type="submit" value="Merkitse luetuksi"/>
+                    <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                        <input type="submit" name="btn" value="Merkitse luetuksi"/>
                     </form>
                 {% endif %}
                 {% if book.read == True %}
-                    <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
-                        <input type="submit" value="Merkitse lukemattomaksi"/>
+                    <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                        <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
                     </form>
                 {% endif %}
+            </td>
+            <td>
+
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                    <input type="submit" name="btn" value="Poista kirja"/>
+                </form>
             </td>
         </tr>
         {% endfor %}
