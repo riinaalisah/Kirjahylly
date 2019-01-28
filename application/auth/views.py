@@ -60,7 +60,12 @@ def auth_info(username):
 def books_set_read(username, book_id):
 
     book = Book.query.get(book_id)
-    book.read = True
+
+    if book.read == False:
+        book.read = True
+    else:
+        book.read = False
+
     db.session().commit()
 
     return redirect(url_for('auth_info', username=username))

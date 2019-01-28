@@ -19,9 +19,16 @@
             <td>{{ book.name }}</td>
             <td>{{ book.read }}</td>
             <td>
-                <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
-                    <input type="submit" value="Merkitse luetuksi"/>
-                </form>
+                {% if book.read == False %}
+                    <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
+                        <input type="submit" value="Merkitse luetuksi"/>
+                    </form>
+                {% endif %}
+                {% if book.read == True %}
+                    <form method="POST" action="{{ url_for('books_set_read', username=user.username, book_id=book.id) }}">
+                        <input type="submit" value="Merkitse lukemattomaksi"/>
+                    </form>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
