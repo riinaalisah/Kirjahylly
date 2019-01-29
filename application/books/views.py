@@ -9,12 +9,12 @@ from application.auth.models import User
 
 @app.route("/books/", methods=["GET"])
 def books_index():
-    return render_template("books/list.html", books = Book.query.all())
+    return render_template("books/list.html", books=Book.query.all())
 
 @app.route("/books/new/")
 @login_required
 def books_form():
-    return render_template("books/new.html", form = BookForm())
+    return render_template("books/new.html", form=BookForm())
 
 
 @app.route("/books/", methods=["POST"])
@@ -23,13 +23,13 @@ def books_create():
     form = BookForm(request.form)
 
     if not form.validate():
-        return render_template("books/new.html", form = form)
+        return render_template("books/new.html", form=form)
 
     book = Book(form.name.data)
     author = Author.query.filter_by(firstname=form.author_firstname.data).first()
     user = User.query.filter_by(username=current_user.username).first_or_404()
 
-    book.read = form.read.data
+    #book.read = form.read.data
     book.account_id = user.id
     book.author_id = author.id
 

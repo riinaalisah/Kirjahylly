@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required
 
 from application import app, db
 from application.auth.models import User
+from application.auth.models import users_books
 from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
 from application.books.models import Book
@@ -64,12 +65,12 @@ def auth_info(username):
 @login_required
 def books_set_read_or_delete(username, book_id):
     if request.form["btn"] == "Merkitse luetuksi" or request.form["btn"] == "Merkitse lukemattomaksi":
-        book = Book.query.get(book_id)
+        usersbook = users_books.query.get(book_id)
 
-        if book.read == False:
-            book.read = True
+        if usersbook.read == False:
+            usersbook.read = True
         else:
-            book.read = False
+            usersbook.read = False
 
         db.session().commit()
 

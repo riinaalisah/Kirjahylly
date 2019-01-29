@@ -5,7 +5,8 @@ from sqlalchemy.sql import text
 
 users_books = db.Table('users_books',
     db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('account.id'))
+    db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
+    db.Column('read', db.Boolean, default=False, nullable=False)
 )
 
 class User(Base):
