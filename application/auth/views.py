@@ -57,7 +57,7 @@ def auth_create():
 def auth_info(username):
     user = User.query.filter_by(username=username).first_or_404()
 
-    return render_template("auth/userinfo.html", user=user, books=user.mybooks)
+    return render_template("auth/userinfo.html", user=user, books=user.mybooks, all_books=user.count_all_books(user.id))
 
 
 @app.route("/auth/<username>/<book_id>/", methods=["POST"])

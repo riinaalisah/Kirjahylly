@@ -5,7 +5,11 @@
     <h3>Käyttäjän {{ user.name }} tiedot</h3>
     <p></p>
     <p>Käyttäjänimi: {{ user.username }}</p>
-    <p>Kirjoja kirjahyllyssä: </p>
+
+    {% if all_books is defined %}
+    <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>           <!-- KYSY TÄSTÄ -->
+    {% endif %}
+
     <p>Luettuja kirjoja: </p>
     <p></p>
     <h5>Omat kirjat</h5>

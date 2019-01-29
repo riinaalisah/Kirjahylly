@@ -1,6 +1,8 @@
 from application import db
 from application.models import Base
 
+from sqlalchemy.sql import text
+
 users_books = db.Table('users_books',
     db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
     db.Column('user_id', db.Integer, db.ForeignKey('account.id'))
@@ -34,3 +36,17 @@ class User(Base):
     def is_authenticated(self):
         return True
 
+    @staticmethod
+    def count_all_books(userid):
+        stmt = text("SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id = :userid").params(userid=userid)
+
+        res = db.engine.execute(stmt)
+        return res
+
+
+    @staticmethod
+    def count_read_books():
+        stmt = text("").params()
+
+        res = db.engine.execute(stmt)
+        return res
