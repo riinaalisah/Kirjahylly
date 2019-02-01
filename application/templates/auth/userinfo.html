@@ -12,7 +12,7 @@
 
     <p>Luettuja kirjoja: </p>
     <p></p>
-    <h5>Omat kirjat</h5>
+    <h4>Omat kirjat</h4>
     <table>
         <tr>
             <th>Kirjan nimi</th>
@@ -20,24 +20,26 @@
             <th></th>
             <th>Kirjailijan nimi</th>
         </tr>
-        {% for book in books %}
+
+
+        {% for read in books_read %}
+        {% for book in books_names %}
         <tr>
             <td>{{ book.name }}</td>
-            <td>{{ book.read }}</td>
+            <td>{{ read.read }}</td>
             <td>
-                {% if book.read == False %}
-                    <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
-                        <input type="submit" name="btn" value="Merkitse luetuksi"/>
-                    </form>
+                {% if read.read == False %}
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                    <input type="submit" name="btn" value="Merkitse luetuksi"/>
+                </form>
                 {% endif %}
-                {% if book.read == True %}
-                    <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
-                        <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
-                    </form>
+                {% if read.read == True %}
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                    <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
+                </form>
                 {% endif %}
             </td>
             <td>
-
             </td>
             <td>
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
@@ -46,6 +48,8 @@
             </td>
         </tr>
         {% endfor %}
+        {% endfor %}
     </table>
+
 </form>
 {% endblock %}

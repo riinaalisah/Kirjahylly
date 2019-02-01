@@ -1,15 +1,24 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<!--<form method="GET" action="{{ url_for('books_index', user=user) }}"-->
   <table>
     <tr>
       <th>Kirjan nimi</th>
       <th>Kirjailijan nimi</th>
+      <th></th>
     </tr>
     {% for book in books %}
     <tr>
       <td>{{ book.name }}</td>
+      <td></td>
+      <td>
+        <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.id) }}">
+            <input type="submit" value="Lisää omiin kirjoihin"/>
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </table>
+</form>
 {% endblock %}
