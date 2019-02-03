@@ -10,7 +10,6 @@ from application.auth.forms import UserForm
 from application.books.models import Book
 
 from sqlalchemy.sql import text
-from sqlalchemy import create_engine
 
 @app.route("/auth/", methods=["GET"])
 def auth_index():
@@ -51,27 +50,26 @@ def auth_create():
 
     db.session().add(u)
     db.session().commit()
-    return redirect(url_for("auth_index"))
+    return redirect(url_for("auth_login"))
 
 
 @app.route("/auth/<username>/", methods=["GET"])
 @login_required
 def auth_info(username):
-    user = User.query.filter_by(username=username).first_or_404()
+    user = User.query.filter_by(username=username).first()
 
-    stmt = text("SELECT * FROM users_books WHERE user_id = :user_id").params(user_id=user.id)
+    stmt = text("SELECT user_id, read, name FROM users_books ub JOIN book b ON b.id=ub.book_id WHERE ub.user_id=:user_id").params(user_id=user.id)
 
-    books_read = db.engine.execute(stmt)
+    bookslist = db.engine.execute(stmt)
+    db.session().commit()
 
-    return render_template("auth/userinfo.html", user=user, books_names=user.mybooks,
-                           books_read=books_read, all_books=user.count_all_books(user.id))
+    return render_template("auth/userinfo.html", user=user, books=bookslist, all_books=user.count_all_books(user.id))
 
 
 
 @app.route("/auth/<username>/<book_id>/", methods=["POST"])
 @login_required
 def books_set_read_or_delete(username, book_id):
-
     user = User.query.filter_by(username=username).first()
 
     if request.form["btn"] == "Merkitse luetuksi":

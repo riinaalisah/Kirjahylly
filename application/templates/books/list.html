@@ -13,7 +13,7 @@
       <td>{{ book.name }}</td>
       <td></td>
       <td>
-        <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.id) }}">
+        <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.id) }}"> <!-- id Base-luokan kautta, eikö onnistu?-->
             <input type="submit" value="Lisää omiin kirjoihin"/>
         </form>
       </td>

@@ -42,7 +42,7 @@ class User(Base):
         stmt = text("SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id = :userid").params(userid=userid)
 
         res = db.engine.execute(stmt)
-        return res
+        return res.fetchone()[0]
 
 
     @staticmethod

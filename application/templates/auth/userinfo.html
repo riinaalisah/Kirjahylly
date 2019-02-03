@@ -21,19 +21,17 @@
             <th>Kirjailijan nimi</th>
         </tr>
 
-
-        {% for read in books_read %}
-        {% for book in books_names %}
+        {% for book in books %}
         <tr>
             <td>{{ book.name }}</td>
-            <td>{{ read.read }}</td>
+            <td>{{ book.read }}</td>
             <td>
-                {% if read.read == False %}
+                {% if book.read == False %}
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
                     <input type="submit" name="btn" value="Merkitse luetuksi"/>
                 </form>
                 {% endif %}
-                {% if read.read == True %}
+                {% if book.read == True %}
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
                     <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
                 </form>
@@ -47,7 +45,6 @@
                 </form>
             </td>
         </tr>
-        {% endfor %}
         {% endfor %}
     </table>
 
