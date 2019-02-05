@@ -11,7 +11,7 @@
     {% for book in books %}
     <tr>
       <td>{{ book.name }}</td>
-      <td></td>
+      <td>{{ book.firstname }} {{book.lastname }}</td>
       <td>
         <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.id) }}"> <!-- id Base-luokan kautta, eikö onnistu?-->
             <input type="submit" value="Lisää omiin kirjoihin"/>

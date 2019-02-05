@@ -11,12 +11,11 @@ from application.auth.models import User
 @app.route("/books/", methods=["GET"])
 def books_index():
     user = current_user
-    books = Book.query.all()
-    for book in books:
-        print(book.id)
-        print(book.name)
+    stmt = text("select book_id, author_id, name, firstname, lastname from authors_books join book on "
+                "book.id=authors_books.book_id join author on author.id=authors_books.author_id")
+    books = db.engine.execute(stmt)
 
-    return render_template("books/list.html", books=Book.query.all(), user=user)
+    return render_template("books/list.html", books=books, user=user)
 
 @app.route("/books/new/")
 @login_required
