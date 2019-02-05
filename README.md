@@ -9,6 +9,9 @@ Kirjahyllysovellukseen rekisteröidytään sähköpostin avulla. Kun sivuille on
   - omien lukutavoitteiden asettaminen ja seuraaminen
 
 
+Jos sovellusta haluaa testata, pystyy käyttäjätunnuksen luomaan painamalla etusivulta linkkiä 'Lisää käyttäjä' ja syöttämällä avautuvalle sivulle nimen, käyttäjänimen ja salasanan.
+
+
 ##### Linkkejä
 
 Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
