@@ -46,8 +46,8 @@ class User(Base):
 
 
     @staticmethod
-    def count_read_books():
-        stmt = text("").params()
+    def count_read_books(userid):
+        stmt = text("SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id =  :userid AND read = 1").params(userid=userid)
 
         res = db.engine.execute(stmt)
-        return res
+        return res.fetchone()[0]

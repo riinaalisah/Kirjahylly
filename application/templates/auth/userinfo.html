@@ -7,10 +7,12 @@
     <p>Käyttäjänimi: {{ user.username }}</p>
 
     {% if all_books is defined %}
-    <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>           <!-- KYSY TÄSTÄ -->
+    <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>
     {% endif %}
 
-    <p>Luettuja kirjoja: </p>
+    {% if read_books is defined %}
+    <p>Luettuja kirjoja: {{ read_books }}</p>
+    {% endif %}
     <p></p>
     <h4>Omat kirjat</h4>
     <table>

@@ -63,7 +63,8 @@ def auth_info(username):
     bookslist = db.engine.execute(stmt)
     db.session().commit()
 
-    return render_template("auth/userinfo.html", user=user, books=bookslist, all_books=user.count_all_books(user.id))
+    return render_template("auth/userinfo.html", user=user, books=bookslist, all_books=user.count_all_books(user.id),
+                           read_books=user.count_read_books(user.id))
 
 
 
