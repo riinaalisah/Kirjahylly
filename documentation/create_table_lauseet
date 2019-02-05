@@ -1,0 +1,39 @@
+CREATE TABLE book (
+        id INTEGER NOT NULL, 
+        date_created DATETIME, 
+        date_modified DATETIME, 
+        name VARCHAR(144) NOT NULL, 
+        PRIMARY KEY (id)
+);
+CREATE TABLE author (
+        id INTEGER NOT NULL, 
+        date_created DATETIME, 
+        date_modified DATETIME, 
+        firstname VARCHAR(30) NOT NULL, 
+        lastname VARCHAR(30) NOT NULL, 
+        PRIMARY KEY (id)
+);
+CREATE TABLE account (
+        id INTEGER NOT NULL, 
+        date_created DATETIME, 
+        date_modified DATETIME, 
+        name VARCHAR(30) NOT NULL, 
+        username VARCHAR(30) NOT NULL, 
+        password VARCHAR(30) NOT NULL, 
+        PRIMARY KEY (id)
+);
+CREATE TABLE authors_books (
+        book_id INTEGER, 
+        author_id INTEGER, 
+        FOREIGN KEY(book_id) REFERENCES book (id), 
+        FOREIGN KEY(author_id) REFERENCES author (id)
+);
+CREATE TABLE users_books (
+        book_id INTEGER, 
+        user_id INTEGER, 
+        read BOOLEAN NOT NULL, 
+        FOREIGN KEY(book_id) REFERENCES book (id), 
+        FOREIGN KEY(user_id) REFERENCES account (id), 
+        CHECK (read IN (0, 1))
+);
+
