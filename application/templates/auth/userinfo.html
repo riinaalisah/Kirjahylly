@@ -29,12 +29,12 @@
             <td>{{ book.read }}</td>
             <td>
                 {% if book.read == False %}
-                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.book_id) }}">
                     <input type="submit" name="btn" value="Merkitse luetuksi"/>
                 </form>
                 {% endif %}
                 {% if book.read == True %}
-                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.book_id) }}">
                     <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
                 </form>
                 {% endif %}
@@ -42,7 +42,7 @@
             <td>
             </td>
             <td>
-                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.id) }}">
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', username=user.username, book_id=book.book_id) }}">
                     <input type="submit" name="btn" value="Poista kirja"/>
                 </form>
             </td>

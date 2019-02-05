@@ -7,7 +7,6 @@ from application.books.models import Book
 from application.books.forms import BookForm
 from application.authors.models import Author
 from application.auth.models import User
-from application.auth.models import users_books
 
 @app.route("/books/", methods=["GET"])
 def books_index():
@@ -35,14 +34,9 @@ def books_create():
 
     book = Book(form.name.data)
     author = Author.query.filter_by(firstname=form.author_firstname.data).first()
-    #user = User.query.filter_by(username=current_user.username).first_or_404()
 
-    #book.read = form.read.data
-    #book.account_id = user.id
-    #book.author_id = author.id
 
     db.session().add(book)
-    #user.mybooks.append(book)
     author.books.append(book)
     db.session().commit()
 
@@ -55,10 +49,7 @@ def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
 
-    #stmt = text("INSERT INTO users_books (user_id, book_id, read) VALUES (:book_id, :user_id)").params(book_id=book_id, user_id=user.id)
-
     user.mybooks.append(book)
-    #db.engine.execute(stmt)
     db.session().commit()
 
     return redirect(url_for("books_index"))

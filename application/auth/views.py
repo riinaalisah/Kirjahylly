@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
-
 from application import app, db
 from application.auth.models import User
 from application.auth.models import users_books
@@ -10,6 +9,7 @@ from application.auth.forms import UserForm
 from application.books.models import Book
 
 from sqlalchemy.sql import text
+
 
 @app.route("/auth/", methods=["GET"])
 def auth_index():
@@ -58,14 +58,15 @@ def auth_create():
 def auth_info(username):
     user = User.query.filter_by(username=username).first()
 
-    stmt = text("SELECT user_id, read, name FROM users_books ub JOIN book b ON b.id=ub.book_id WHERE ub.user_id=:user_id").params(user_id=user.id)
+    stmt = text(
+        "SELECT book_id, user_id, read, name FROM users_books ub JOIN book b ON b.id=ub.book_id WHERE ub.user_id=:user_id").params(
+        user_id=user.id)
 
     bookslist = db.engine.execute(stmt)
     db.session().commit()
 
     return render_template("auth/userinfo.html", user=user, books=bookslist, all_books=user.count_all_books(user.id),
                            read_books=user.count_read_books(user.id))
-
 
 
 @app.route("/auth/<username>/<book_id>/", methods=["POST"])
@@ -75,24 +76,18 @@ def books_set_read_or_delete(username, book_id):
 
     if request.form["btn"] == "Merkitse luetuksi":
 
-        stmt = text("UPDATE users_books SET read = 1 WHERE book_id = :book_id AND user_id = :user_id")\
+        stmt = text("UPDATE users_books SET read = 1 WHERE book_id = :book_id AND user_id = :user_id") \
             .params(user_id=user.id, book_id=book_id)
-
-        db.engine.execute(stmt)
-        db.session().commit()
 
     elif request.form["btn"] == "Merkitse lukemattomaksi":
-        stmt = text("UPDATE users_books SET read = 0 WHERE book_id = :book_id AND user_id = :user_id")\
+        stmt = text("UPDATE users_books SET read = 0 WHERE book_id = :book_id AND user_id = :user_id") \
             .params(user_id=user.id, book_id=book_id)
-
-        db.engine.execute(stmt)
-        db.session().commit()
 
     else:
-        stmt = text("DELETE FROM users_books WHERE user_id = :user_id AND book_id = :book_id")\
+        stmt = text("DELETE FROM users_books WHERE user_id = :user_id AND book_id = :book_id") \
             .params(user_id=user.id, book_id=book_id)
 
-        db.engine.execute(stmt)
-        db.session().commit()
+    db.engine.execute(stmt)
+    db.session().commit()
 
-    return redirect(url_for('auth_info', username=username))
+    return redirect(url_for("auth_info", username=username))
