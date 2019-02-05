@@ -18,14 +18,14 @@
     <table>
         <tr>
             <th>Kirjan nimi</th>
-            <th>Luettu</th>
-            <th></th>
             <th>Kirjailijan nimi</th>
+            <th>Luettu</th>
         </tr>
 
         {% for book in books %}
         <tr>
             <td>{{ book.name }}</td>
+            <td>{{ book.firstname }} {{ book.lastname }}</td>
             <td>{{ book.read }}</td>
             <td>
                 {% if book.read == False %}

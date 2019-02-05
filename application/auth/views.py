@@ -59,7 +59,9 @@ def auth_info(username):
     user = User.query.filter_by(username=username).first()
 
     stmt = text(
-        "SELECT book_id, user_id, read, name FROM users_books ub JOIN book b ON b.id=ub.book_id WHERE ub.user_id=:user_id").params(
+        "SELECT ub.book_id, user_id, firstname, lastname, read, name FROM users_books ub, authors_books ab "
+        "JOIN book b ON b.id=ub.book_id JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id "
+        "AND ab.book_id=ub.book_id;").params(
         user_id=user.id)
 
     bookslist = db.engine.execute(stmt)
