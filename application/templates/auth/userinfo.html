@@ -14,6 +14,9 @@
     <p>Luettuja kirjoja: {{ read_books }}</p>
     {% endif %}
     <p></p>
+    <a href="{{ url_for('auth_edit_form', username=user.username) }}" class="button">Muokkaa tietoja</a>
+
+    <p></p>
     <h4>Omat kirjat</h4>
     <table>
         <tr>
@@ -24,7 +27,6 @@
 
         {% for book in books %}
         <tr>
-            <td>{{ book.name }}</td>
             <td>{{ book.firstname }} {{ book.lastname }}</td>
             <td>{{ book.read }}</td>
             <td>
@@ -49,7 +51,6 @@
         </tr>
         {% endfor %}
     </table>
-    <!-- tietojen muokkaus (jonka sisällä mahdollisuus poistoon?).-->
 
 </form>
 {% endblock %}

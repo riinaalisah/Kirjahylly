@@ -34,6 +34,7 @@ def auth_login():
 
 
 @app.route("/auth/logout/")
+@login_required
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
@@ -96,6 +97,6 @@ def books_set_read_or_delete(username, book_id):
 
 @app.route("/auth/<username>/edit/", methods=["GET"])
 @login_required
-def auth_edit(username):
-    user = User.query.filter_by(username=username).first()
+def auth_edit_form(username):
+    #user = User.query.filter_by(username=username).first()
     return render_template("auth/editinfo.html", form=UserForm())

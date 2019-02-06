@@ -1,44 +1,44 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h2>Muokkaa omia tietoja</h2>
-<table>
-    <tr>
-        <td>
-            Uusi nimi
-        </td>
-        <td>
-            {{ form.name }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Uusi käyttäjänimi
-        </td>
-        <td>
-            {{ form.username }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Vanha salasana
-        </td>
-        <td>
-            {{ form.password }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Uusi salasana
-        </td>
-        <td>
-            {{ form.password }}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <input type="submit" value="Tallenna muutokset"/>
-        </td>
-    </tr>
-</table>
+    <h2>Muokkaa omia tietoja</h2>
+    <table>
+        <tr>
+            <td>
+                Uusi nimi
+            </td>
+            <td>
+                {{ form.name }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Uusi käyttäjänimi
+            </td>
+            <td>
+                {{ form.username }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Vanha salasana
+            </td>
+            <td>
+                {{ form.password }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Uusi salasana
+            </td>
+            <td>
+                {{ form.password }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="submit" value="Tallenna muutokset"/>
+            </td>
+        </tr>
+    </table>
 {% endblock %}
