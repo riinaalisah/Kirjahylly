@@ -1,7 +1,11 @@
 asn1crypto==0.24.0
+<<<<<<< HEAD
 cffi==1.11.5
 click==6.7
 cryptography==2.1.4
+=======
+cryptography>=2.3
+>>>>>>> c3ddab94c57f23f83f6c6ffba29b5fe12bedde88
 enum34==1.1.6
 Flask==0.12.2
 Flask-Login==0.4.1
