@@ -93,3 +93,9 @@ def books_set_read_or_delete(username, book_id):
     db.session().commit()
 
     return redirect(url_for("auth_info", username=username))
+
+@app.route("/auth/<username>/edit/", methods=["GET"])
+@login_required
+def auth_edit(username):
+    user = User.query.filter_by(username=username).first()
+    return render_template("auth/editinfo.html", form=UserForm())
