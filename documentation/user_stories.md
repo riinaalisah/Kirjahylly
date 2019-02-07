@@ -1,5 +1,5 @@
-"Innokkaana lukijana pysyn kärryillä kirjoistani; mitkä niistä olen lukenut ja mitkä ovat vielä lukematta"
+"Käyttäjänä pystyn asettamaan kirjoja luetuiksi ja lukemattomiksi."
 
-"Luen paljon kirjoja ja haluan asettaa itselleni lukutavoitteita. Sovelluksen avulla tavoitteiden toteutumisen seuraaminen on helpompaa."
+"Käyttäjänä pystyn selaamaan kirjoja ja lisäämään niitä omaan hyllyyn."
 
-
+"Käyttäjänä pystyn näkemään tilastoja kirjoistani: kuinka paljon niitä on, paljonko olen lukenut, kenen kirjailijan kirjoja minulla on eniten."
