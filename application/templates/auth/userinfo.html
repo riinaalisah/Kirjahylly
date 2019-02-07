@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="GET" action="{{ url_for('auth_info', username=user.username) }}">
+<form method="GET" action="{{ url_for('auth_info') }}">
     <h3>Käyttäjän {{ user.name }} tiedot</h3>
     <p></p>
     <p>Käyttäjänimi: {{ user.username }}</p>
@@ -27,6 +27,7 @@
 
         {% for book in books %}
         <tr>
+            <td>{{ book.name }}</td>
             <td>{{ book.firstname }} {{ book.lastname }}</td>
             <td>{{ book.read }}</td>
             <td>

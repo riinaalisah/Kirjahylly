@@ -54,46 +54,45 @@ def auth_create():
     return redirect(url_for("auth_login"))
 
 
-@app.route("/auth/<username>/", methods=["GET"])
+@app.route("/auth/info/", methods=["GET"])
 @login_required
-def auth_info(username):
-    user = User.query.filter_by(username=username).first()
+def auth_info():
 
     stmt = text(
         "SELECT ub.book_id, user_id, firstname, lastname, read, name FROM users_books ub, authors_books ab "
         "JOIN book b ON b.id=ub.book_id JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id "
         "AND ab.book_id=ub.book_id;").params(
-        user_id=user.id)
+        user_id=current_user.id)
 
     bookslist = db.engine.execute(stmt)
     db.session().commit()
 
-    return render_template("auth/userinfo.html", user=user, books=bookslist, all_books=user.count_all_books(user.id),
-                           read_books=user.count_read_books(user.id))
+    return render_template("auth/userinfo.html", user=current_user, books=bookslist,
+                           all_books=current_user.count_all_books(current_user.id),
+                           read_books=current_user.count_read_books(current_user.id))
 
 
-@app.route("/auth/<username>/<book_id>/", methods=["POST"])
+@app.route("/auth/info/<book_id>/", methods=["POST"])
 @login_required
-def books_set_read_or_delete(username, book_id):
-    user = User.query.filter_by(username=username).first()
+def books_set_read_or_delete(book_id):
 
     if request.form["btn"] == "Merkitse luetuksi":
 
         stmt = text("UPDATE users_books SET read = 1 WHERE book_id = :book_id AND user_id = :user_id") \
-            .params(user_id=user.id, book_id=book_id)
+            .params(user_id=current_user.id, book_id=book_id)
 
     elif request.form["btn"] == "Merkitse lukemattomaksi":
         stmt = text("UPDATE users_books SET read = 0 WHERE book_id = :book_id AND user_id = :user_id") \
-            .params(user_id=user.id, book_id=book_id)
+            .params(user_id=current_user.id, book_id=book_id)
 
     else:
         stmt = text("DELETE FROM users_books WHERE user_id = :user_id AND book_id = :book_id") \
-            .params(user_id=user.id, book_id=book_id)
+            .params(user_id=current_user.id, book_id=book_id)
 
     db.engine.execute(stmt)
     db.session().commit()
 
-    return redirect(url_for("auth_info", username=username))
+    return redirect(url_for("auth_info"))
 
 @app.route("/auth/edit/", methods=["GET", "POST"])
 @login_required
