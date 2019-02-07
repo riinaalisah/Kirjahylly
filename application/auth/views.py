@@ -85,11 +85,11 @@ def books_set_read_or_delete(book_id):
 
     if request.form["btn"] == "Merkitse luetuksi":
 
-        stmt = text("UPDATE users_books SET read = \"true\" WHERE book_id = :book_id AND user_id = :user_id") \
+        stmt = text("UPDATE users_books SET read = '1' WHERE book_id = :book_id AND user_id = :user_id") \
             .params(user_id=current_user.id, book_id=book_id)
 
     elif request.form["btn"] == "Merkitse lukemattomaksi":
-        stmt = text("UPDATE users_books SET read = \"false\" WHERE book_id = :book_id AND user_id = :user_id") \
+        stmt = text("UPDATE users_books SET read = '0' WHERE book_id = :book_id AND user_id = :user_id") \
             .params(user_id=current_user.id, book_id=book_id)
 
     else:
