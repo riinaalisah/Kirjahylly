@@ -47,6 +47,11 @@ def auth_form():
 
 @app.route("/auth/", methods=["POST"])
 def auth_create():
+    form = UserForm(request.form)
+
+    if not form.validate():
+        return render_template("auth/new.html", form=form)
+
     u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
 
     db.session().add(u)

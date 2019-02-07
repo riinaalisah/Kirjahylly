@@ -8,6 +8,7 @@ from application.books.forms import BookForm
 from application.authors.models import Author
 from application.auth.models import User
 
+
 @app.route("/books/", methods=["GET"])
 def books_index():
     user = current_user
@@ -16,6 +17,7 @@ def books_index():
     books = db.engine.execute(stmt)
 
     return render_template("books/list.html", books=books, user=user)
+
 
 @app.route("/books/new/")
 @login_required
@@ -34,17 +36,16 @@ def books_create():
     book = Book(form.name.data)
     author = Author.query.filter_by(firstname=form.author_firstname.data).first()
 
-
     db.session().add(book)
     author.books.append(book)
     db.session().commit()
 
     return redirect(url_for("books_index"))
 
+
 @app.route("/books/<book_id>/", methods=["POST"])
 @login_required
 def book_add_to_user(book_id):
-
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
 
