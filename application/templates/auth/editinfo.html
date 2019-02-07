@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<form method="POST" action="{{ url_for('auth_edit_form') }}">
     <h2>Muokkaa omia tietoja</h2>
+    <p>Tässä voit muuttaa omia tietojasi. Voit vaihtaa joko kaikki tiedot kerralla, tai esimerkiksi vain salasanan.
+        Jätä tällöin muut kentät tyhjäksi.</p>
     <table>
         <tr>
             <td>
@@ -19,6 +22,8 @@
                 {{ form.username }}
             </td>
         </tr>
+        <!--- jätetään tämä vielä pois
+
         <tr>
             <td>
                 Vanha salasana
@@ -27,6 +32,8 @@
                 {{ form.password }}
             </td>
         </tr>
+        -->
+
         <tr>
             <td>
                 Uusi salasana
@@ -41,4 +48,5 @@
             </td>
         </tr>
     </table>
+</form>
 {% endblock %}

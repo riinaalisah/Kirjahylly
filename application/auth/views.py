@@ -95,8 +95,24 @@ def books_set_read_or_delete(username, book_id):
 
     return redirect(url_for("auth_info", username=username))
 
-@app.route("/auth/<username>/edit/", methods=["GET"])
+@app.route("/auth/edit/", methods=["GET", "POST"])
 @login_required
-def auth_edit_form(username):
-    #user = User.query.filter_by(username=username).first()
-    return render_template("auth/editinfo.html", form=UserForm())
+def auth_edit_form():
+
+    if request.method == "GET":
+        return render_template("auth/editinfo.html", form=UserForm())
+
+    else:
+        modifieduser = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
+        if modifieduser.name != "":
+            current_user.name = modifieduser.name
+
+        if modifieduser.username != "":
+            current_user.username = modifieduser.username
+
+        if modifieduser.password != "":
+            current_user.password = modifieduser.password
+
+        db.session().commit()
+        return redirect(url_for('auth_info', username=current_user.username))
+
