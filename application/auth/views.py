@@ -66,9 +66,9 @@ def auth_create():
 def auth_info():
 
     stmt = text(
-        "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name FROM users_books ub, authors_books ab "
-        "JOIN book b ON b.id=ub.book_id JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id "
-        "AND ab.book_id=ub.book_id").params(
+        "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
+        "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
+        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id;").params(
         user_id=current_user.id)
 
     bookslist = db.engine.execute(stmt)
