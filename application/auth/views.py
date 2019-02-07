@@ -10,6 +10,8 @@ from application.books.models import Book
 
 from sqlalchemy.sql import text
 
+from application.views import index
+
 
 @app.route("/auth/", methods=["GET"])
 def auth_index():
@@ -105,6 +107,13 @@ def auth_edit_form():
 
     if request.method == "GET":
         return render_template("auth/editinfo.html", form=UserForm())
+
+    elif request.method == "POST" and request.form["btn"] == "Poista käyttäjätili":
+        #logout_user()
+        stmt = text("DELETE FROM account WHERE id=:userid").params(userid=current_user.id)
+        db.engine.execute(stmt)
+        db.session().commit()
+        return redirect(url_for("index"))
 
     else:
         modifieduser = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
