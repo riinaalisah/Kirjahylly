@@ -22,7 +22,10 @@ def books_index():
 @app.route("/books/new/")
 @login_required
 def books_form():
-    return render_template("books/new.html", form=BookForm())
+    stmt = text("SELECT * FROM author")
+    authors = db.engine.execute(stmt)
+
+    return render_template("books/new.html", form=BookForm(), authors=authors)
 
 
 @app.route("/books/", methods=["POST"])
@@ -34,7 +37,9 @@ def books_create():
         return render_template("books/new.html", form=form)
 
     book = Book(form.name.data)
-    author = Author.query.filter_by(firstname=form.author_firstname.data).first()
+    authorname = request.form.get("dropdown")
+    names = authorname.split(" ")
+    author = Author.query.filter_by(firstname=names[0], lastname=names[1]).first()
 
     db.session().add(book)
     author.books.append(book)

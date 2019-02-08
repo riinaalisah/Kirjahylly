@@ -4,21 +4,20 @@
 <form method="POST" action="{{ url_for('books_create') }}">
   <table>
     <tr>
+
       <td>
-        {{ form.author_firstname.label }}
+        Kirjailija
       </td>
       <td>
-        {{ form.author_firstname }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.author_lastname.label }}
-      </td>
-      <td>
-        {{ form.author_lastname }}
+        <select name="dropdown">
+          <option style="display:none">Valitse kirjailija</option>
+          {% for author in authors %}
+          <option>{{ author.firstname }} {{ author.lastname }}</option>
+          {% endfor %}
+        </select>
       </td>
     </tr>
+
     <tr>
       <td>
         {{ form.name.label }}
