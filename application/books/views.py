@@ -43,6 +43,7 @@ def books_create():
 
     db.session().add(book)
     author.books.append(book)
+    author.books_count = author.books_count + 1
     db.session().commit()
 
     return redirect(url_for("books_index"))
@@ -53,10 +54,6 @@ def books_create():
 def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
-
-    #stmt = text("SELECT book_id FROM users_books WHERE user_id = :userid").params(userid=current_user.id)
-    #book_ids = db.engine.execute(stmt)
-    #print(book_ids)
 
     if book not in user.mybooks:
         user.mybooks.append(book)

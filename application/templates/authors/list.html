@@ -3,13 +3,13 @@
 {% block body %}
   <table>
     <tr>
-      <th>Etunimi</th>
-      <th>Sukunimi</th>
+      <th style="padding:0 15px 0 15px;">Kirjailijan nimi</th>
+      <th style="padding:0 15px 0 15px;">Kirjoja sovelluksessa</th>
     </tr>
     {% for author in authors %}
     <tr>
-      <td>{{ author.firstname }}</td>
-      <td>{{ author.lastname }}</td>
+      <td style="padding:0 15px 0 15px;">{{ author.firstname }} {{ author.lastname }}</td>
+      <td style="padding:0 15px 0 15px;">{{ author.books_count }}</td>
     </tr>
     {% endfor %}
   </table>
