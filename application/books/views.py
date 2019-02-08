@@ -36,7 +36,7 @@ def books_create():
     if not form.validate():
         return render_template("books/new.html", form=form)
 
-    book = Book(form.name.data)
+    book = Book(name=form.name.data, pages=form.pages.data, isbn=form.isbn.data)
     authorname = request.form.get("dropdown")
     names = authorname.split(" ")
     author = Author.query.filter_by(firstname=names[0], lastname=names[1]).first()
