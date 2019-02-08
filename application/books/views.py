@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from sqlalchemy import text
 
@@ -54,7 +54,16 @@ def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
 
-    user.mybooks.append(book)
-    db.session().commit()
+    #stmt = text("SELECT book_id FROM users_books WHERE user_id = :userid").params(userid=current_user.id)
+    #book_ids = db.engine.execute(stmt)
+    #print(book_ids)
+
+    if book not in user.mybooks:
+        user.mybooks.append(book)
+        db.session().commit()
+        flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!")
+
+    else:
+        flash("Kirja on jo lisätty omaan kirjahyllyyn!")
 
     return redirect(url_for("books_index"))
