@@ -1,5 +1,5 @@
-from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user, LoginManager
 
 from application import app, db
 from application.auth.models import User
@@ -9,8 +9,6 @@ from application.auth.forms import UserForm
 from application.books.models import Book
 
 from sqlalchemy.sql import text
-
-from application.views import index
 
 
 @app.route("/auth/", methods=["GET"])
@@ -28,8 +26,8 @@ def auth_login():
 
     user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
     if not user:
-        return render_template("auth/loginform.html", form=form,
-                               error="No such username or password")
+        flash("Syötetty käyttäjänimi tai salasana ei täsmää.", 'warning')
+        return render_template("auth/loginform.html", form=form)
 
     login_user(user)
     return redirect(url_for("index"))
@@ -101,6 +99,7 @@ def books_set_read_or_delete(book_id):
 
     return redirect(url_for("auth_info"))
 
+
 @app.route("/auth/edit/", methods=["GET", "POST"])
 @login_required
 def auth_edit_form():
@@ -109,7 +108,7 @@ def auth_edit_form():
         return render_template("auth/editinfo.html", form=UserForm())
 
     elif request.method == "POST" and request.form["btn"] == "Poista käyttäjätili":
-        #logout_user()
+        # logout_user()
         stmt = text("DELETE FROM account WHERE id=:userid").params(userid=current_user.id)
         db.engine.execute(stmt)
         db.session().commit()
@@ -128,4 +127,3 @@ def auth_edit_form():
 
         db.session().commit()
         return redirect(url_for('auth_info', username=current_user.username))
-

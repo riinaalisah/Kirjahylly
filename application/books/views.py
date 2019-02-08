@@ -1,5 +1,5 @@
 from flask import redirect, render_template, request, url_for, flash
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, LoginManager
 from sqlalchemy import text
 
 from application import app, db
@@ -61,9 +61,9 @@ def book_add_to_user(book_id):
     if book not in user.mybooks:
         user.mybooks.append(book)
         db.session().commit()
-        flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!")
+        flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
 
     else:
-        flash("Kirja on jo lisätty omaan kirjahyllyyn!")
+        flash("Kirja on jo lisätty omaan kirjahyllyyn!", 'warning')
 
     return redirect(url_for("books_index"))

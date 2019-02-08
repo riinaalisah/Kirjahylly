@@ -1,20 +1,20 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, validators
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired, Length
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Käyttäjänimi", [InputRequired()])
-    password = PasswordField("Salasana", [InputRequired()])
+    username = StringField("Käyttäjänimi")
+    password = PasswordField("Salasana")
 
     class Meta:
         csrf = False
 
 
 class UserForm(FlaskForm):
-    name = StringField("Nimi", [validators.Length(min=2)])
-    username = StringField("Käyttäjänimi", [validators.Length(min=2)])
-    password = PasswordField("Salasana", [validators.Length(min=5)])
+    name = StringField("Nimi", [Length(min=2, message="Nimen tulee olla vähintään 2 merkkiä pitkä.")])
+    username = StringField("Käyttäjänimi", [Length(min=2, message="Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.")])
+    password = PasswordField("Salasana", [Length(min=5, message="Salasanan tulee olla vähintään 5 merkkiä pitkä.")])
 
     class Meta:
         csrf = False
