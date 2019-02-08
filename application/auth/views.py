@@ -63,16 +63,23 @@ def auth_create():
 @login_required
 def auth_info():
 
-    stmt = text(
+    stmt_unread = text(
         "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
         "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
-        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id").params(
+        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '0'").params(
         user_id=current_user.id)
 
-    bookslist = db.engine.execute(stmt)
-    db.session().commit()
+    unread_books = db.engine.execute(stmt_unread)
 
-    return render_template("auth/userinfo.html", user=current_user, books=bookslist,
+    stmt_read =text(
+        "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
+        "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
+        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '1'").params(
+        user_id=current_user.id)
+
+    read_books = db.engine.execute(stmt_read)
+
+    return render_template("auth/userinfo.html", user=current_user, unread=unread_books, read=read_books,
                            all_books=current_user.count_all_books(current_user.id),
                            read_books=current_user.count_read_books(current_user.id))
 
