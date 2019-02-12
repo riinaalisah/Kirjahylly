@@ -64,3 +64,14 @@ def book_add_to_user(book_id):
         flash("Kirja on jo lisätty omaan kirjahyllyyn!", 'warning')
 
     return redirect(url_for("books_index"))
+
+@app.route("/books/info/", methods=["GET", "POST"])
+@login_required
+def book_info():
+    url = request.url
+    split1 = url.split("?")
+    split2 = split1[1].split("=")
+
+    book = Book.query.filter_by(name=split2[0]).first()
+
+    return render_template("books/bookinfo.html", book=book)

@@ -4,21 +4,27 @@
 <!--<form method="GET" action="{{ url_for('books_index', user=user) }}"-->
   <table>
     <tr>
-      <th>Kirjan nimi</th>
-      <th>Kirjailijan nimi</th>
-      <th></th>
+      <th style="padding:0 15px 0 15px;">Kirjan nimi</th>
+      <th style="padding:0 15px 0 15px;">Kirjailijan nimi</th>
     </tr>
     {% for book in books %}
     <tr>
-      <td>{{ book.name }}</td>
-      <td>{{ book.firstname }} {{book.lastname }}</td>
-      <td>
+      <td style="padding:0 15px 0 15px;">{{ book.name }}</td>
+      <td style="padding:0 15px 0 15px;">{{ book.firstname }} {{ book.lastname }}</td>
+      <td style="padding:0 15px 0 15px;">
         <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
             <input type="submit" value="Lisää omiin kirjoihin"/>
         </form>
       </td>
+      <td style="padding:0 15px 0 15px;">
+
+        <form method="GET" action="{{ url_for('book_info') }}">
+          <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
+        </form>
+
+        <!--<a href="{{ url_for('book_info') }}" class="button">Kirjan kaikki tiedot</a>-->
+      </td>
     </tr>
     {% endfor %}
   </table>
-</form>
 {% endblock %}
