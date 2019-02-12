@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, url_for
 
-from application import app, db
+from application import app, db, login_required
 from application.authors.models import Author
 from application.authors.forms import AuthorForm
 

@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required, current_user, LoginManager
+from flask_login import logout_user, login_required, current_user, LoginManager, login_user
 
-from application import app, db
-from application.auth.models import User, Roles
+from application import app, db, login_required
+from application.auth.models import User
 from application.auth.models import users_books
 from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
@@ -34,7 +34,7 @@ def auth_login():
 
 
 @app.route("/auth/logout/")
-@login_required
+@login_required(role="user")
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
@@ -52,18 +52,15 @@ def auth_create():
     if not form.validate():
         return render_template("auth/new.html", form=form)
 
-    u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
-
-    role = Roles.query.filter_by(rolename="user").first()
+    u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"), "user")
 
     db.session().add(u)
-    u.myroles.append(role)
     db.session().commit()
     return redirect(url_for("auth_login"))
 
 
 @app.route("/auth/info/", methods=["GET"])
-@login_required
+@login_required(role="user")
 def auth_info():
 
     stmt_unread = text(
@@ -88,7 +85,7 @@ def auth_info():
 
 
 @app.route("/auth/info/<book_id>/", methods=["POST"])
-@login_required
+@login_required(role="user")
 def books_set_read_or_delete(book_id):
 
     if request.form["btn"] == "Merkitse luetuksi":
@@ -111,7 +108,7 @@ def books_set_read_or_delete(book_id):
 
 
 @app.route("/auth/edit/", methods=["GET", "POST"])
-@login_required
+@login_required(role="user")
 def auth_edit_form():
 
     if request.method == "GET":

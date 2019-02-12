@@ -29,14 +29,14 @@ login_manager.init_app(app)
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Tämä toiminto vaatii kirjautumisen."
 
-# roles in login_required
+
 from functools import wraps
-'''
+
 def login_required(role="ANY"):
     def wrapper(fn):
         @wraps(fn)
         def decorated_view(*args, **kwargs):
-            if not current_user:   
+            if not current_user:
                 return login_manager.unauthorized()
 
             if not current_user.is_authenticated():
@@ -47,9 +47,9 @@ def login_required(role="ANY"):
             if role != "ANY":
                 unauthorized = True
 
-                for user_role in current_user.roles():
-                    if user_role == role:
-                        unauthorized = False
+                #for user_role in current_user.roles():
+                if current_user.role == role:
+                    unauthorized = False
              
             if unauthorized:
                 return login_manager.unauthorized()
@@ -57,7 +57,7 @@ def login_required(role="ANY"):
             return fn(*args, **kwargs)
         return decorated_view
     return wrapper
-'''
+
 
 # oman sovelluksen toiminnallisuudet
 from application import views

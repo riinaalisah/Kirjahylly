@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for, flash
-from flask_login import login_required, current_user, LoginManager
+from flask_login import current_user
 from sqlalchemy import text
 
-from application import app, db
+from application import app, db, login_required
 from application.books.models import Book
 from application.books.forms import BookForm
 from application.authors.models import Author
@@ -20,7 +20,7 @@ def books_index():
 
 
 @app.route("/books/new/")
-@login_required
+@login_required(role="user")
 def books_form():
     stmt = text("SELECT * FROM author")
     authors = db.engine.execute(stmt)
@@ -29,7 +29,7 @@ def books_form():
 
 
 @app.route("/books/", methods=["POST"])
-@login_required
+@login_required(role="user")
 def books_create():
     form = BookForm(request.form)
 
@@ -50,7 +50,7 @@ def books_create():
 
 
 @app.route("/books/<book_id>/", methods=["POST"])
-@login_required
+@login_required(role="user")
 def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
@@ -66,7 +66,7 @@ def book_add_to_user(book_id):
     return redirect(url_for("books_index"))
 
 @app.route("/books/info/", methods=["GET", "POST"])
-@login_required
+@login_required(role="user")
 def book_info():
     url = request.url
     split1 = url.split("?")

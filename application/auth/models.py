@@ -8,11 +8,12 @@ users_books = db.Table('users_books',
                        db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
                        db.Column('read', db.Boolean, default=False, nullable=False)
                        )
-
+'''
 users_roles = db.Table('users_roles',
                        db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
                        db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
                        )
+'''
 
 
 class User(Base):
@@ -21,17 +22,21 @@ class User(Base):
     name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(30), nullable=False)
+    role = db.Column(db.String(9), nullable=False)
 
     mybooks = db.relationship("Book", secondary=users_books,
                               backref=db.backref('mybooks', lazy='dynamic'))
 
+    '''
     myroles = db.relationship("Roles", secondary=users_roles,
                               backref=db.backref('myroles', lazy='dynamic'))
+    '''
 
-    def __init__(self, name, username, password):
+    def __init__(self, name, username, password, role):
         self.name = name
         self.username = username
         self.password = password
+        self.role = role
 
     def get_id(self):
         return self.id
@@ -44,6 +49,18 @@ class User(Base):
 
     def is_authenticated(self):
         return True
+
+    '''
+    @staticmethod
+    def get_users_roles(userid):
+
+        stmt = text("select rolename from roles join users_roles ur on roles.id=ur.role_id and ur.user_id=:userid").params(userid=userid)
+
+        res = db.engine.execute(stmt)
+        print("*****************", res.fetchone()[0])
+
+        return res.fetchone()[0]
+        '''
 
     @staticmethod
     def count_all_books(userid):
@@ -61,8 +78,8 @@ class User(Base):
         return res.fetchone()[0]
 
 
+'''
 class Roles(db.Model):
-
     __tablename__ = "roles"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -70,3 +87,4 @@ class Roles(db.Model):
 
     def __init__(self, rolename):
         self.roleName = rolename
+'''
