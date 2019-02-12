@@ -10,7 +10,7 @@ users_books = db.Table('users_books',
                        )
 
 users_roles = db.Table('users_roles',
-                       db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                       db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
                        db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
                        )
 
@@ -61,8 +61,12 @@ class User(Base):
         return res.fetchone()[0]
 
 
-class Roles():
+class Roles(db.Model):
+
     __tablename__ = "roles"
 
     id = db.Column(db.Integer, primary_key=True)
-    roleName = db.Column(db.String(10), nullable=False)
+    rolename = db.Column(db.String(10), nullable=False)
+
+    def __init__(self, rolename):
+        self.roleName = rolename

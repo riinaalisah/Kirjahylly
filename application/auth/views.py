@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user, LoginManager
 
 from application import app, db
-from application.auth.models import User
+from application.auth.models import User, Roles
 from application.auth.models import users_books
 from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
@@ -54,7 +54,10 @@ def auth_create():
 
     u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
 
+    role = Roles.query.filter_by(rolename="user").first()
+
     db.session().add(u)
+    u.myroles.append(role)
     db.session().commit()
     return redirect(url_for("auth_login"))
 
