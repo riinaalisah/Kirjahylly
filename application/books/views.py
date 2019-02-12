@@ -74,4 +74,10 @@ def book_info():
 
     book = Book.query.filter_by(name=split2[0]).first()
 
+    stmt = text("SELECT book.id, book.name, book.pages, book.isbn, author.firstname, author.lastname "
+                "FROM book JOIN authors_books ab ON ab.book_id=book.id JOIN author ON ab.author_id=author.id "
+                "WHERE book.id = :bookid").params(bookid=book.id)
+
+    book = db.engine.execute(stmt).fetchone()
+
     return render_template("books/bookinfo.html", book=book)

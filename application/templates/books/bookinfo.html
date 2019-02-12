@@ -2,10 +2,9 @@
 {% block body %}
 <form method="GET" action="{{ url_for('book_info', book=book) }}">
     <p>Kirjan nimi: {{ book.name }}</p><br>
-    <p>Kirjailijan nimi: </p><br>
-    <p>Sivumäärä: </p><br>
-    <p>ISBN-koodi: </p><br>
+    <p>Kirjailija: {{ book.firstname }} {{ book.lastname }}</p><br>
+    <p>Sivumäärä: {{ book.pages }}</p><br>
+    <p>ISBN-koodi: {{ book.isbn }}</p><br>
 </form>
-
 
 {% endblock %}
