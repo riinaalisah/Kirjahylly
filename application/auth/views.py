@@ -63,7 +63,7 @@ def auth_register():
                 return render_template("auth/register.html", form=form)
             '''
 
-            stmt = text("SELECT cast(count(id) as unsigned) FROM account WHERE username=:username").params(username=username)
+            stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
             res = db.engine.execute(stmt).fetchone()[0]
             print("***************************", res)
 
