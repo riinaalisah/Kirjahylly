@@ -2,58 +2,51 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('books_create') }}">
-  <table style="border-collapse:separate; border-spacing:0 15px; margin-top:-15px;">
-    <tr>
 
-      <td>
-        Kirjailija
-      </td>
-      <td>
-        <select name="dropdown">
-          <option style="display:none">Valitse kirjailija</option>
-          {% for author in authors %}
-          <option>{{ author.firstname }} {{ author.lastname }}</option>
-          {% endfor %}
-        </select>
-      </td>
-    </tr>
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="kirjailija">Valitse kirjailija</label>
+    <div class="col-sm-3">
+      <select id="kirjailija" class="form-control" name="dropdown">
+        <option style="display:none">Valitse kirjailija</option>
+        {% for author in authors %}
+        <option>{{ author.firstname }} {{ author.lastname }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
 
-    <tr>
-      <td>
-        {{ form.name.label }}
-      </td>
-      <td>
-        {{ form.name }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.name.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.pages.label }}
-      </td>
-      <td>
-        {{ form.pages }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.isbn.label }}
-      </td>
-      <td>
-        {{ form.isbn }}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <input type="submit" value="Lisää uusi kirja"/>
-      </td>
-    </tr>
-  </table>
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="inputName">{{ form.name.label }}</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="inputName" id="inputName" placeholder="Kirjan nimi">
+    </div>
+    <div class="errors">
+      {% for error in form.name.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="inputPages">{{ form.pages.label }}</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="inputPages" id="inputPages" placeholder="Sivuja">
+    </div>
+  </div>
+
+    <div class="form-group row">
+      <label class="col-form-label col-sm-2" for="inputIsbn">{{ form.isbn.label }}</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="inputIsbn" id="inputIsbn" placeholder="ISBN">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <button type="submit" class="btn btn-primary">Lisää uusi kirja</button>
+    </div>
+
+</div>
+
 </form>
 {% endblock %}

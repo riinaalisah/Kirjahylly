@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, url_for
+from flask_login import current_user
 
 from application import app, db, login_required
 from application.authors.models import Author
@@ -16,6 +17,7 @@ def authors_form():
 
 
 @app.route("/authors/", methods=["POST"])
+@login_required(role="user")
 def authors_create():
     form = AuthorForm(request.form)
 

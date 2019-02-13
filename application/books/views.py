@@ -31,14 +31,15 @@ def books_form():
 @app.route("/books/", methods=["POST"])
 @login_required(role="user")
 def books_create():
-    form = BookForm(request.form)
+    form = request.form
 
-    if not form.validate():
-        return render_template("books/new.html", form=form)
+#    if not form.validate():
+ #       return render_template("books/new.html", form=form)
 
-    book = Book(name=form.name.data, pages=form.pages.data, isbn=form.isbn.data)
-    authorname = request.form.get("dropdown")
+    book = Book(name=request.form["inputName"], pages=request.form["inputPages"], isbn=request.form["inputIsbn"])
+    authorname = request.form["dropdown"]
     names = authorname.split(" ")
+    print("**************************", names[0], names[1])
     author = Author.query.filter_by(firstname=names[0], lastname=names[1]).first()
 
     db.session().add(book)
