@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block body %}
+<form class="needs-validation" method="POST" action="{{ url_for('auth_register') }}" novalidate>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom01">Käyttäjänimi</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="username" id="validationCustom01" placeholder="Käyttäjänimi" required>
+            <div class="invalid-feedback">
+                Syötä käyttäjänimi.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom02">Sähköpostiosoite</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="email" id="validationCustom02" placeholder="Sähköpostiosoite" required>
+            <div class="invalid-feedback">
+                Syötä sähköpostiosoite.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom03">Salasana</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="password" id="validationCustom03" placeholder="Salasana" required>
+            <div class="invalid-feedback">
+                Syötä salasana.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom04">Salasana uudestaan</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="passwordagain" id="validationCustom04" placeholder="Salasana uudestaan" required>
+            <div class="invalid-feedback">
+                Syötä salasana uudestaan.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <button type="submit" class="btn btn-primary">Rekisteröidy</button>
+    </div>
+
+
+</form>
+<script>
+
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
+{% endblock %}

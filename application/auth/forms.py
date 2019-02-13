@@ -13,7 +13,8 @@ class LoginForm(FlaskForm):
 
 class UserForm(FlaskForm):
     name = StringField("Nimi", [Length(min=2, message="Nimen tulee olla vähintään 2 merkkiä pitkä.")])
-    username = StringField("Käyttäjänimi", [Length(min=2, message="Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.")])
+    username = StringField("Käyttäjänimi",
+                           [Length(min=2, message="Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.")])
     password = PasswordField("Salasana", [Length(min=5, message="Salasanan tulee olla vähintään 5 merkkiä pitkä.")])
 
     class Meta:

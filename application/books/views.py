@@ -39,7 +39,6 @@ def books_create():
     book = Book(name=request.form["inputName"], pages=request.form["inputPages"], isbn=request.form["inputIsbn"])
     authorname = request.form["dropdown"]
     names = authorname.split(" ")
-    print("**************************", names[0], names[1])
     author = Author.query.filter_by(firstname=names[0], lastname=names[1]).first()
 
     db.session().add(book)

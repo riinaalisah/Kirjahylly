@@ -19,8 +19,9 @@ users_roles = db.Table('users_roles',
 class User(Base):
     __tablename__ = "account"
 
-    name = db.Column(db.String(30), nullable=False)
+    #name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(30), nullable=False)
     role = db.Column(db.String(9), nullable=False)
 
@@ -32,9 +33,9 @@ class User(Base):
                               backref=db.backref('myroles', lazy='dynamic'))
     '''
 
-    def __init__(self, name, username, password, role):
-        self.name = name
+    def __init__(self, username, email, password, role):
         self.username = username
+        self.email = email
         self.password = password
         self.role = role
 
