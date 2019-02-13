@@ -22,7 +22,7 @@ class User(Base):
     #name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(90), nullable=False)
     role = db.Column(db.String(9), nullable=False)
 
     mybooks = db.relationship("Book", secondary=users_books,
