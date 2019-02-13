@@ -54,8 +54,11 @@ def auth_register():
         if request.method == "POST":
             username = request.form["username"]
             email = request.form["email"]
-            password = sha256_crypt.encrypt((str(request.form["password"])))
-            passwordagain = sha256_crypt.encrypt((str(request.form["passwordagain"])))
+            password = request.form["password"]
+            passwordagain = request.form["passwordagain"]
+
+            #password = sha256_crypt.encrypt((str(request.form["password"])))
+            #passwordagain = sha256_crypt.encrypt((str(request.form["passwordagain"])))
 
             '''
             if password != passwordagain:
