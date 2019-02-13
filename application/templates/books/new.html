@@ -1,29 +1,30 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('books_create') }}">
+<form class="needs-validation" method="POST" action="{{ url_for('books_create') }}" novalidate>
 
   <div class="form-group row">
-    <label class="col-form-label col-sm-2" for="kirjailija">Valitse kirjailija</label>
+    <label class="col-form-label col-sm-2" for="validationCustom01">Valitse kirjailija</label>
     <div class="col-sm-3">
-      <select id="kirjailija" class="form-control" name="dropdown">
-        <option style="display:none">Valitse kirjailija</option>
+      <select id="validationCustom01" class="form-control" name="dropdown" required>
+        <option style="display:none" value="">Valitse kirjailija</option>
         {% for author in authors %}
         <option>{{ author.firstname }} {{ author.lastname }}</option>
         {% endfor %}
       </select>
+      <div class="invalid-feedback">
+        Ole hyvä ja valitse kirjailija.
+      </div>
     </div>
   </div>
 
   <div class="form-group row">
-    <label class="col-form-label col-sm-2" for="inputName">{{ form.name.label }}</label>
+    <label class="col-form-label col-sm-2" for="validationDefault02">{{ form.name.label }}</label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" name="inputName" id="inputName" placeholder="Kirjan nimi">
-    </div>
-    <div class="errors">
-      {% for error in form.name.errors %}
-      <p>{{ error }}</p>
-      {% endfor %}
+      <input type="text" class="form-control" name="inputName" id="validationDefault02" placeholder="Kirjan nimi" required>
+      <div class="invalid-feedback">
+        Ole hyvä ja syötä kirjan nimi.
+      </div>
     </div>
   </div>
 
@@ -49,4 +50,23 @@
 </div>
 
 </form>
+<script>
+
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
 {% endblock %}
