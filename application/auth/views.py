@@ -18,19 +18,33 @@ def auth_index():
 
 @app.route("/auth/login/", methods=["GET", "POST"])
 def auth_login():
-    if request.method == "GET":
-        return render_template("auth/loginform.html", form=LoginForm())
+    error = ''
 
-    form = LoginForm(request.form)
-    # validoinnit
+    try:
+        if request.method == "POST":
 
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
-    if not user:
-        flash("Syötetty käyttäjänimi tai salasana ei täsmää.", 'warning')
-        return render_template("auth/loginform.html", form=form)
+            stmt = text("SELECT * FROM account WHERE username=:username").params(username=request.form['username'])
 
-    login_user(user)
-    return redirect(url_for("index"))
+            res = db.engine.execute(stmt)
+            data = res.fetchone()[5]
+
+            if sha256_crypt.verify(request.form['password'], data):
+                user = User.query.filter_by(username=request.form['username']).first()
+                login_user(user)
+
+                flash("Sisäänkirjautuminen onnistui!", 'success')
+                return redirect(url_for('index'))
+
+            else:
+                error = "Käyttäjänimi tai salasana ei täsmää, yritä uudelleen."
+
+        return render_template("auth/loginform.html", error=error)
+
+
+    except Exception as e:
+        flash(e)
+        error = "Käyttäjänimi tai salasana ei täsmää, yritä uudelleen."
+        return render_template("auth/loginform.html", error=error)
 
 
 @app.route("/auth/logout/")
@@ -57,24 +71,19 @@ def auth_register():
             password = request.form["password"]
             passwordagain = request.form["passwordagain"]
 
-            #password = sha256_crypt.encrypt((str(request.form["password"])))
-            #passwordagain = sha256_crypt.encrypt((str(request.form["passwordagain"])))
-
-            '''
             if password != passwordagain:
                 flash("Salasanan varmistus epäonnistui, yritä uudelleen.", 'warning')
                 return render_template("auth/register.html", form=form)
-            '''
 
             stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
             res = db.engine.execute(stmt).fetchone()[0]
-            print("***************************", res)
 
             if res > 0:
                 flash("Käyttäjänimi on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
                 return render_template("auth/register.html", form=form)
 
             else:
+                password = sha256_crypt.encrypt((str(request.form["password"])))
                 user = User(username=username, email=email, password=password, role='user')
                 db.session().add(user)
                 db.session().commit()

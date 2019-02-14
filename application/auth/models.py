@@ -1,7 +1,17 @@
-from application import db
+from flask_login import UserMixin
+
+from application import db, login_manager
 from application.models import Base
 
 from sqlalchemy.sql import text
+
+@login_manager.user_loader
+def get_user(user_id):
+    user = User.query.get(user_id).first()
+    if user:
+        return user
+    return None
+
 
 users_books = db.Table('users_books',
                        db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
@@ -16,7 +26,9 @@ users_roles = db.Table('users_roles',
 '''
 
 
-class User(Base):
+
+
+class User(Base, UserMixin):
     __tablename__ = "account"
 
     #name = db.Column(db.String(30), nullable=False)
