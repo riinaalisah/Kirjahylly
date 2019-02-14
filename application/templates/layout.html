@@ -23,39 +23,39 @@
 
   <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-      <a class="navbar-brand" href="{{ url_for('index') }}">Kirjahyllysovellus</a>
+    <nav class="navbar navbar-expand-md navbar-light mb-4" style="background-color: #931a0e;">
+      <a class="navbar-brand" style="color: #f7ecec;" href="{{ url_for('index') }}">Kirjahyllysovellus</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           {% if current_user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth_info', username=current_user.username) }}">Käyttäjän tiedot</a>
+          <li class="nav-item" style="color: #f7ecec;">
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('auth_info', username=current_user.username) }}">Käyttäjän tiedot</a>
           </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('books_index') }}">Listaa kirjat</a>
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('books_index') }}">Listaa kirjat</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('books_form') }}">Lisää kirja</a>
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('books_form') }}">Lisää kirja</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{ url_for('auth_register') }}">Rekisteröidy</a>
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('auth_register') }}">Rekisteröidy</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{ url_for('authors_index') }}">Listaa kirjailijat</a>
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('authors_index') }}">Listaa kirjailijat</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"  href="{{ url_for('authors_form') }}">Lisää uusi kirjailija</a>
+            <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('authors_form') }}">Lisää uusi kirjailija</a>
           </li>
         </ul>
         <div class="form-inline mt-2 mt-md-0">
           {% if current_user.is_authenticated %}
-          <a href="{{url_for('auth_logout') }}">Kirjautuneena {{ current_user.username }} -- Kirjaudu ulos</a>
+          <a class="nav-link" style="color: #f7ecec;" href="{{url_for('auth_logout') }}">Kirjautuneena {{ current_user.username }} -- Kirjaudu ulos</a>
           {% else %}
-          <a href="{{ url_for('auth_login') }}">Kirjaudu sisään</a>
+          <a class="nav-link" style="color: #f7ecec;" href="{{ url_for('auth_login') }}">Kirjaudu sisään</a>
           {% endif %}
         </div>
       </div>
