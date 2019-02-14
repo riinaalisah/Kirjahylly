@@ -1,7 +1,10 @@
+import uuid
+
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import logout_user, current_user, login_user
+from flask_mail import Message
 
-from application import app, db, login_required
+from application import app, db, login_required, mail
 from application.auth.models import User
 from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
@@ -50,7 +53,7 @@ def auth_login():
 @app.route("/auth/logout/")
 @login_required(role="user")
 def auth_logout():
-    logout_user()
+    logout_user(current_user)
     return redirect(url_for("index"))
 
 
@@ -78,8 +81,14 @@ def auth_register():
             stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
             res = db.engine.execute(stmt).fetchone()[0]
 
+            emailres = User.query.filter_by(email=email).first()
+
             if res > 0:
-                flash("Käyttäjänimi on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
+                flash("Kyseinen käyttäjänimi on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
+                return render_template("auth/register.html", form=form)
+
+            elif emailres is not None:
+                flash("Kyseinen sähköpostiosoite on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
                 return render_template("auth/register.html", form=form)
 
             else:
@@ -185,3 +194,76 @@ def auth_edit_form():
 
         db.session().commit()
         return redirect(url_for('auth_info', username=current_user.username))
+
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Salasanan vaihtaminen',
+                  sender='rrraa96@gmail.com',
+                  recipients=[user.email])
+
+    msg.body = f'''Vaihtaaksesi salasanasi, käytä seuraavaa linkkiä:
+{url_for('auth_reset_token', token=token, _external=True)}
+
+Jos et ole pyytänyt salasananvaihtoa, ole hyvä ja jätä tämä viesti huomiotta.
+'''
+    mail.send(msg)
+
+
+
+@app.route("/auth/reset_password", methods=["GET", "POST"])
+def auth_reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = request.form
+
+    if request.method == "POST":
+        user = User.query.filter_by(email=request.form['email']).first()
+        send_reset_email(user)
+        flash("Sähköpostiviesti lähetetty salasanan vaihtoa varten.", 'info')
+        return redirect(url_for('auth_login'))
+
+    return render_template('/auth/reset_request.html', form=form)
+
+
+@app.route("/auth/reset_password/<token>", methods=["GET", "POST"])
+def auth_reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash("Virheellinen tai vanhentunut valtuus (token)", 'warning')
+        return render_template(url_for('auth_reset_request'))
+
+    form = request.form
+
+    if request.method == "POST":
+        hashed_password = sha256_crypt.encrypt((str(request.form["password"])))
+        user.password = hashed_password
+        db.session().commit()
+        flash("Salasanasi on vaihdettu onnistuneesti! Voit nyt kirjautua sisään.", 'success')
+        return redirect(url_for('auth_login'))
+
+
+    return render_template('auth/reset_token.html', form=form)
+
+    '''
+    form = request.form
+
+    if request.method == "GET":
+        return render_template("auth/reset_request.html", form=form)
+
+    else:
+        email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+        print("*******************", user)
+
+        if user:
+            code = str(uuid.uuid4())
+            user.change_configuration = {
+                "password_reset_code": code
+            }
+            user.save()
+            '''

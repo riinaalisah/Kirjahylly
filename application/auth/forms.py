@@ -28,3 +28,5 @@ class EditForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+

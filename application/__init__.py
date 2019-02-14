@@ -1,12 +1,13 @@
-# flask-sovellus
+import os
+from os import urandom
 from flask import Flask
+from flask_login import LoginManager, current_user
+from flask_mail import Mail
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# tietokanta
-from flask_sqlalchemy import SQLAlchemy
-
-import os
+app.config["SECRET_KEY"] = urandom(32)
 
 if os.environ.get("HEROKU"):
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
@@ -18,19 +19,26 @@ db = SQLAlchemy(app)
 
 # kirjautuminen
 
-from os import urandom
-app.config["SECRET_KEY"] = urandom(32)
-
-from flask_login import LoginManager, current_user
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Tämä toiminto vaatii kirjautumisen."
+login_manager.login_message_category = 'info'
 
+mail = Mail(app)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+mail = Mail(app)
+mail.init_app(app)
 
 from functools import wraps
+
 
 def login_required(role="ANY"):
     def wrapper(fn):
@@ -49,12 +57,14 @@ def login_required(role="ANY"):
 
                 if current_user.role == role:
                     unauthorized = False
-             
+
             if unauthorized:
                 return login_manager.unauthorized()
-            
+
             return fn(*args, **kwargs)
+
         return decorated_view
+
     return wrapper
 
 
@@ -74,6 +84,7 @@ from application.authors import views
 
 from application.auth.models import User
 from application.auth.models import users_books
+
 
 @login_manager.user_loader
 def load_user(user_id):

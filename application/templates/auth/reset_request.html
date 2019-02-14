@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form class="needs-validation" method="POST" action="{{ url_for('auth_reset_request') }}" novalidate>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom01">Sähköpostiosoite</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="email" id="validationCustom01" placeholder="Sähköpostiosoite" required>
+            <div class="invalid-feedback">
+                Syötä sähköpostiosoite.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <button type="submit" class="btn btn-primary">Lähetä</button>
+    </div>
+
+</form>
+<script>
+
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
+{% endblock %}

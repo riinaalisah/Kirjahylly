@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form class="needs-validation" method="POST" action="{{ url_for('auth_reset_token') }}" novalidate>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom01">Salasana</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="password" id="validationCustom01" placeholder="Salasana" required>
+            <div class="invalid-feedback">
+                Syötä salasana.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="validationCustom02">Vahvista salasana</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="confirmpassword" id="validationCustom02" placeholder="Vahvista salasana" required>
+            <div class="invalid-feedback">
+                Syötä salasana uudestaan.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <button type="submit" class="btn btn-primary">Lähetä</button>
+    </div>
+
+</form>
+<script>
+
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
+{% endblock %}
