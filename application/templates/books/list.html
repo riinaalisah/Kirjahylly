@@ -2,29 +2,37 @@
 
 {% block body %}
 <!--<form method="GET" action="{{ url_for('books_index', user=user) }}"-->
-  <table>
-    <tr>
-      <th style="padding:0 15px 0 15px;">Kirjan nimi</th>
-      <th style="padding:0 15px 0 15px;">Kirjailijan nimi</th>
-    </tr>
-    {% for book in books %}
-    <tr>
-      <td style="padding:0 15px 0 15px;">{{ book.name }}</td>
-      <td style="padding:0 15px 0 15px;">{{ book.firstname }} {{ book.lastname }}</td>
-      <td style="padding:0 15px 0 15px;">
-        <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
-            <input type="submit" value="Lisää omiin kirjoihin"/>
-        </form>
-      </td>
-      <td style="padding:0 15px 0 15px;">
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Kirjan nimi</th>
+        <th scope="col">Kirjailijan nimi</th>
+        <th scope="col">Lisää omiin kirjoihin</th>
+      </tr>
+    </thead>
 
-        <form method="GET" action="{{ url_for('book_info') }}">
-          <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
-        </form>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>
+            <!--<a style="color:black;" href="{{ url_for('book_info') }}">-->{{ book.name }}<!--</a>--> <!-- TODO linkki kirjan tietoihin-->
+        </td>
+        <td>{{ book.firstname }} {{ book.lastname }}</td> <!-- TODO linkki kirjailijan tietoihin-->
+        <td>
+          <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+              <input type="submit" value="Lisää omiin kirjoihin"/>
+          </form>
+        </td>
+        <td>
+          <form method="GET" action="{{ url_for('book_info') }}">
+            <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
 
-        <!--<a href="{{ url_for('book_info') }}" class="button">Kirjan kaikki tiedot</a>-->
-      </td>
-    </tr>
-    {% endfor %}
   </table>
+</div>
 {% endblock %}

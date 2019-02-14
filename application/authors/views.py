@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
+from sqlalchemy import text
 
 from application import app, db, login_required
 from application.authors.models import Author
@@ -8,7 +9,9 @@ from application.authors.forms import AuthorForm
 
 @app.route("/authors/", methods=["GET"])
 def authors_index():
-    return render_template("authors/list.html", authors=Author.query.all())
+    stmt = text("SELECT * FROM author ORDER BY books_count DESC")
+    authors = db.engine.execute(stmt)
+    return render_template("authors/list.html", authors=authors)
 
 
 @app.route("/authors/new/")

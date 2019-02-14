@@ -1,16 +1,23 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <table>
-    <tr>
-      <th style="padding:0 15px 0 15px;">Kirjailijan nimi</th>
-      <th style="padding:0 15px 0 15px;">Kirjoja sovelluksessa</th>
-    </tr>
-    {% for author in authors %}
-    <tr>
-      <td style="padding:0 15px 0 15px;">{{ author.firstname }} {{ author.lastname }}</td>
-      <td style="padding:0 15px 0 15px;">{{ author.books_count }}</td>
-    </tr>
-    {% endfor %}
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="align-middle" style="width: 50%" scope="col">Kirjailijan nimi</th>
+        <th class="align-middle" style="width: 50%" scope="col">Kirjoja sovelluksessa</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for author in authors %}
+      <tr>
+        <td class="align-middle">{{ author.firstname }} {{ author.lastname }}</td>
+        <td class="align-middle">{{ author.books_count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
+</div>
 {% endblock %}
