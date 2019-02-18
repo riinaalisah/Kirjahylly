@@ -58,19 +58,11 @@ def book_add_to_user(book_id):
     return redirect(url_for("books_index"))
 
 
-@app.route("/books/info/", methods=["GET", "POST"])
+@app.route("/books/info/<bookname>", methods=["GET", "POST"])
 @login_required(role="user")
-def book_info():
-    url = request.url
-    split1 = url.split("?")
-    split2 = split1[1].split("=")
+def book_info(bookname):
 
-    book = Book.query.filter_by(name=split2[0]).first()
-
-    stmt = text("SELECT book.id, book.name, book.pages, book.isbn, author.firstname, author.lastname "
-                "FROM book JOIN authors_books ab ON ab.book_id=book.id JOIN author ON ab.author_id=author.id "
-                "WHERE book.id = :bookid").params(bookid=book.id)
-
-    book = db.engine.execute(stmt).fetchone()
+    book = Book.query.filter_by(name=bookname).first()
+    book = Book.book_info(book.id)
 
     return render_template("books/bookinfo.html", book=book)

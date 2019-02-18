@@ -25,7 +25,7 @@
           </form>
         </td>
         <td>
-          <form method="GET" action="{{ url_for('book_info') }}">
+          <form action="{{ url_for('book_info', bookname = book.name) }}">
             <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
           </form>
         </td>
