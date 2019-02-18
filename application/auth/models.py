@@ -20,12 +20,6 @@ users_books = db.Table('users_books',
                        db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
                        db.Column('read', db.Boolean, default=False, nullable=False)
                        )
-'''
-users_roles = db.Table('users_roles',
-                       db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
-                       db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
-                       )
-'''
 
 
 class User(Base, UserMixin):
@@ -39,11 +33,6 @@ class User(Base, UserMixin):
 
     mybooks = db.relationship("Book", secondary=users_books,
                               backref=db.backref('mybooks', lazy='dynamic'))
-
-    '''
-    myroles = db.relationship("Roles", secondary=users_roles,
-                              backref=db.backref('myroles', lazy='dynamic'))
-    '''
 
     def __init__(self, username, email, password, role):
         self.username = username
@@ -81,18 +70,6 @@ class User(Base, UserMixin):
 
         return User.query.get(user_id)
 
-    '''
-    @staticmethod
-    def get_users_roles(userid):
-
-        stmt = text("select rolename from roles join users_roles ur on roles.id=ur.role_id and ur.user_id=:userid").params(userid=userid)
-
-        res = db.engine.execute(stmt)
-        print("*****************", res.fetchone()[0])
-
-        return res.fetchone()[0]
-        '''
-
     @staticmethod
     def count_all_books(userid):
         stmt = text("SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id = :userid").params(userid=userid)
@@ -108,14 +85,24 @@ class User(Base, UserMixin):
         res = db.engine.execute(stmt)
         return res.fetchone()[0]
 
+    @staticmethod
+    def get_read_books(userid):
+        stmt = text(
+            "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
+            "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
+            "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '1'").params(
+            user_id=userid)
 
-'''
-class Roles(db.Model):
-    __tablename__ = "roles"
+        res = db.engine.execute(stmt)
+        return res
 
-    id = db.Column(db.Integer, primary_key=True)
-    rolename = db.Column(db.String(10), nullable=False)
+    @staticmethod
+    def get_unread_books(userid):
+        stmt = text(
+            "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
+            "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
+            "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '0'").params(
+            user_id=userid)
 
-    def __init__(self, rolename):
-        self.roleName = rolename
-'''
+        res = db.engine.execute(stmt)
+        return res

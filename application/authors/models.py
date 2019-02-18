@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from application import db
 from application.models import Base
 
@@ -21,3 +23,9 @@ class Author(Base):
         self.firstname = firstname
         self.lastname = lastname
         self.books_count = 0
+
+    @staticmethod
+    def all_authors():
+        stmt = text("SELECT * FROM author")
+        res = db.engine.execute(stmt)
+        return res

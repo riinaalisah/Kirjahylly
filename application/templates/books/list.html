@@ -16,7 +16,7 @@
       {% for book in books %}
       <tr>
         <td>
-            <!--<a style="color:black;" href="{{ url_for('book_info') }}">-->{{ book.name }}<!--</a>--> <!-- TODO linkki kirjan tietoihin-->
+            {{ book.name }}<!--</a>--> <!-- TODO linkki kirjan tietoihin-->
         </td>
         <td>{{ book.firstname }} {{ book.lastname }}</td> <!-- TODO linkki kirjailijan tietoihin-->
         <td>

@@ -8,33 +8,25 @@ from application.books.forms import BookForm
 from application.authors.models import Author
 from application.auth.models import User
 
+import uuid
+
 
 @app.route("/books/", methods=["GET"])
 def books_index():
     user = current_user
-    stmt = text("select book_id, author_id, name, firstname, lastname from authors_books join book on "
-                "book.id=authors_books.book_id join author on author.id=authors_books.author_id")
-    books = db.engine.execute(stmt)
-
-    return render_template("books/list.html", books=books, user=user)
+    return render_template("books/list.html", books=Book.all_books(), user=user)
 
 
 @app.route("/books/new/")
 @login_required(role="user")
 def books_form():
-    stmt = text("SELECT * FROM author")
-    authors = db.engine.execute(stmt)
-
-    return render_template("books/new.html", form=BookForm(), authors=authors)
+    return render_template("books/new.html", authors=Author.all_authors())
 
 
 @app.route("/books/", methods=["POST"])
 @login_required(role="user")
 def books_create():
     form = request.form
-
-#    if not form.validate():
- #       return render_template("books/new.html", form=form)
 
     book = Book(name=request.form["inputName"], pages=request.form["inputPages"], isbn=request.form["inputIsbn"])
     authorname = request.form["dropdown"]
@@ -64,6 +56,7 @@ def book_add_to_user(book_id):
         flash("Kirja on jo lisätty omaan kirjahyllyyn!", 'warning')
 
     return redirect(url_for("books_index"))
+
 
 @app.route("/books/info/", methods=["GET", "POST"])
 @login_required(role="user")

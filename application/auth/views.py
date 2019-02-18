@@ -6,7 +6,6 @@ from flask_mail import Message
 
 from application import app, db, login_required, mail
 from application.auth.models import User
-from application.auth.forms import LoginForm
 from application.auth.forms import UserForm
 
 from sqlalchemy.sql import text
@@ -66,7 +65,6 @@ def auth_form():
 @app.route("/auth/register/", methods=["GET", "POST"])
 def auth_register():
     try:
-        # form = RegistrationForm(request.form)
         form = request.form
 
         if request.method == "POST":
@@ -126,23 +124,10 @@ def auth_create():
 @app.route("/auth/info/", methods=["GET"])
 @login_required(role="user")
 def auth_info():
-    stmt_unread = text(
-        "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
-        "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
-        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '0'").params(
-        user_id=current_user.id)
 
-    unread_books = db.engine.execute(stmt_unread)
-
-    stmt_read = text(
-        "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
-        "FROM users_books ub JOIN book b ON b.id=ub.book_id, authors_books ab "
-        "JOIN author ON author.id=ab.author_id WHERE ub.user_id=:user_id AND ab.book_id=ub.book_id AND read = '1'").params(
-        user_id=current_user.id)
-
-    read_books = db.engine.execute(stmt_read)
-
-    return render_template("auth/userinfo.html", user=current_user, unread=unread_books, read=read_books,
+    return render_template("auth/userinfo.html", user=current_user,
+                           unread=current_user.get_unread_books(current_user.id),
+                           read=current_user.get_read_books(current_user.id),
                            all_books=current_user.count_all_books(current_user.id),
                            read_books=current_user.count_read_books(current_user.id))
 
