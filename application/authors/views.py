@@ -15,6 +15,7 @@ def authors_index():
 
 
 @app.route("/authors/new/")
+@login_required(role="user")
 def authors_form():
     return render_template("authors/new.html", form=AuthorForm())
 

@@ -45,8 +45,9 @@ def auth_login():
 
 
     except Exception as e:
-        flash(e)
+
         error = "Käyttäjänimi tai salasana ei täsmää, yritä uudelleen."
+        flash(error, 'warning')
         return render_template("auth/loginform.html", error=error)
 
 
