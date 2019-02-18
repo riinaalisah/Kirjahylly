@@ -20,8 +20,6 @@ def auth_index():
 
 @app.route("/auth/login/", methods=["GET", "POST"])
 def auth_login():
-    error = ''
-
     try:
         if request.method == "POST":
 
@@ -38,16 +36,14 @@ def auth_login():
                 return redirect(url_for('index'))
 
             else:
-                error = "Käyttäjänimi tai salasana ei täsmää, yritä uudelleen."
+                flash("Käyttäjänimi tai salasana ei täsmää, yritä uudelleen.", 'warning')
 
-        return render_template("auth/loginform.html", error=error)
+        return render_template("auth/loginform.html")
 
 
-    except Exception as e:
-
-        error = "Käyttäjänimi tai salasana ei täsmää, yritä uudelleen."
-        flash(error, 'warning')
-        return render_template("auth/loginform.html", error=error)
+    except Exception:
+        flash("Käyttäjänimi tai salasana ei täsmää, yritä uudelleen.", 'warning')
+        return render_template("auth/loginform.html")
 
 
 @app.route("/auth/logout/")
@@ -106,7 +102,7 @@ def auth_register():
     except Exception as e:
         return (str(e))
 
-
+# unnecessary method?
 @app.route("/auth/", methods=["POST"])
 def auth_create():
     form = UserForm(request.form)
@@ -124,12 +120,12 @@ def auth_create():
 @app.route("/auth/info/", methods=["GET"])
 @login_required(role="user")
 def auth_info():
-
     return render_template("auth/userinfo.html", user=current_user,
                            unread=current_user.get_unread_books(current_user.id),
                            read=current_user.get_read_books(current_user.id),
                            all_books=current_user.count_all_books(current_user.id),
                            read_books=current_user.count_read_books(current_user.id))
+
 
 
 @app.route("/auth/info/<book_id>/", methods=["POST"])
