@@ -53,7 +53,7 @@ def auth_login():
 @app.route("/auth/logout/")
 @login_required(role="user")
 def auth_logout():
-    logout_user(current_user)
+    logout_user()
     return redirect(url_for("index"))
 
 
@@ -210,7 +210,6 @@ Jos et ole pyytänyt salasananvaihtoa, ole hyvä ja jätä tämä viesti huomiot
     mail.send(msg)
 
 
-
 @app.route("/auth/reset_password", methods=["GET", "POST"])
 def auth_reset_request():
     if current_user.is_authenticated:
@@ -220,6 +219,9 @@ def auth_reset_request():
 
     if request.method == "POST":
         user = User.query.filter_by(email=request.form['email']).first()
+        if user is None:
+            flash("Kyseisellä sähköpostiosoitteella ei löytynyt käyttäjätiliä, yritä uudestaan.", 'warning')
+            return redirect(url_for('auth_reset_request'))
         send_reset_email(user)
         flash("Sähköpostiviesti lähetetty salasanan vaihtoa varten.", 'info')
         return redirect(url_for('auth_login'))
@@ -246,24 +248,4 @@ def auth_reset_token(token):
         flash("Salasanasi on vaihdettu onnistuneesti! Voit nyt kirjautua sisään.", 'success')
         return redirect(url_for('auth_login'))
 
-
     return render_template('auth/reset_token.html', form=form)
-
-    '''
-    form = request.form
-
-    if request.method == "GET":
-        return render_template("auth/reset_request.html", form=form)
-
-    else:
-        email = request.form['email']
-        user = User.query.filter_by(email=email).first()
-        print("*******************", user)
-
-        if user:
-            code = str(uuid.uuid4())
-            user.change_configuration = {
-                "password_reset_code": code
-            }
-            user.save()
-            '''
