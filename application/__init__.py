@@ -33,8 +33,8 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'rrraa96@gmail.com'
-app.config['MAIL_PASSWORD'] = 'pmrwzrfmzdynqvcj'
+app.config['MAIL_USERNAME'] = 'tsohakirjahylly@gmail.com'
+app.config['MAIL_PASSWORD'] = 'nuxhatnhlegfdkfr'
 mail = Mail(app)
 mail.init_app(app)
 

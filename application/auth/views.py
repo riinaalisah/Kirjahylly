@@ -219,7 +219,7 @@ def auth_reset_token(token):
 
     user = User.verify_reset_token(token)
     if user is None:
-        flash("Virheellinen tai vanhentunut valtuus (token)", 'warning')
+        flash("Virheellinen tai vanhentunut valtuus (token).", 'warning')
         return redirect(url_for('auth_reset_request'))
 
     form = request.form
