@@ -8,7 +8,9 @@
       <tr>
         <th scope="col">Kirjan nimi</th>
         <th scope="col">Kirjailijan nimi</th>
+        {% if current_user.is_authenticated %}
         <th scope="col">Lisää omiin kirjoihin</th>
+        {% endif %}
       </tr>
     </thead>
 
@@ -19,6 +21,7 @@
             {{ book.name }}<!--</a>--> <!-- TODO linkki kirjan tietoihin-->
         </td>
         <td>{{ book.firstname }} {{ book.lastname }}</td> <!-- TODO linkki kirjailijan tietoihin-->
+        {% if current_user.is_authenticated %}
         <td>
           <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
               <input type="submit" value="Lisää omiin kirjoihin"/>
@@ -29,6 +32,7 @@
             <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
           </form>
         </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

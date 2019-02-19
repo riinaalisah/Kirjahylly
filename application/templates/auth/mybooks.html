@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<p>Kirjoja kirjahyllyssä: {{ all_books }}</p>
+<p>Luettuja kirjoja: {{ read_books }}</p>
+<br>
+<h4>Omat kirjat</h4>
+<br>
+<h5>Lukemattomat</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">Kirjan nimi</th>
+            <th scope="col">Kirjailijan nimi</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for book in unread %}
+        <tr>
+            <td>{{ book.name }}</td>
+            <td>{{ book.firstname }} {{ book.lastname }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
+                    <input type="submit" name="btn" value="Merkitse luetuksi"/>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
+                    <input type="submit" name="btn" value="Poista kirja"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table><br>
+
+<h5>Luetut</h5>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">Kirjan nimi</th>
+            <th scope="col">Kirjailijan nimi</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for book in read %}
+        <tr>
+            <td>{{ book.name }}</td>
+            <td>{{ book.firstname }} {{ book.lastname }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
+                    <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
+                    <input type="submit" name="btn" value="Poista kirja"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

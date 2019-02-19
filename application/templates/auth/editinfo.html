@@ -1,53 +1,55 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('auth_edit_form') }}">
+<form class="needs-validation" method="POST" action="{{ url_for('auth_edit_form') }}" novalidate>
     <h2>Muokkaa omia tietoja</h2>
     <p>Tässä voit muuttaa omia tietojasi. Voit vaihtaa joko kaikki tiedot kerralla, tai esimerkiksi vain salasanan.
         Jätä tällöin muut kentät tyhjäksi.</p>
-    <table>
-        <tr>
-            <td>
-                Uusi nimi
-            </td>
-            <td>
-                {{ form.name }}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Uusi käyttäjänimi
-            </td>
-            <td>
-                {{ form.username }}
-            </td>
-        </tr>
-        <!--- jätetään tämä vielä pois
 
-        <tr>
-            <td>
-                Vanha salasana
-            </td>
-            <td>
-                {{ form.password }}
-            </td>
-        </tr>
-        -->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom01">Uusi käyttäjänimi</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="newUsername" id="validationCustom01" placeholder="Uusi käyttäjänimi" maxlength="30">
+            <div class="invalid-feedback">
+                Käyttäjänimi saa olla korkeintaan 30 merkkiä pitkä.
+            </div>
+        </div>
+    </div>
 
-        <tr>
-            <td>
-                Uusi salasana
-            </td>
-            <td>
-                {{ form.password }}
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <input type="submit" name="btn" value="Tallenna muutokset"/>
-            </td>
-        </tr>
-    </table>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom02">Uusi sähköpostiosoite</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="newEmail" id="ValidationCustom02" placeholder="Uusi sähköpostiosoite" maxlength="50">
+            <div class="invalid-feedback">
+                Sähköpostiosoite saa olla korkeintaan 50 merkkiä pitkä.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom03">Uusi salasana</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="newPassword" id="ValidationCustom03" placeholder="Uusi salasana" maxlength="30" minlength="5">
+            <div class="invalid-feedback">
+                Salasanan tulee olla 5-30 merkkiä pitkä.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom04">Nykyinen salasana</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="currentPassword" id="ValidationCustom04" placeholder="Nykyinen salasana">
+            <!--<div class="invalid-feedback">
+                Salasanan tulee olla 5-30 merkkiä pitkä.
+            </div>-->
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Tallenna muutokset</button>
+    </div>
+
     <br><br><br>
     <input type="submit" name="btn" value="Poista käyttäjätili"/>
 </form>

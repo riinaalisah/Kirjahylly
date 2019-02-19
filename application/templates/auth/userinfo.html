@@ -1,16 +1,143 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="row">
-    <div class="col-md-9">
-        <h2>Käyttäjän {{ user.username }} tiedot</h2>
+
+    <div class="row">
+        <div class="col-md-9">
+            <h2>Käyttäjän {{ user.username }} tiedot</h2>
+        </div>
+    </div>
+    <br>
+
+    <!-- trigger modal -->
+    <div class="row">
+        <p class="col-8">Käyttäjänimi: {{ user.username }}</p>
+        <div class="col-sm-2">
+            <button type="button" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" data-toggle="modal" data-target="#usernameModal">
+                Vaihda käyttäjänimi
+            </button>
+        </div>
     </div>
 
-    <div class="col-sm-2">
-        <a href="{{ url_for('auth_edit_form') }}" class="button">Muokkaa tietoja</a>
+    <!-- Modal -->
+    <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="usernameModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usernameModalLabel">Vaihda käyttäjänimi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Sulje">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-form-label col-sm-10" for="newUsername">Syötä uusi käyttäjänimi</label>
+                        <input type="text"  class="form-control" id="newUsername" placeholder="Uusi käyttäjänimi">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" style="background-color: f3f1f1;" data-dismiss="modal">Peruuta</button>
+                    <button type="button" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Tallenna</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div><br>
 
+    <br>
+    <div class="row">
+        <p class="col-8">Sähköpostiosoite: {{ user.email }}</p>
+        <div class="col-sm-2">
+            <button type="button" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" data-toggle="modal" data-target="#emailModal">
+                Vaihda sähköpostiosoite
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Vaihda sähköpostiosoite</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Sulje">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-form-label col-sm-10" for="newEmail">Syötä uusi sähköpostiosoite</label>
+                        <input type="text"  class="form-control" id="newEmail" placeholder="Uusi sähköpostiosoite">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" style="background-color: f3f1f1;" data-dismiss="modal">Peruuta</button>
+                    <button type="button" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Tallenna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <p class="col-8">Liittymisaika: {{ user.date_created }}</p>
+        <div class="col-sm-2">
+            <button type="button" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" data-toggle="modal" data-target="#passwordModal">
+                Vaihda salasana
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Vaihda salasana</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Sulje">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-form-label col-sm-10" for="currentPassword">Syötä nykyinen salasana</label>
+                        <input type="password" class="form-control" id="currentPassword" placeholder="Nykyinen salasana">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-10" for="newPassword">Syötä uusi salasana</label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Uusi salasana">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-10" for="confirmPassword">Vahvista uusi salasana</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Toista salasana">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <form id="myForm" method="POST">
+                        <button type="button" class="btn btn-light" style="background-color: f3f1f1;" data-dismiss="modal">Peruuta</button>
+                        <button id="myFormSubmit" type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Tallenna</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function(){
+        $('#myForm').on('submit', function(e){
+        e.preventDefault();
+        $.post('{{ url_for('auth_reset_password') }}',
+            $('#myForm').serialize(),
+            function(data, status, xhr){
+                // do something here with response;
+            });
+        });
+    });
+</script>
+
+<!--
 <p>Liittymisaika: {{ user.date_created }}</p>
 {% if all_books is defined %}
 <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>
@@ -83,5 +210,5 @@
         </tr>
         {% endfor %}
     </tbody>
-</table>
+</table>-->
 {% endblock %}

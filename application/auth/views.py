@@ -102,6 +102,7 @@ def auth_register():
     except Exception as e:
         return (str(e))
 
+
 # unnecessary method?
 @app.route("/auth/", methods=["POST"])
 def auth_create():
@@ -126,6 +127,44 @@ def auth_info():
                            all_books=current_user.count_all_books(current_user.id),
                            read_books=current_user.count_read_books(current_user.id))
 
+@app.route("/auth/mybooks/", methods=["GET"])
+@login_required(role="user")
+def auth_mybooks():
+    return render_template("auth/mybooks.html", user=current_user,
+                           unread=current_user.get_unread_books(current_user.id),
+                           read=current_user.get_read_books(current_user.id),
+                           all_books=current_user.count_all_books(current_user.id),
+                           read_books=current_user.count_read_books(current_user.id))
+
+
+@app.route("/auth_info/reset_password/", methods=["POST"])
+@login_required(role='user')
+def auth_reset_password():
+    try:
+        form = request.form
+        password = current_user.password
+        print("Salasana:", password)
+        print("Syötetty nyk. salasana", request.form['currentPassword'])
+        print("Uusi salasana", request.form['newPassword'])
+
+        '''
+        if sha256_crypt.verify(request.form['currentPassword'], password):
+            newPassword = request.form["newPassword"]
+            current_user.password = sha256_crypt.encrypt(str(newPassword))
+            db.session().commit()
+            flash("Salasana vaihdettu onnistuneesti!", 'success')
+            return redirect(url_for("auth_info"))
+        
+        else:
+            flash("Syöttämäsi salasana on väärä, yritä uudelleen.", 'warning')
+            return redirect(url_for("auth_info"))
+        '''
+
+        return redirect(url_for("auth_info"))
+
+    except Exception as e:
+        print("VIRHE ********************", e)
+        return redirect(url_for("auth_info"))
 
 
 @app.route("/auth/info/<book_id>/", methods=["POST"])
@@ -147,12 +186,13 @@ def books_set_read_or_delete(book_id):
     db.engine.execute(stmt)
     db.session().commit()
 
-    return redirect(url_for("auth_info"))
+    return redirect(url_for("auth_mybooks"))
 
 
 @app.route("/auth/edit/", methods=["GET", "POST"])
 @login_required(role="user")
-def auth_edit_form():
+def auth_edit_info():
+    '''
     if request.method == "GET":
         return render_template("auth/editinfo.html", form=UserForm())
 
@@ -176,6 +216,7 @@ def auth_edit_form():
 
         db.session().commit()
         return redirect(url_for('auth_info', username=current_user.username))
+    '''
 
 
 def send_reset_email(user):
@@ -213,7 +254,6 @@ def auth_reset_request():
 
 @app.route("/auth/reset_password/<token>", methods=["GET", "POST"])
 def auth_reset_token(token):
-
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
@@ -232,4 +272,3 @@ def auth_reset_token(token):
         return redirect(url_for('auth_login'))
 
     return render_template('auth/reset_token.html', form=form)
-
