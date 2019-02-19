@@ -213,13 +213,14 @@ def auth_reset_request():
 
 @app.route("/auth/reset_password/<token>", methods=["GET", "POST"])
 def auth_reset_token(token):
+
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
     user = User.verify_reset_token(token)
     if user is None:
         flash("Virheellinen tai vanhentunut valtuus (token)", 'warning')
-        return render_template(url_for('auth_reset_request'))
+        return redirect(url_for('auth_reset_request'))
 
     form = request.form
 
@@ -231,3 +232,4 @@ def auth_reset_token(token):
         return redirect(url_for('auth_login'))
 
     return render_template('auth/reset_token.html', form=form)
+
