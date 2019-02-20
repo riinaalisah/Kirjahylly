@@ -25,7 +25,6 @@ users_books = db.Table('users_books',
 class User(Base, UserMixin):
     __tablename__ = "account"
 
-    # name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(90), nullable=False)

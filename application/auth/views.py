@@ -12,8 +12,27 @@ from passlib.hash import sha256_crypt
 
 
 @app.route("/auth/", methods=["GET"])
-def auth_index():
+@login_required(role="admin")
+def auth_all():
     return render_template("auth/list.html", users=User.query.all())
+
+
+@app.route("/auth/delete/<username>", methods=["GET", "POST"])
+@login_required(role='admin')
+def admin_delete_user(username):
+    user = User.query.filter_by(username=username).first()
+
+    if request.method == "GET":
+        return render_template("auth/deleteuser.html", user=user)
+
+    else:
+        stmt = text("DELETE FROM account WHERE username=:username").params(username=username)
+        db.engine.execute(stmt)
+        stmt2 = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
+        db.engine.execute(stmt2)
+        db.session().commit()
+        flash("Käyttäjä poistettiin onnistuneesti.", 'success')
+        return redirect(url_for('auth_all'))
 
 
 @app.route("/auth/login/", methods=["GET", "POST"])

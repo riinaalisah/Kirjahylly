@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h4>Poista käyttäjä</h4>
+<p>Oletko varma että haluat poistaa käyttäjän <strong>{{ user.username }}</strong>? Muista ettet voi perua tätä toimintoa.</p>
+<br><br>
+<div class="row">
+    <div class="col-sm-3">
+        <form method="POST" action="{{ url_for('admin_delete_user', username=user.username) }}">
+        <button class="btn" type="submit" name="{{ user.username }}" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Kyllä, poista käyttäjä</button>
+    </form>
+    </div>
+    <div class="col-sm-2">
+        <form action="{{ url_for('auth_all') }}">
+        <button type="submit" class="btn btn-light">Peruuta</button>
+    </form>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}
