@@ -14,7 +14,7 @@ def authors_index():
 
 
 @app.route("/authors/new", methods=["GET", "POST"])
-@login_required(role="user")
+@login_required(role="ANY")
 def authors_create():
 
     if request.method == "GET":

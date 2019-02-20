@@ -21,6 +21,9 @@ def auth_all():
 @login_required(role='admin')
 def admin_delete_user(username):
     user = User.query.filter_by(username=username).first()
+    if user.role == 'admin':
+        flash("Admin-käyttäjiä ei voi poistaa.", 'info')
+        return redirect(url_for('auth_all'))
 
     if request.method == "GET":
         return render_template("auth/deleteuser.html", user=user)
@@ -64,12 +67,12 @@ def auth_login():
 
 
 @app.route("/auth/logout/")
-@login_required(role="user")
+@login_required(role="ANY")
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
 
-
+# unnecessary?
 @app.route("/auth/new/")
 def auth_form():
     return render_template("auth/new.html", form=UserForm())
@@ -136,13 +139,13 @@ def auth_create():
 
 
 @app.route("/auth/info/", methods=["GET"])
-@login_required(role="user")
+@login_required(role="ANY")
 def auth_info():
     return render_template("auth/userinfo.html", user=current_user)
 
 
 @app.route("/auth/info/edit/", methods=["GET", "POST"])
-@login_required(role='user')
+@login_required(role="ANY")
 def auth_edit():
     if request.method == "GET":
         return render_template("auth/editinfo.html", user=current_user)
@@ -184,7 +187,7 @@ def auth_edit():
 
 
 @app.route("/auth/info/edit/password", methods=["GET", "POST"])
-@login_required(role='user')
+@login_required(role="ANY")
 def auth_change_password():
     if request.method == "GET":
         return render_template("auth/changepassword.html", user=current_user)
@@ -207,7 +210,7 @@ def auth_change_password():
 
 
 @app.route("/auth/mybooks/", methods=["GET"])
-@login_required(role="user")
+@login_required(role="ANY")
 def auth_mybooks():
     return render_template("auth/mybooks.html", user=current_user,
                            unread=current_user.get_unread_books(current_user.id),
@@ -217,7 +220,7 @@ def auth_mybooks():
 
 
 @app.route("/auth/info/<book_id>/", methods=["POST"])
-@login_required(role="user")
+@login_required(role="ANY")
 def books_set_read_or_delete(book_id):
     if request.form["btn"] == "Merkitse luetuksi":
 
@@ -236,36 +239,6 @@ def books_set_read_or_delete(book_id):
     db.session().commit()
 
     return redirect(url_for("auth_mybooks"))
-
-
-@app.route("/auth/edit/", methods=["GET", "POST"])
-@login_required(role="user")
-def auth_edit_info():
-    '''
-    if request.method == "GET":
-        return render_template("auth/editinfo.html", form=UserForm())
-
-    elif request.method == "POST" and request.form["btn"] == "Poista käyttäjätili":
-        # logout_user()
-        stmt = text("DELETE FROM account WHERE id=:userid").params(userid=current_user.id)
-        db.engine.execute(stmt)
-        db.session().commit()
-        return redirect(url_for("index"))
-
-    else:
-        modifieduser = User(request.form.get("name"), request.form.get("username"), request.form.get("password"))
-        if modifieduser.name != "":
-            current_user.name = modifieduser.name
-
-        if modifieduser.username != "":
-            current_user.username = modifieduser.username
-
-        if modifieduser.password != "":
-            current_user.password = modifieduser.password
-
-        db.session().commit()
-        return redirect(url_for('auth_info', username=current_user.username))
-    '''
 
 
 def send_reset_email(user):

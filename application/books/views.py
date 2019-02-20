@@ -15,7 +15,7 @@ def books_index():
 
 
 @app.route("/books/new/", methods=["GET", "POST"])
-@login_required(role="user")
+@login_required(role="ANY")
 def books_new():
     if request.method == "GET":
         return render_template("books/new.html", authors=Author.all_authors())
@@ -43,7 +43,7 @@ def books_new():
 
 
 @app.route("/books/<book_id>/", methods=["POST"])
-@login_required(role="user")
+@login_required(role="ANY")
 def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
@@ -60,7 +60,7 @@ def book_add_to_user(book_id):
 
 
 @app.route("/books/info/<bookname>", methods=["GET", "POST"])
-@login_required(role="user")
+@login_required(role="ANY")
 def book_info(bookname):
     book = Book.query.filter_by(name=bookname).first()
     book = Book.book_info(book.id)
