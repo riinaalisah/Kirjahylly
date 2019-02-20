@@ -8,9 +8,9 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom01"><strong>Käyttäjänimi</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="username" id="validationCustom01" value="{{ user.username }}" required maxlength="30">
+            <input type="text" class="form-control" name="username" id="validationCustom01" value="{{ user.username }}" maxlength="30" minlength="1" required>
             <div class="invalid-feedback">
-                Käyttäjänimi saa olla korkeintaan 30 merkkiä pitkä.
+                Käyttäjänimen tulee olla 1-30 merkkiä pitkä.
             </div>
         </div>
     </div>
@@ -18,9 +18,9 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom02"><strong>Sähköpostiosoite</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="email" id="ValidationCustom02" value="{{ user.email }}" required maxlength="50">
+            <input type="text" class="form-control" name="email" id="ValidationCustom02" value="{{ user.email }}" required maxlength="50" minlength="1">
             <div class="invalid-feedback">
-                Sähköpostiosoite saa olla korkeintaan 50 merkkiä pitkä.
+                Sähköpostiosoitteen tulee olla 1-50 merkkiä pitkä.
             </div>
         </div>
     </div>
@@ -39,4 +39,23 @@
     <br><br><br>
     <input type="submit" name="btn" value="Poista käyttäjätili"/>
 </form>
+
+<script>
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
 {% endblock %}

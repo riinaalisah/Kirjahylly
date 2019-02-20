@@ -31,3 +31,12 @@ class Author(Base):
         res = db.engine.execute(stmt)
         return res.fetchall()
 
+    @staticmethod
+    def authors_books_by_author_name(firstname, lastname):
+        stmt = text("SELECT a.id, a.firstname, a.lastname, ab.book_id, b.name FROM author a"
+                    " JOIN authors_books ab ON ab.author_id=a.id"
+                    " JOIN book b ON ab.book_id=b.id"
+                    " WHERE a.firstname=:firstname AND a.lastname=:lastname")\
+                .params(firstname=firstname, lastname=lastname)
+        res = db.engine.execute(stmt)
+        return res.fetchall()
