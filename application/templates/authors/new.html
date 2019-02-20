@@ -1,43 +1,50 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('authors_create') }}">
-  <table>
-    <tr>
-      <td>
-        {{ form.firstname.label }}
-      </td>
-      <td>
-        {{ form.firstname }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.firstname.errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{ form.lastname.label }}
-      </td>
-      <td>
-        {{ form.lastname }}
-      </td>
-      <td>
-        <ul>
-          {% for error in form.lastname.errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <button class="btn" type="submit" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Lisää uusi kirjailija</button>
-      </td>
-    </tr>
-  </table>
+<form class="needs-validation" method="POST" action="{{ url_for('authors_create') }}" novalidate>
+
+  <div class="form-group row">
+    <label class="col-form label col-sm-3" for="ValidationCustom01">Kirjailijan etunimi</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="firstname" id="ValidationCustom01" placeholder="Etunimi" required>
+      <div class="invalid-feedback">
+        Ole hyvä ja syötä kirjailijan etunimi.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-form label col-sm-3" for="ValidationCustom02">Kirjailijan sukunimi</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="lastname" id="ValidationCustom02" placeholder="Sukunimi" required>
+      <div class="invalid-feedback">
+        Ole hyvä ja syötä kirjailijan sukunimi.
+      </div>
+    </div>
+  </div>
+
+   <div class="form-group row col-sm-3">
+      <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Lisää kirjailija</button>
+  </div>
+
 </form>
+
+<script>
+  (function() {
+    'use strict';
+     window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
 {% endblock %}

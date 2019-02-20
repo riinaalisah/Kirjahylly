@@ -1,4 +1,4 @@
-from sqlalchemy import text
+from sqlalchemy import text, UniqueConstraint
 
 from application import db
 from application.models import Base
@@ -15,6 +15,7 @@ class Author(Base):
     firstname = db.Column(db.String(30), nullable=False)
     lastname = db.Column(db.String(30), nullable=False)
     books_count = db.Column(db.Integer, nullable=False, default=0)
+    __table_args__ = (db.UniqueConstraint('firstname', 'lastname', name='_author_name_uc'), )
 
     books = db.relationship("Book", secondary=authors_books,
                             backref=db.backref('books', lazy='dynamic'))
@@ -28,4 +29,24 @@ class Author(Base):
     def all_authors():
         stmt = text("SELECT * FROM author")
         res = db.engine.execute(stmt)
-        return res
+        return res.fetchall()
+
+    @staticmethod
+    def author_firstnames():
+        stmt = text("SELECT firstname FROM author")
+        res = db.engine.execute(stmt)
+        list = []
+        for r in res:
+            list.append(r)
+
+        return list
+
+    @staticmethod
+    def author_lastnames():
+        stmt = text("SELECT lastname FROM author")
+        res = db.engine.execute(stmt).fetchall()
+        list = []
+        for r in res:
+            list.append(r)
+
+        return list
