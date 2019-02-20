@@ -1,4 +1,4 @@
-from sqlalchemy import text, UniqueConstraint
+from sqlalchemy import text
 
 from application import db
 from application.models import Base
@@ -31,22 +31,3 @@ class Author(Base):
         res = db.engine.execute(stmt)
         return res.fetchall()
 
-    @staticmethod
-    def author_firstnames():
-        stmt = text("SELECT firstname FROM author")
-        res = db.engine.execute(stmt)
-        list = []
-        for r in res:
-            list.append(r)
-
-        return list
-
-    @staticmethod
-    def author_lastnames():
-        stmt = text("SELECT lastname FROM author")
-        res = db.engine.execute(stmt).fetchall()
-        list = []
-        for r in res:
-            list.append(r)
-
-        return list

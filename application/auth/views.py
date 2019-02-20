@@ -1,5 +1,3 @@
-import uuid
-
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import logout_user, current_user, login_user
 from flask_mail import Message
@@ -121,11 +119,73 @@ def auth_create():
 @app.route("/auth/info/", methods=["GET"])
 @login_required(role="user")
 def auth_info():
-    return render_template("auth/userinfo.html", user=current_user,
-                           unread=current_user.get_unread_books(current_user.id),
-                           read=current_user.get_read_books(current_user.id),
-                           all_books=current_user.count_all_books(current_user.id),
-                           read_books=current_user.count_read_books(current_user.id))
+    return render_template("auth/userinfo.html", user=current_user)
+
+
+@app.route("/auth/info/edit/", methods=["GET", "POST"])
+@login_required(role='user')
+def auth_edit():
+    if request.method == "GET":
+        return render_template("auth/editinfo.html", user=current_user)
+
+    else:
+        user = current_user
+        username = request.form["username"]
+        email = request.form["email"]
+        changed = False
+
+        if user.username != username:
+            stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
+            res = db.engine.execute(stmt).fetchone()[0]
+            if res == 0:
+                user.username = username
+                changed = True
+            else:
+                flash("Kyseinen nimimerkki on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
+                return render_template("auth/editinfo.html", user=current_user)
+
+        if user.email != email:
+            stmt = text("SELECT count(id) FROM account WHERE email=:email").params(email=email)
+            res = db.engine.execute(stmt).fetchone()[0]
+            if res == 0:
+                user.email = email
+                changed = True
+            else:
+                flash("Kyseinen sähköpostiosoite on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
+                return render_template("auth/editinfo.html", user=current_user)
+
+        if changed:
+            db.session().commit()
+            flash("Tiedot päivitettiin onnistuneesti!", 'success')
+            return redirect(url_for('auth_info', user=current_user))
+
+        else:
+            flash("Et muuttanut tietoja.", 'info')
+            return render_template("auth/editinfo.html", user=current_user)
+
+
+@app.route("/auth/info/edit/password", methods=["GET", "POST"])
+@login_required(role='user')
+def auth_change_password():
+    if request.method == "GET":
+        return render_template("auth/changepassword.html", user=current_user)
+
+    else:
+        user = current_user
+        password = request.form["currentpassword"]
+        newpassword = request.form["newpassword"]
+        confirmpassword = request.form["confirmpassword"]
+
+        if not sha256_crypt.verify(password, user.password) or newpassword != confirmpassword:
+            flash("Salasanan varmistus epäonnistui, ole hyvä ja yritä uudestaan.", 'warning')
+            return render_template("auth/changepassword.html", user=current_user)
+
+        else:
+            user.password = sha256_crypt.encrypt((str(newpassword)))
+            db.session().commit()
+            flash("Salasana vaihdettiin onnistuneesti!", 'success')
+            return redirect(url_for('auth_info', user=current_user))
+
 
 @app.route("/auth/mybooks/", methods=["GET"])
 @login_required(role="user")
@@ -135,36 +195,6 @@ def auth_mybooks():
                            read=current_user.get_read_books(current_user.id),
                            all_books=current_user.count_all_books(current_user.id),
                            read_books=current_user.count_read_books(current_user.id))
-
-
-@app.route("/auth_info/reset_password/", methods=["POST"])
-@login_required(role='user')
-def auth_reset_password():
-    try:
-        form = request.form
-        password = current_user.password
-        print("Salasana:", password)
-        print("Syötetty nyk. salasana", request.form['currentPassword'])
-        print("Uusi salasana", request.form['newPassword'])
-
-        '''
-        if sha256_crypt.verify(request.form['currentPassword'], password):
-            newPassword = request.form["newPassword"]
-            current_user.password = sha256_crypt.encrypt(str(newPassword))
-            db.session().commit()
-            flash("Salasana vaihdettu onnistuneesti!", 'success')
-            return redirect(url_for("auth_info"))
-        
-        else:
-            flash("Syöttämäsi salasana on väärä, yritä uudelleen.", 'warning')
-            return redirect(url_for("auth_info"))
-        '''
-
-        return redirect(url_for("auth_info"))
-
-    except Exception as e:
-        print("VIRHE ********************", e)
-        return redirect(url_for("auth_info"))
 
 
 @app.route("/auth/info/<book_id>/", methods=["POST"])
