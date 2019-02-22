@@ -2,7 +2,11 @@
 {% block body %}
     <p>Kirjan nimi: {{ book.name }}</p><br>
     <p>Kirjailija: {{ book.firstname }} {{ book.lastname }}</p><br>
+    {% if not book.pages %}
+    <p>Sivumäärä:</p><br>
+    {% else %}
     <p>Sivumäärä: {{ book.pages }}</p><br>
+    {% endif %}
     <p>ISBN-koodi: {{ book.isbn }}</p><br>
 
 {% endblock %}

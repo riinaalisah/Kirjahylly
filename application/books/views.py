@@ -33,7 +33,10 @@ def books_new():
                 flash("Kyseinen kirja on jo lisätty tietokantaan.", 'warning')
                 return render_template("books/new.html", authors=Author.all_authors())
 
-        book = Book(name=bookname, pages=request.form["inputPages"], isbn=request.form["inputIsbn"])
+        pages = request.form["inputPages"]
+        if pages == "":
+            pages = None
+        book = Book(name=bookname, pages=pages, isbn=request.form["inputIsbn"])
         db.session().add(book)
         author.books.append(book)
         author.books_count = author.books_count + 1
