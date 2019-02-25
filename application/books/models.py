@@ -18,8 +18,8 @@ class Book(Base):
 
     @staticmethod
     def all_books():
-        stmt = text("select book_id, author_id, name, firstname, lastname from authors_books join book on "
-                    "book.id=authors_books.book_id join author on author.id=authors_books.author_id")
+        stmt = text("SELECT book_id, author_id, name, firstname, lastname FROM authors_books JOIN book ON "
+                    "book.id=authors_books.book_id JOIN author ON author.id=authors_books.author_id ORDER BY name ASC")
         res = db.engine.execute(stmt)
         return res
 
