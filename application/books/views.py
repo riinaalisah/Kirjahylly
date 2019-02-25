@@ -22,8 +22,8 @@ def books_new():
 
     else:
         bookname = request.form["inputName"]
-
         authorname = request.form["dropdown"]
+
         splitname = authorname.split(" ")
         author = Author.query.filter_by(firstname=splitname[0], lastname=splitname[1]).first()
 

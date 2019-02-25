@@ -21,9 +21,12 @@ def authors_create():
         return render_template("authors/new.html")
 
     else:
-        form = request.form
         firstname = request.form["firstname"].capitalize()
         lastname = request.form["lastname"].capitalize()
+
+        if (len(firstname.split(" ")) > 1) or (len(lastname.split(" ")) > 1):
+            flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
+            return render_template("authors/new.html")
 
         a = Author(firstname, lastname)
 
@@ -58,7 +61,6 @@ def admin_delete_author(firstname, lastname):
 
 
 @app.route("/authors/<firstname>/<lastname>/", methods=["GET"])
-#@login_required(role="ANY")
 def author_info(firstname, lastname):
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
     return render_template("authors/authorinfo.html", author=author,
