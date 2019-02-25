@@ -81,14 +81,15 @@ def admin_delete_book(bookname, id):
 
     else:
         author = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
-        stmt = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
-            .params(bookname=bookname, id=id)
+
+        stmt = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
         db.engine.execute(stmt)
 
-        stmt2 = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
+        stmt2 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
         db.engine.execute(stmt2)
 
-        stmt3 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
+        stmt3 = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
+            .params(bookname=bookname, id=id)
         db.engine.execute(stmt3)
 
         author.books_count = author.books_count - 1

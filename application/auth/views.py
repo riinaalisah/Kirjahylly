@@ -29,10 +29,12 @@ def admin_delete_user(username):
         return render_template("auth/deleteuser.html", user=user)
 
     else:
-        stmt = text("DELETE FROM account WHERE username=:username").params(username=username)
+        stmt = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
         db.engine.execute(stmt)
-        stmt2 = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
+
+        stmt2 = text("DELETE FROM account WHERE username=:username").params(username=username)
         db.engine.execute(stmt2)
+
         db.session().commit()
         flash("Käyttäjä poistettiin onnistuneesti.", 'success')
         return redirect(url_for('auth_all'))
