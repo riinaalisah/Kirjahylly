@@ -12,7 +12,7 @@ Kirjahyllysovellukseen rekisteröidytään sähköpostin avulla. Kun sivuille on
 Nämä toiminnot ovat kaikille tavallisille käyttäjille. Admin-käyttäjille on lisäksi mahdollisuus poistaa käyttäjiä, kirjoja ja kirjailijoita tietokannasta. 
 
 
-Sovelluksen testausta varten on tunnus, johon pystyy kirjautumaan käyttäjätunnuksella "testi" ja salasanalla "testi".
+Sovelluksen testausta varten on tunnus, johon pystyy kirjautumaan käyttäjätunnuksella "testi" ja salasanalla "testi". Myös admin-käyttäjä löytyy tunnuksella "admin" ja salasanalla "admin1".
 
 
 ##### Linkkejä
