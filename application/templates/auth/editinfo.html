@@ -37,9 +37,11 @@
     </div>
 
     <br><br>
+    {% if current_user.role != 'admin' %}
     <div class="form-group">
         <button class="btn" style=" color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="btn" value="Poista käyttäjätili">Poista käyttäjätili</button>
     </div>
+    {% endif %}
 
 </form>
 
