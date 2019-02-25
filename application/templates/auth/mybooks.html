@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
+<h3>Omat kirjat</h3>
+<p>Täältä näet mitä kirjoja olet lisännyt omaan kirjahyllyysi. Pääset kirjan tai kirjailijan tietoihin klikkaamalla kirjan tai kirjailijan nimeä, ja pysty merkitsemään kirjoja luetuiksi tai lukemattomiksi, sekä poistamaan kirjoja omasta hyllystäsi.</p><br>
 
 <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>
 <p>Luettuja kirjoja: {{ read_books }}</p>
-<br>
-<h4>Omat kirjat</h4>
 <br>
 <h5>Lukemattomat</h5>
 <table class="table table-sm">
@@ -20,11 +20,16 @@
     <tbody>
         {% for book in unread %}
         <tr>
-            <td>{{ book.name }}</td>
-            <td>{{ book.firstname }} {{ book.lastname }}</td>
+            <td class="align-middle">
+            <a style="color: #000000;" href="{{ url_for('book_info', bookname = book.name) }}">{{ book.name }}</a>
+            </td>
+            <td class="align-middle">
+              <a style="color: #000000;" href="{{ url_for('author_info', firstname = book.firstname, lastname=book.lastname) }}">
+                {{ book.firstname }} {{ book.lastname }}</a>
+            </td>
             <td>
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
-                    <input type="submit" name="btn" value="Merkitse luetuksi"/>
+                    <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" value="Merkitse luetuksi" name="btn">Merkitse luetuksi</button>
                 </form>
             </td>
             <td>
@@ -52,11 +57,16 @@
     <tbody>
     {% for book in read %}
         <tr>
-            <td>{{ book.name }}</td>
-            <td>{{ book.firstname }} {{ book.lastname }}</td>
+            <td class="align-middle">
+                <a style="color: #000000;" href="{{ url_for('book_info', bookname = book.name) }}">{{ book.name }}</a>
+            </td>
+            <td class="align-middle">
+              <a style="color: #000000;" href="{{ url_for('author_info', firstname = book.firstname, lastname=book.lastname) }}">
+                {{ book.firstname }} {{ book.lastname }}</a>
+            </td>
             <td>
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
-                    <input type="submit" name="btn" value="Merkitse lukemattomaksi"/>
+                    <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" value="Merkitse lukemattomaksi" name="btn">Merkitse lukemattomaksi</button>
                 </form>
             </td>
             <td>
@@ -68,6 +78,6 @@
         {% endfor %}
     </tbody>
 </table>
-
+<br><br><br>
 
 {% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Kirjailijan {{ author.firstname }} {{ author.lastname }} tiedot</h3><br>
+<p>Kirjoja sovelluksessa: {{ author.books_count }}</p><br>
+
+<h5>Kirjat</h5>
+<ul class="list-group list-group flush w-75">
+    {% for book in books %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <span class="align-middle">
+                    <a style="color: #000000;" href="{{ url_for('book_info', bookname = book.name) }}">{{ book.name }}</a></span>
+            </div>
+            {% if current_user.is_authenticated %}
+            <div class="col-sm">
+                <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+                    <span class="align-middle">
+                    <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
+                    </span>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

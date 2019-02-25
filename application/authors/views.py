@@ -55,3 +55,11 @@ def admin_delete_author(firstname, lastname):
         db.session().commit()
         flash("Kirjailija poistettiin onnistuneesti.", 'success')
         return redirect(url_for('authors_index'))
+
+
+@app.route("/authors/<firstname>/<lastname>/", methods=["GET"])
+#@login_required(role="ANY")
+def author_info(firstname, lastname):
+    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
+    return render_template("authors/authorinfo.html", author=author,
+                           books=Author.authors_books_by_author_name(author.firstname, author.lastname))

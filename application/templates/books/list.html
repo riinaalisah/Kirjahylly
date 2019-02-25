@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<!--<form method="GET" action="{{ url_for('books_index', user=user) }}"-->
+<h3>Kirjat</h3>
+<p>Täältä löydät kaikki tietokantaan lisätyt kirjat. Kirjan tai kirjailijan tietoihin pääset klikkaamalla kirjan tai kirjailijan nimeä.</p><br>
 <div class="table-responsive">
   <table class="table table-bordered">
     <thead>
@@ -17,24 +18,22 @@
     <tbody>
       {% for book in books %}
       <tr>
-        <td>
-            {{ book.name }}<!--</a>--> <!-- TODO linkki kirjan tietoihin-->
+        <td class="align-middle">
+            <a style="color: #000000;" href="{{ url_for('book_info', bookname = book.name) }}">{{ book.name }}</a>
         </td>
-        <td>{{ book.firstname }} {{ book.lastname }}</td> <!-- TODO linkki kirjailijan tietoihin-->
+        <td class="align-middle">
+          <a style="color: #000000;" href="{{ url_for('author_info', firstname = book.firstname, lastname=book.lastname) }}">
+            {{ book.firstname }} {{ book.lastname }}</a>
+        </td>
         {% if current_user.is_authenticated %}
-        <td>
+        <td class="align-middle">
           <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
-              <input type="submit" value="Lisää omiin kirjoihin"/>
-          </form>
-        </td>
-        <td>
-          <form action="{{ url_for('book_info', bookname = book.name) }}">
-            <input type="submit" value="Kirjan kaikki tiedot" name="{{ book.name }}">
+            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
           </form>
         </td>
         {% endif %}
         {% if current_user.role == 'admin' %}
-        <td>
+        <td class="align-middle">
           <form action="{{ url_for('admin_delete_book', bookname=book.name, id=book.book_id) }}">
             <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ book.name }}">Poista kirja</button>
           </form>
@@ -46,4 +45,5 @@
 
   </table>
 </div>
+<br><br><br>
 {% endblock %}
