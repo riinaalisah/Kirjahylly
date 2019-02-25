@@ -15,6 +15,14 @@
       <tr>
         <td class="align-middle">{{ author.firstname }} {{ author.lastname }}</td>
         <td class="align-middle">{{ author.books_count }}</td>
+        {% if user.role == 'admin' %}
+        <td class="align-middle">
+          <form action="{{ url_for('admin_delete_author', firstname = author.firstname, lastname = author.lastname) }}">
+            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ author.firstname }} {{ author.lastname }}">Poista kirjailija</button>
+          </form>
+        </td>
+        {% endif %}
+
       </tr>
       {% endfor %}
     </tbody>

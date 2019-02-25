@@ -10,7 +10,7 @@ from application.authors.models import Author
 def authors_index():
     stmt = text("SELECT * FROM author ORDER BY books_count DESC")
     authors = db.engine.execute(stmt)
-    return render_template("authors/list.html", authors=authors)
+    return render_template("authors/list.html", authors=authors, user=current_user)
 
 
 @app.route("/authors/new", methods=["GET", "POST"])
@@ -37,3 +37,21 @@ def authors_create():
             flash("Kirjailija on jo lisätty tietokantaan.", 'warning')
             return redirect(url_for('authors_create'))
 
+
+@app.route("/authors/delete/<firstname>/<lastname>/", methods=["GET", "POST"])
+@login_required(role='admin')
+def admin_delete_author(firstname, lastname):
+    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
+
+    if request.method == "GET":
+        return render_template("authors/deleteauthor.html", author=author)
+
+    else:
+        stmt = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname")\
+            .params(firstname=author.firstname, lastname=author.lastname)
+        db.engine.execute(stmt)
+        stmt2 = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
+        db.engine.execute(stmt2)
+        db.session().commit()
+        flash("Kirjailija poistettiin onnistuneesti.", 'success')
+        return redirect(url_for('authors_index'))
