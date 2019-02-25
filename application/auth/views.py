@@ -294,11 +294,18 @@ def auth_reset_token(token):
     form = request.form
 
     if request.method == "POST":
-        hashed_password = sha256_crypt.encrypt((str(request.form["password"])))
-        user.password = hashed_password
-        db.session().commit()
-        flash("Salasanasi on vaihdettu onnistuneesti! Voit nyt kirjautua sisään.", 'success')
-        return redirect(url_for('auth_login'))
+        password = request.form["password"]
+        confirmpassword = request.form["confirmpassword"]
+        if password != confirmpassword:
+            flash("Salasanan varmistus epäonnistui, ole hyvä ja yritä uudestaan.", 'warning')
+            return redirect(url_for('auth_reset_token', token=token))
+
+        else:
+            hashed_password = sha256_crypt.encrypt((str(request.form["password"])))
+            user.password = hashed_password
+            db.session().commit()
+            flash("Salasanasi on vaihdettu onnistuneesti! Voit nyt kirjautua sisään.", 'success')
+            return redirect(url_for('auth_login'))
 
     return render_template('auth/reset_token.html', form=form)
 
