@@ -28,4 +28,9 @@ Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/
 
 1. Lataa sovelluksen zip-tiedosto
 2. Pura paketti
-3. Siirry kansioon ja aja komento "python3 run.py"
+3. Navigoi kansioon johon purit tiedoston
+4. Luo virtuaaliympäristö komennolla `python3 -m venv venv`
+5. Aktivoi sen jälkeen virtuaaliympäristö komennolla `source venv/bin/activate`
+6. Päivitä pip komennolla `pip install --upgrade pip`
+7. Asenna riippuvuudet komennolla `pip install -r requirements.txt`
+8. Käynnistä sovellus komennolla `python3 run.py`
