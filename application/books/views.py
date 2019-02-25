@@ -69,3 +69,30 @@ def book_info(bookname):
     book = Book.book_info(book.id)
 
     return render_template("books/bookinfo.html", book=book)
+
+
+@app.route("/books/delete/<bookname>/<id>/", methods=["GET", "POST"])
+@login_required(role='admin')
+def admin_delete_book(bookname, id):
+    book = Book.book_info(id)
+
+    if request.method == "GET":
+        return render_template("books/deletebook.html", book=book)
+
+    else:
+        author = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
+        stmt = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
+            .params(bookname=bookname, id=id)
+        db.engine.execute(stmt)
+
+        stmt2 = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
+        db.engine.execute(stmt2)
+
+        stmt3 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
+        db.engine.execute(stmt3)
+
+        author.books_count = author.books_count - 1
+
+        db.session().commit()
+        flash("Kirja poistettiin onnistuneesti.", 'success')
+        return redirect(url_for('books_index'))
