@@ -1,3 +1,7 @@
+### Käyttötapaukset
+
+##### Tavallinen käyttäjä
+
 "Käyttäjänä pystyn selaamaan tietokannan kirjoja, jotta pystyn löytämään uusia, minua kiinnostavia kirjoja."
 
 "Käyttäjänä pystyn selaamaan tietokannan kirjailijoita, jotta näen keiden kirjailijoiden kirjoja muut käyttäjät lukevat."
@@ -18,6 +22,8 @@
 
 "Käyttäjänä pystyn päivittämään käyttäjätietojani, jotta ne pysyvät ajan tasalla."
 
+
+##### Admin-käyttäjä
 
 "Admin-käyttäjänä pystyn poistamaan käyttäjiä, jotta käyttäjät pysyvät asiallisina."
 
