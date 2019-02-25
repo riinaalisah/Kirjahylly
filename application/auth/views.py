@@ -74,6 +74,7 @@ def auth_logout():
     logout_user()
     return redirect(url_for("index"))
 
+
 # unnecessary?
 @app.route("/auth/new/")
 def auth_form():
@@ -151,6 +152,10 @@ def auth_info():
 def auth_edit():
     if request.method == "GET":
         return render_template("auth/editinfo.html", user=current_user)
+
+
+    elif request.form["btn"] == "Poista käyttäjätili":
+        return redirect(url_for("auth_delete_user"))
 
     else:
         user = current_user
@@ -296,3 +301,28 @@ def auth_reset_token(token):
         return redirect(url_for('auth_login'))
 
     return render_template('auth/reset_token.html', form=form)
+
+
+@app.route("/auth/info/edit/delete/", methods=["GET", "POST"])
+@login_required(role='user')
+def auth_delete_user():
+    if request.method == "GET":
+        return render_template("auth/deleteownprofile.html")
+
+    else:
+        user = current_user
+        if user.role == 'admin':
+            flash("Admin-käyttäjiä ei voi poistaa.", 'info')
+            return redirect(url_for('auth_all'))
+
+        else:
+            stmt = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
+            db.engine.execute(stmt)
+
+            stmt2 = text("DELETE FROM account WHERE username=:username").params(username=user.username)
+            db.engine.execute(stmt2)
+
+            db.session().commit()
+            flash("Käyttäjätili poistettiin onnistuneesti.", 'success')
+            return redirect(url_for('index'))
+

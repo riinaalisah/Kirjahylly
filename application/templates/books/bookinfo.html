@@ -1,6 +1,9 @@
+<!DOCTYPE html>
+<html lang="fi">
+
 {% extends "layout.html" %}
 {% block body %}
-    <p>Kirjan nimi: {{ book.name }}</p><br>
+<h3>Kirjan <a class="font-weight-bold">{{ book.name }}</a> tiedot</h3><br>
     <p>Kirjailija: {{ book.firstname }} {{ book.lastname }}</p><br>
     {% if not book.pages %}
     <p>Sivumäärä:</p><br>

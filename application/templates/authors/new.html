@@ -1,6 +1,9 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="fi">
 
+{% extends "layout.html" %}
 {% block body %}
+<h3>Lisää kirjailija</h3><br>
 <form class="needs-validation" method="POST" action="{{ url_for('authors_create') }}" novalidate>
 
   <div class="form-group row">

@@ -1,52 +1,32 @@
+<!DOCTYPE html>
+<html lang="fi">
+
 {% extends "layout.html" %}
-
 {% block body %}
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Käyttäjänimi</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      {% for user in users %}
-      <tr>
-        <td>{{ user.username }}</td>
-        {% if user.role != 'admin' %}
-        <td>
-          <form action="{{ url_for('admin_delete_user', username = user.username) }}">
-            <button class="btn btn-sm" type="submit" name="{{ user.username }}" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Poista käyttäjä</button>
-          </form>
-        </td>
-        {% endif %}
-      </tr>
-      {% endfor %}
-    </tbody>
+<h3>Käyttäjät</h3><br>
 
-  </table>
-</div>
-<!--
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Vahvista poisto</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Sulje">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Oletko varma, että haluat poistaa kyseisen käyttäjän?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Peruuta</button>
 
-          <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Kyllä, poista käyttäjä</button>
+<ul class="list-group list-group flush w-75">
+    {% for user in users %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <span class="align-middle">{{ user.username }}</span>
+            </div>
+            {% if user.role != 'admin' %}
+            <div class="col-sm">
+              <form action="{{ url_for('admin_delete_user', username = user.username) }}">
+                <span class="align-middle">
+                <button class="btn btn-sm" type="submit" name="{{ user.username }}" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Poista käyttäjä</button>
+                </span>
+              </form>
+            </div>
+            {% endif %}
+        </div>
+    </li>
 
-      </div>
-    </div>
-  </div>
-</div>
--->
+    {% endfor %}
+</ul>
+
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <h3>Omat kirjat</h3>
-<p>Täältä näet mitä kirjoja olet lisännyt omaan kirjahyllyysi. Pääset kirjan tai kirjailijan tietoihin klikkaamalla kirjan tai kirjailijan nimeä, ja pysty merkitsemään kirjoja luetuiksi tai lukemattomiksi, sekä poistamaan kirjoja omasta hyllystäsi.</p><br>
+<p>Täällä näet mitä kirjoja olet lisännyt omaan kirjahyllyysi. Pääset kirjan tai kirjailijan tietoihin klikkaamalla kirjan tai kirjailijan nimeä, ja pysty merkitsemään kirjoja luetuiksi tai lukemattomiksi, sekä poistamaan kirjoja omasta hyllystäsi.</p><br>
 
 <p>Kirjoja kirjahyllyssä: {{ all_books }}</p>
 <p>Luettuja kirjoja: {{ read_books }}</p>
@@ -34,7 +34,7 @@
             </td>
             <td>
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
-                    <input type="submit" name="btn" value="Poista kirja"/>
+                    <button class="btn" style=" color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="btn" value="Poista kirja">Poista kirja</button>
                 </form>
             </td>
         </tr>
@@ -71,7 +71,7 @@
             </td>
             <td>
                 <form method="POST" action="{{ url_for('books_set_read_or_delete', book_id=book.book_id) }}">
-                    <input type="submit" name="btn" value="Poista kirja"/>
+                    <button class="btn" style=" color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="btn" value="Poista kirja">Poista kirja</button>
                 </form>
             </td>
         </tr>

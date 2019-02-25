@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+{% extends "layout.html" %}
+{% block body %}
+
+<h4>Poista käyttäjätili</h4>
+<p>Oletko varma että haluat poistaa käyttäjätilisi? Tämä poistaa kaikki tietosi, etkä voi perua poistoa.</p>
+<br><br>
+<div class="row">
+    <div class="col-sm-3">
+        <form method="POST" action="{{ url_for('auth_delete_user') }}">
+        <button class="btn" type="submit" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Kyllä, poista käyttäjätilini</button>
+    </form>
+    </div>
+    <div class="col-sm-2">
+        <form action="{{ url_for('auth_edit') }}">
+        <button type="submit" class="btn" style="color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;">Peruuta</button>
+    </form>
+    </div>
+
+</div>
+
+{% endblock %}

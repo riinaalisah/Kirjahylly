@@ -63,7 +63,6 @@ def book_add_to_user(book_id):
 
 
 @app.route("/books/info/<bookname>", methods=["GET", "POST"])
-#@login_required(role="ANY")
 def book_info(bookname):
     book = Book.query.filter_by(name=bookname).first()
     book = Book.book_info(book.id)
