@@ -87,16 +87,19 @@ def admin_author_edit_info(firstname, lastname):
             flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
             return render_template("authors/editinfo.html", author=author)
 
+        # check if author with the name already in database
+        authornamequery = Author.check_if_author_in_database(firstname.upper(), lastname.upper())
 
-        try:
-            stmt = text("UPDATE author SET firstname=:firstname, lastname=:lastname WHERE id=:id")\
+        if authornamequery == 0:
+            stmt = text("UPDATE author SET firstname=:firstname, lastname=:lastname WHERE id=:id") \
                 .params(firstname=firstname, lastname=lastname, id=author.id)
             db.engine.execute(stmt)
-
             db.session().commit()
             flash("Kirjailijan tiedot muutettu onnistuneesti!", 'success')
             return redirect(url_for("author_info", firstname=firstname, lastname=lastname))
 
-        except Exception as e:
+        else:
             flash("Kyseinen kirjailija on jo lisätty tietokantaan.", 'warning')
             return render_template("authors/editinfo.html", author=author)
+
+

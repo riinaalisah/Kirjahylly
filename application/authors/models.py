@@ -40,3 +40,11 @@ class Author(Base):
                 .params(firstname=firstname, lastname=lastname)
         res = db.engine.execute(stmt)
         return res.fetchall()
+
+    @staticmethod
+    def check_if_author_in_database(firstname, lastname):
+        authornamequery = text("SELECT COUNT(id) FROM author WHERE UPPER(firstname)=:firstname"
+                               " AND UPPER(lastname)=:lastname")\
+                                .params(firstname=firstname.upper(), lastname=lastname.upper())
+        res = db.engine.execute(authornamequery)
+        return res.fetchone()[0]

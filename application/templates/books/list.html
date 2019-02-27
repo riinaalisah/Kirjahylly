@@ -4,13 +4,16 @@
 <h3>Kirjat</h3>
 <p>Täältä löydät kaikki tietokantaan lisätyt kirjat. Kirjan tai kirjailijan tietoihin pääset klikkaamalla kirjan tai kirjailijan nimeä.</p><br>
 <div class="table-responsive">
-  <table class="table table-bordered table-">
+  <table class="table table-bordered">
     <thead>
       <tr>
-        <th scope="col">Kirjan nimi</th>
-        <th scope="col">Kirjailijan nimi</th>
         {% if current_user.is_authenticated %}
-        <th scope="col">Lisää omiin kirjoihin</th>
+        <th scope="col" style="width: 33%">Kirjan nimi</th>
+        <th scope="col" style="width: 33%">Kirjailijan nimi</th>
+        <th scope="col" style="width: 33%">Lisää omiin kirjoihin</th>
+        {% else %}
+        <th scope="col" style="width: 50%">Kirjan nimi</th>
+        <th scope="col" style="width: 50%">Kirjailijan nimi</th>
         {% endif %}
       </tr>
     </thead>
