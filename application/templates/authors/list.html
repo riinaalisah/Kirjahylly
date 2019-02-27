@@ -20,12 +20,19 @@
             {{ author.firstname }} {{ author.lastname }}</a>
         </td>
         <td class="align-middle">{{ author.books_count }}</td>
+
         {% if user.role == 'admin' %}
-        <td class="align-middle">
-          <form action="{{ url_for('admin_delete_author', firstname = author.firstname, lastname = author.lastname) }}">
-            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ author.firstname }} {{ author.lastname }}">Poista kirjailija</button>
+        <td>
+          <form action="{{ url_for('admin_author_edit_info', firstname = author.firstname, lastname = author.lastname) }}">
+            <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Muokkaa tietoja</button>
           </form>
         </td>
+        <td class="align-middle">
+          <form action="{{ url_for('admin_delete_author', firstname = author.firstname, lastname = author.lastname) }}">
+            <button class="btn" style="color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="{{ author.firstname }} {{ author.lastname }}">Poista kirjailija</button>
+          </form>
+        </td>
+
         {% endif %}
 
       </tr>

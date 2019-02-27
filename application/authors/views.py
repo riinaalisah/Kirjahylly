@@ -16,13 +16,12 @@ def authors_index():
 @app.route("/authors/new", methods=["GET", "POST"])
 @login_required(role="ANY")
 def authors_create():
-
     if request.method == "GET":
         return render_template("authors/new.html")
 
     else:
-        firstname = request.form["firstname"].capitalize()
-        lastname = request.form["lastname"].capitalize()
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
 
         if (len(firstname.split(" ")) > 1) or (len(lastname.split(" ")) > 1):
             flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
@@ -50,7 +49,7 @@ def admin_delete_author(firstname, lastname):
         return render_template("authors/deleteauthor.html", author=author)
 
     else:
-        stmt = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname")\
+        stmt = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
             .params(firstname=author.firstname, lastname=author.lastname)
         db.engine.execute(stmt)
         stmt2 = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
@@ -65,3 +64,39 @@ def author_info(firstname, lastname):
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
     return render_template("authors/authorinfo.html", author=author,
                            books=Author.authors_books_by_author_name(author.firstname, author.lastname))
+
+
+@app.route("/authors/edit/<firstname>/<lastname>/", methods=["GET", "POST"])
+@login_required(role='admin')
+def admin_author_edit_info(firstname, lastname):
+    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
+    if request.method == "GET":
+        return render_template("authors/editinfo.html", author=author)
+
+    if request.method == "POST":
+        firstname = request.form["firstname"]
+        lastname = request.form["lastname"]
+
+        # check if info has changed
+        if firstname == author.firstname and lastname == author.lastname:
+            flash("Et muuttanut tietoja.", 'info')
+            return render_template("authors/editinfo.html", author=author)
+
+        # check for spaces in name
+        if (len(firstname.split(" ")) > 1) or (len(lastname.split(" ")) > 1):
+            flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
+            return render_template("authors/editinfo.html", author=author)
+
+
+        try:
+            stmt = text("UPDATE author SET firstname=:firstname, lastname=:lastname WHERE id=:id")\
+                .params(firstname=firstname, lastname=lastname, id=author.id)
+            db.engine.execute(stmt)
+
+            db.session().commit()
+            flash("Kirjailijan tiedot muutettu onnistuneesti!", 'success')
+            return redirect(url_for("author_info", firstname=firstname, lastname=lastname))
+
+        except Exception as e:
+            flash("Kyseinen kirjailija on jo lisätty tietokantaan.", 'warning')
+            return render_template("authors/editinfo.html", author=author)
