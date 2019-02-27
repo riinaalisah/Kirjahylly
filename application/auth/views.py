@@ -153,16 +153,13 @@ def auth_edit():
     if request.method == "GET":
         return render_template("auth/editinfo.html", user=current_user)
 
-
-    elif request.form["btn"] == "Poista käyttäjätili":
-        return redirect(url_for("auth_delete_user"))
-
-    else:
+    if request.method == "POST":
         user = current_user
         username = request.form["username"]
         email = request.form["email"]
         changed = False
 
+        # check if username is taken
         if user.username != username:
             stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
             res = db.engine.execute(stmt).fetchone()[0]
@@ -173,6 +170,7 @@ def auth_edit():
                 flash("Kyseinen nimimerkki on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
                 return render_template("auth/editinfo.html", user=current_user)
 
+        # check if email is taken
         if user.email != email:
             stmt = text("SELECT count(id) FROM account WHERE email=:email").params(email=email)
             res = db.engine.execute(stmt).fetchone()[0]
@@ -332,4 +330,3 @@ def auth_delete_user():
         db.session().commit()
         flash("Käyttäjätili poistettiin onnistuneesti.", 'success')
         return redirect(url_for('index'))
-
