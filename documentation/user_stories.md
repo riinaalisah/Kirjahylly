@@ -73,8 +73,9 @@
 
 - Kirjailijan poistaminen:
   1. Kirjailijan kirjojen nimien muuttaminen: `UPDATE book set name = 'delete' WHERE book.id IN (SELECT book_id FROM authors_books WHERE author_id = 1);`
-  2. Kirjailijan ja kirjan yhteyden poistaminen authors_bookstaulusta: `DELETE FROM authors_books WHERE author_id = 1;`
-  3. Kirjailijan poistaminen: `DELETE FROM author WHERE id = 1;`
-  4. Kirjailijan kirjojen poistaminen: `DELETE FROM book WHERE name = 'delete';`
+  2. Kirjailijan ja kirjojen yhteyden poistaminen authors_books-taulusta: `DELETE FROM authors_books WHERE author_id = 1;`
+  3. Käyttäjän ja kirjailijan kirjojen yhteyden poistaminen: `DELETE FROM users_books WHERE book_id in (SELECT id FROM book WHERE name = 'delete');`
+  4. Kirjailijan poistaminen: `DELETE FROM author WHERE id = 1;`
+  5. Kirjailijan kirjojen poistaminen: `DELETE FROM book WHERE name = 'delete';`
   - Tämä täytyy tehdä tässä järjestyksessä, sillä ainakin Heroku herjaa, jos esim. kirjan tai kirjailijan poistaa ennen kuin poistaa niiden yhteyden
   
