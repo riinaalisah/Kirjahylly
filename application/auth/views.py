@@ -76,26 +76,24 @@ def auth_logout():
     return redirect(url_for("index"))
 
 
-# unnecessary?
-@app.route("/auth/new/")
-def auth_form():
-    return render_template("auth/new.html", form=UserForm())
-
-
 @app.route("/auth/register/", methods=["GET", "POST"])
 def auth_register():
     try:
-        form = request.form
-
         if request.method == "POST":
             username = request.form["username"]
             email = request.form["email"]
             password = request.form["password"]
             passwordagain = request.form["passwordagain"]
 
+            # check for invalid inputs (only spaces)
+            if username.isspace() or email.isspace() or password.isspace() or passwordagain.isspace():
+                flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+                return render_template("auth/register.html")
+
+            # check that password confirm matches
             if password != passwordagain:
                 flash("Salasanan varmistus epäonnistui, yritä uudelleen.", 'warning')
-                return render_template("auth/register.html", form=form)
+                return render_template("auth/register.html")
 
             stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
             res = db.engine.execute(stmt).fetchone()[0]
@@ -104,11 +102,11 @@ def auth_register():
 
             if res > 0:
                 flash("Kyseinen käyttäjänimi on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
-                return render_template("auth/register.html", form=form)
+                return render_template("auth/register.html")
 
             elif emailres is not None:
                 flash("Kyseinen sähköpostiosoite on jo käytössä, ole hyvä ja valitse toinen.", 'warning')
-                return render_template("auth/register.html", form=form)
+                return render_template("auth/register.html")
 
             else:
                 password = sha256_crypt.encrypt((str(request.form["password"])))
@@ -121,25 +119,10 @@ def auth_register():
 
                 return redirect(url_for('index'))
 
-        return render_template("auth/register.html", form=form)
+        return render_template("auth/register.html")
 
     except Exception as e:
         return (str(e))
-
-
-# unnecessary method?
-@app.route("/auth/", methods=["POST"])
-def auth_create():
-    form = UserForm(request.form)
-
-    if not form.validate():
-        return render_template("auth/new.html", form=form)
-
-    u = User(request.form.get("name"), request.form.get("username"), request.form.get("password"), "user")
-
-    db.session().add(u)
-    db.session().commit()
-    return redirect(url_for("auth_login"))
 
 
 @app.route("/auth/info/", methods=["GET"])
@@ -159,6 +142,11 @@ def auth_edit():
         username = request.form["username"]
         email = request.form["email"]
         changed = False
+
+        # check for invalid input (only spaces)
+        if username.isspace() or email.isspace():
+            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            return render_template("auth/editinfo.html", user=current_user)
 
         # check if username is taken
         if user.username != username:
@@ -204,6 +192,12 @@ def auth_change_password():
         newpassword = request.form["newpassword"]
         confirmpassword = request.form["confirmpassword"]
 
+        # check for invalid input (only spaces)
+        if password.isspace() or newpassword.isspace() or confirmpassword.isspace():
+            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            return render_template("auth/changepassword.html", user=current_user)
+
+        # password confirmation
         if not sha256_crypt.verify(password, user.password) or newpassword != confirmpassword:
             flash("Salasanan varmistus epäonnistui, ole hyvä ja yritä uudestaan.", 'warning')
             return render_template("auth/changepassword.html", user=current_user)
@@ -225,7 +219,7 @@ def auth_mybooks():
                            read_books=current_user.count_read_books(current_user.id))
 
 
-@app.route("/auth/info/<book_id>/", methods=["POST"])
+@app.route("/auth/mybooks/<book_id>/", methods=["POST"])
 @login_required(role="ANY")
 def books_set_read_or_delete(book_id):
     if request.form["btn"] == "Merkitse luetuksi":
@@ -266,8 +260,6 @@ def auth_reset_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
-    form = request.form
-
     if request.method == "POST":
         user = User.query.filter_by(email=request.form['email']).first()
         if user is None:
@@ -277,7 +269,7 @@ def auth_reset_request():
         flash("Sähköpostiviesti lähetetty salasanan vaihtoa varten.", 'info')
         return redirect(url_for('auth_login'))
 
-    return render_template('/auth/reset_request.html', form=form)
+    return render_template('/auth/reset_request.html')
 
 
 @app.route("/auth/reset_password/<token>", methods=["GET", "POST"])
@@ -290,11 +282,16 @@ def auth_reset_token(token):
         flash("Virheellinen tai vanhentunut valtuus (token).", 'warning')
         return redirect(url_for('auth_reset_request'))
 
-    form = request.form
-
     if request.method == "POST":
         password = request.form["password"]
         confirmpassword = request.form["confirmpassword"]
+
+        # check for invalid input (only spaces)
+        if password.isspace() or confirmpassword.isspace():
+            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            return redirect(url_for('auth_reset_token', token=token))
+
+        # confirm password
         if password != confirmpassword:
             flash("Salasanan varmistus epäonnistui, ole hyvä ja yritä uudestaan.", 'warning')
             return redirect(url_for('auth_reset_token', token=token))
@@ -306,7 +303,7 @@ def auth_reset_token(token):
             flash("Salasanasi on vaihdettu onnistuneesti! Voit nyt kirjautua sisään.", 'success')
             return redirect(url_for('auth_login'))
 
-    return render_template('auth/reset_token.html', form=form)
+    return render_template('auth/reset_token.html')
 
 
 @app.route("/auth/info/edit/delete/", methods=["GET", "POST"])
@@ -329,5 +326,5 @@ def auth_delete_user():
         db.engine.execute(stmt2)
 
         db.session().commit()
-        flash("Käyttäjätili poistettiin onnistuneesti.", 'success')
+        flash("Käyttäjätili poistettiin onnistuneesti. Näkemiin!", 'success')
         return redirect(url_for('index'))

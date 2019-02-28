@@ -14,6 +14,7 @@ def books_index():
     return render_template("books/list.html", books=Book.all_books(), user=user)
 
 
+# add a new book
 @app.route("/books/new/", methods=["GET", "POST"])
 @login_required(role="ANY")
 def books_new():
@@ -22,18 +23,28 @@ def books_new():
 
     else:
         bookname = request.form["inputName"]
+        year = request.form["inputYear"]
+        pages = request.form["inputPages"]
+        isbn = request.form["inputIsbn"]
         authorname = request.form["dropdown"]
+
+        # check if any input is invalid (spaces)
+        if bookname.isspace() or year.isspace() or pages.isspace() or isbn.isspace():
+            flash(
+                "Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.",
+                'warning')
+            return render_template("books/new.html", authors=Author.all_authors())
 
         splitname = authorname.split(" ")
         author = Author.query.filter_by(firstname=splitname[0], lastname=splitname[1]).first()
 
+        # check if the book already in database
         booknamequery = Book.check_if_book_with_name_and_authorid_exists(bookname, author.id)
         if booknamequery > 0:
             flash("Kyseinen kirja on jo lisätty tietokantaan.", 'warning')
             return render_template("books/new.html", authors=Author.all_authors())
 
-        book = Book(name=bookname, year=request.form["inputYear"], pages=request.form["inputPages"],
-                    isbn=request.form["inputIsbn"])
+        book = Book(name=bookname, year=year, pages=pages, isbn=isbn)
         db.session().add(book)
         author.books.append(book)
         author.books_count = author.books_count + 1
@@ -111,6 +122,13 @@ def admin_edit_book_info(bookname, id):
         isbn = request.form["isbn"]
         authorname = request.form["dropdown"]
 
+        # check for empty inputs
+        if bookname.isspace() or year.isspace() or pages.isspace() or isbn.isspace():
+            flash(
+                "Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.",
+                'warning')
+            return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
+
         splitname = authorname.split(" ")
         author = Author.query.filter_by(firstname=splitname[0], lastname=splitname[1]).first()
 
@@ -146,12 +164,10 @@ def admin_edit_book_info(bookname, id):
                 currentauthor.books_count = currentauthor.books_count - 1  # reduce previous author's book count
                 author.books_count = author.books_count + 1  # add to new author's book count
 
-                deletefromab = text("DELETE FROM authors_books WHERE author_id=:authorid AND book_id=:bookid") \
-                    .params(authorid=currentauthor.id, bookid=book.id)
-                db.engine.execute(deletefromab)
-                addtoab = text("INSERT INTO authors_books (author_id, book_id) VALUES (:authorid, :bookid)") \
-                    .params(authorid=author.id, bookid=book.id)
-                db.engine.execute(addtoab)
+                updateab = text("UPDATE authors_books SET author_id=:authorid"
+                                " WHERE author_id=:currentauthorid AND book_id=:bookid") \
+                    .params(authorid=author.id, currentauthorid=currentauthor.id, bookid=book.id)
+                db.engine.execute(updateab)
 
             db.session().commit()
             flash("Kirjan tiedot päivitetiin onnistuneesti!", 'success')

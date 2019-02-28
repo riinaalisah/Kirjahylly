@@ -12,7 +12,7 @@ def authors_index():
     authors = db.engine.execute(stmt)
     return render_template("authors/list.html", authors=authors, user=current_user)
 
-
+# add a new author
 @app.route("/authors/new", methods=["GET", "POST"])
 @login_required(role="ANY")
 def authors_create():
@@ -23,10 +23,17 @@ def authors_create():
         firstname = request.form["firstname"]
         lastname = request.form["lastname"]
 
+        # check if name invalid (only spaces)
+        if firstname.isspace() or lastname.isspace():
+            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            return render_template("authors/new.html")
+
+        # check for spaces in names
         if (len(firstname.split(" ")) > 1) or (len(lastname.split(" ")) > 1):
             flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
             return render_template("authors/new.html")
 
+        # check if author already in database
         authornamequery = Author.check_if_author_in_database(firstname, lastname)
         if authornamequery > 0:
             flash("Kirjailija on jo lisätty tietokantaan.", 'warning')
@@ -66,7 +73,8 @@ def author_info(firstname, lastname):
                            books=Author.authors_books_by_author_name(author.firstname, author.lastname))
 
 
-@app.route("/authors/edit/<firstname>/<lastname>/", methods=["GET", "POST"])
+# edit author info
+@app.route("/authors/<firstname>/<lastname>/edit/", methods=["GET", "POST"])
 @login_required(role='ANY')
 def admin_author_edit_info(firstname, lastname):
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
@@ -80,6 +88,11 @@ def admin_author_edit_info(firstname, lastname):
         # check if info has changed
         if firstname == author.firstname and lastname == author.lastname:
             flash("Et muuttanut tietoja.", 'info')
+            return render_template("authors/editinfo.html", author=author)
+
+        # check for invalid input (only spaces)
+        if firstname.isspace() or lastname.isspace():
+            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
             return render_template("authors/editinfo.html", author=author)
 
         # check for spaces in name

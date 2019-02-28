@@ -8,9 +8,9 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3" for="validationCustom01">Salasana</label>
         <div class="col-sm-5">
-            <input type="password" class="form-control" name="password" id="validationCustom01" placeholder="Salasana" required>
+            <input type="password" class="form-control" name="password" id="validationCustom01" placeholder="Salasana" required minlength="5" maxlength="20">
             <div class="invalid-feedback">
-                Syötä salasana.
+                Salasanan tulee olla 5-20 merkkiä pitkä.
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3" for="validationCustom02">Vahvista salasana</label>
         <div class="col-sm-5">
-            <input type="password" class="form-control" name="confirmpassword" id="validationCustom02" placeholder="Vahvista salasana" required>
+            <input type="password" class="form-control" name="confirmpassword" id="validationCustom02" placeholder="Vahvista salasana" required minlength="5" maxlength="20">
             <div class="invalid-feedback">
                 Syötä salasana uudestaan.
             </div>
