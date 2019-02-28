@@ -58,10 +58,10 @@ def admin_delete_author(firstname, lastname):
         return render_template("authors/deleteauthor.html", author=author)
 
     else:
-        stmt = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
-            .params(firstname=author.firstname, lastname=author.lastname)
+        stmt = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
         db.engine.execute(stmt)
-        stmt2 = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
+        stmt2 = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
+            .params(firstname=author.firstname, lastname=author.lastname)
         db.engine.execute(stmt2)
         db.session().commit()
         flash("Kirjailija poistettiin onnistuneesti.", 'success')
