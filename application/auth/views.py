@@ -48,7 +48,7 @@ def auth_login():
             stmt = text("SELECT * FROM account WHERE username=:username").params(username=request.form['username'])
 
             res = db.engine.execute(stmt)
-            data = res.fetchone()[5]
+            data = res.fetchone()[4]
 
             if sha256_crypt.verify(request.form['password'], data):
                 user = User.query.filter_by(username=request.form['username']).first()
@@ -63,7 +63,8 @@ def auth_login():
         return render_template("auth/loginform.html")
 
 
-    except Exception:
+    except Exception as e:
+        print("**********************", e)
         flash("Käyttäjänimi tai salasana ei täsmää, yritä uudelleen.", 'warning')
         return render_template("auth/loginform.html")
 

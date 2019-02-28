@@ -5,11 +5,9 @@
 {% block body %}
 <h3>Kirjan <a class="font-weight-bold">{{ book.name }}</a> tiedot</h3><br>
     <p>Kirjailija: {{ book.firstname }} {{ book.lastname }}</p><br>
-    {% if not book.pages %}
-    <p>Sivumäärä:</p><br>
-    {% else %}
+    <p>Julkaisuvuosi: {{ book.year }}</p><br>
     <p>Sivumäärä: {{ book.pages }}</p><br>
-    {% endif %}
     <p>ISBN-koodi: {{ book.isbn }}</p><br>
 
 {% endblock %}
+</html>

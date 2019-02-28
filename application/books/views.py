@@ -27,16 +27,13 @@ def books_new():
         splitname = authorname.split(" ")
         author = Author.query.filter_by(firstname=splitname[0], lastname=splitname[1]).first()
 
-        authors_books = Author.authors_books_by_author_name(splitname[0], splitname[1])
-        for row in authors_books:
-            if row[4].lower() == bookname.lower():
-                flash("Kyseinen kirja on jo lisätty tietokantaan.", 'warning')
-                return render_template("books/new.html", authors=Author.all_authors())
+        booknamequery = Book.check_if_book_with_name_and_authorid_exists(bookname, author.id)
+        if booknamequery > 0:
+            flash("Kyseinen kirja on jo lisätty tietokantaan.", 'warning')
+            return render_template("books/new.html", authors=Author.all_authors())
 
-        pages = request.form["inputPages"]
-        if pages == "":
-            pages = None
-        book = Book(name=bookname, pages=pages, isbn=request.form["inputIsbn"])
+        book = Book(name=bookname, year=request.form["inputYear"], pages=request.form["inputPages"],
+                    isbn=request.form["inputIsbn"])
         db.session().add(book)
         author.books.append(book)
         author.books_count = author.books_count + 1
@@ -96,3 +93,66 @@ def admin_delete_book(bookname, id):
         db.session().commit()
         flash("Kirja poistettiin onnistuneesti.", 'success')
         return redirect(url_for('books_index'))
+
+
+@app.route("/books/edit/<bookname>/<id>/", methods=["GET", "POST"])
+@login_required(role="admin")
+def admin_edit_book_info(bookname, id):
+    book = Book.book_info(id)
+    currentauthor = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
+
+    if request.method == "GET":
+        return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
+
+    else:
+        bookname = request.form["name"]
+        year = request.form["year"]
+        pages = request.form["pages"]
+        isbn = request.form["isbn"]
+        authorname = request.form["dropdown"]
+
+        splitname = authorname.split(" ")
+        author = Author.query.filter_by(firstname=splitname[0], lastname=splitname[1]).first()
+
+        authorchanged = False
+        namechanged = False
+
+        # check if author has changed
+        if book.firstname != author.firstname and book.lastname != author.lastname:
+            authorchanged = True
+
+        # check if book name changed
+        if bookname != book.name:
+            namechanged = True
+
+        # check if book info has changed
+        if not namechanged and book.year == year and pages == book.pages and isbn == book.isbn and not authorchanged:
+            flash("Et muuttanut tietoja.", 'info')
+            return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
+
+        # check if book with same name and author in database IF NAME OR AUTHOR HAS CHANGED
+        if namechanged and authorchanged:
+            booknamequery = Book.check_if_book_with_name_and_authorid_exists(bookname, author.id)
+            if booknamequery > 0:
+                flash("Kyseinen kirja on jo lisätty tietokantaan.", 'warning')
+                return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
+
+        else:
+            stmt = text("UPDATE book SET name=:bookname, pages=:pages, isbn=:isbn WHERE id=:bookid") \
+                .params(bookname=bookname, pages=pages, isbn=isbn, bookid=book.id)
+            db.engine.execute(stmt)
+
+            if authorchanged:
+                currentauthor.books_count = currentauthor.books_count - 1  # reduce previous author's book count
+                author.books_count = author.books_count + 1  # add to new author's book count
+
+                deletefromab = text("DELETE FROM authors_books WHERE author_id=:authorid AND book_id=:bookid") \
+                    .params(authorid=currentauthor.id, bookid=book.id)
+                db.engine.execute(deletefromab)
+                addtoab = text("INSERT INTO authors_books (author_id, book_id) VALUES (:authorid, :bookid)") \
+                    .params(authorid=author.id, bookid=book.id)
+                db.engine.execute(addtoab)
+
+            db.session().commit()
+            flash("Kirjan tiedot päivitetiin onnistuneesti!", 'success')
+            return redirect(url_for("books_index"))

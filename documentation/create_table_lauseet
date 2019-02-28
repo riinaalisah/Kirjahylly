@@ -1,27 +1,33 @@
 CREATE TABLE book (
         id INTEGER NOT NULL, 
         date_created DATETIME, 
-        date_modified DATETIME, 
-        name VARCHAR(144) NOT NULL, 
+        name VARCHAR(40) NOT NULL,
+        year VARCHAR(4),
+        pages VARCHAR(4),
+        isbn VARCHAR(19),
         PRIMARY KEY (id)
 );
+
 CREATE TABLE author (
         id INTEGER NOT NULL, 
         date_created DATETIME, 
-        date_modified DATETIME, 
-        firstname VARCHAR(30) NOT NULL, 
-        lastname VARCHAR(30) NOT NULL, 
-        PRIMARY KEY (id)
+        firstname VARCHAR(30) NOT NULL,
+        lastname VARCHAR(30) NOT NULL,
+        books_count INTEGER NOT NULL,
+        PRIMARY KEY (id),
+        CONSTRAINT _author_name_uc UNIQUE (firstname, lastname)
 );
+
 CREATE TABLE account (
         id INTEGER NOT NULL, 
         date_created DATETIME, 
-        date_modified DATETIME, 
-        name VARCHAR(30) NOT NULL, 
-        username VARCHAR(30) NOT NULL, 
-        password VARCHAR(30) NOT NULL, 
+        username VARCHAR(30) NOT NULL,
+        email VARCHAR(50) NOT NULL,
+        password VARCHAR(90) NOT NULL,
+        role VARCHAR(9) NOT NULL,
         PRIMARY KEY (id)
 );
+
 CREATE TABLE authors_books (
         book_id INTEGER, 
         author_id INTEGER, 
