@@ -1,36 +1,29 @@
 ## Kirjahylly
 
-Kirjahyllysovellukseen rekisteröidytään sähköpostin avulla. Kun sivuille on rekisteröitynyt, pystyy sen avulla hallitsemaan omia kirjoja erilaisin toiminnoin
+Kirjahyllysovellus on oma kirjahylly netissä! Sovelluksen avulla lukemisesta enemmän tai vähemmän innostuneet pystyvät seuraamaan omaa kirjatilannettaan; mitä kirjoja on jo lukenut, mitä kirjoja on vielä luettavana, mitä kirjoja muut lukevat ja niin edelleen.
+
+Kuka tahansa pääsee selailemaan tietokantaan lisättyjä kirjoja ja kirjailijoita ilman rekisteröitymistä, mutta rekisteröityneille käyttäjille löytyy monia muitakin toimintoja:
 
   - kirjojen ja kirjailijoiden lisääminen tietokantaan
+  - kirjojen ja kirjailijoiden tietojen päivittäminen
   - tietokantaan lisättyjen kirjojen lisääminen omaan hyllyyn ja sieltä poistaminen
-  - tietokantaan lisättyjen kirjojen selaaminen
   - kirjojen merkitseminen luetuiksi tai lukemattomiksi
   - omien käyttäjätietojen päivittäminen
   
   
-Nämä toiminnot ovat kaikille tavallisille käyttäjille. Admin-käyttäjille on lisäksi mahdollisuus poistaa käyttäjiä, kirjoja ja kirjailijoita tietokannasta. 
-
-
-Sovelluksen testausta varten on tunnus, johon pystyy kirjautumaan käyttäjätunnuksella "testi" ja salasanalla "testi". Myös admin-käyttäjä löytyy tunnuksella "admin" ja salasanalla "admin1".
+Nämä toiminnot ovat kaikille tavallisille käyttäjille. Admin-käyttäjillä on lisäksi mahdollisuus poistaa käyttäjiä, kirjoja ja kirjailijoita tietokannasta. 
 
 
 ##### Linkkejä
 
-Sovelluksen löytää osoitteesta http://tsoha-kirjahylly.herokuapp.com/ 
-
-[Sovelluksen tietokantakaavio](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/kirjahylly_tietokantakaavio.png)
+Sovellus Herokussa: http://tsoha-kirjahylly.herokuapp.com/ 
+- Testausta varten löytyy kaksi tunnusta: 
+  - tavallinen käyttäjä (käyttäjänimi 'testi', salasana 'testi')
+  - admin-käyttäjä (käyttäjänimi 'testiadmin' salasana 'testiadmin')
 
 [User storyt](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/user_stories.md)
 
+[Tietokannan kuvaus](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/tietokantakuvaus.md)
 
-##### Asennus- ja käyttöohje
+[Asennusohje](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/asennusohjeet.md)
 
-1. Lataa sovelluksen zip-tiedosto
-2. Pura paketti
-3. Navigoi kansioon johon purit tiedoston
-4. Luo virtuaaliympäristö komennolla `python3 -m venv venv`
-5. Aktivoi sen jälkeen virtuaaliympäristö komennolla `source venv/bin/activate`
-6. Päivitä pip komennolla `pip install --upgrade pip`
-7. Asenna riippuvuudet komennolla `pip install -r requirements.txt`
-8. Käynnistä sovellus komennolla `python3 run.py`
