@@ -1,4 +1,4 @@
-### Asennus- ja käyttöohje
+### Asennusohje
 
 1) Asenna Python (vähintään versio 3.0) ja sqlite3, jos ne eivät ole vielä asennettuina
 2) Lataa projektin zip-tiedosto
