@@ -3,7 +3,8 @@
 
 {% extends "layout.html" %}
 {% block body %}
-<h3>Lisää kirjailija</h3><br>
+<h3>Lisää kirjailija</h3>
+<p>Lisää uusi kirjailija syöttämällä kirjailijan etu- ja sukunimi. Huomioithan ettei kumpikaan nimistä saa sisältää välilyöntejä!</p><br>
 <form class="needs-validation" method="POST" action="{{ url_for('authors_create') }}" novalidate>
 
   <div class="form-group row">

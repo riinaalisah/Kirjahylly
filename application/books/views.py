@@ -138,8 +138,8 @@ def admin_edit_book_info(bookname, id):
                 return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
 
         else:
-            stmt = text("UPDATE book SET name=:bookname, pages=:pages, isbn=:isbn WHERE id=:bookid") \
-                .params(bookname=bookname, pages=pages, isbn=isbn, bookid=book.id)
+            stmt = text("UPDATE book SET name=:bookname, year=:year, pages=:pages, isbn=:isbn WHERE id=:bookid") \
+                .params(bookname=bookname, year=year, pages=pages, isbn=isbn, bookid=book.id)
             db.engine.execute(stmt)
 
             if authorchanged:

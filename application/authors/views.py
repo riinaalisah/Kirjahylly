@@ -67,7 +67,7 @@ def author_info(firstname, lastname):
 
 
 @app.route("/authors/edit/<firstname>/<lastname>/", methods=["GET", "POST"])
-@login_required(role='admin')
+@login_required(role='ANY')
 def admin_author_edit_info(firstname, lastname):
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
     if request.method == "GET":

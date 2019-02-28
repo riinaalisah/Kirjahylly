@@ -14,8 +14,11 @@
     </div>
 </div>
 <br>
+<p style="width: 75%">Tässä näet kaikki kirjalle lisätyt tiedot. Jos koet tiedot virheellisiksi, tai haluat lisätä puuttuvia tietoja, voit kirjautuneena päivittää tietoja painamalla nappia "Muokkaa tietoja".</p>
+<p>Kirjailijan tietoihin pääset klikkaamalla kirjailijan nimeä.</p>
+<br>
 
-<ul class="list-group list-group flush w-75">
+<ul class="list-group flush w-75">
     <li class="list-group-item">
         <div class="row">
             <div class="col-sm">
@@ -58,6 +61,10 @@
         </div>
     </li>
 </ul>
+<br>
+<form action="{{ url_for('books_index') }}">
+    <button type="submit" class="btn" style="color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;">Takaisin kaikkiin kirjoihin</button>
+</form>
 
 {% endblock %}
 </html>

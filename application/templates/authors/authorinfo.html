@@ -41,5 +41,10 @@
 
     {% endfor %}
 </ul>
+<br><br>
+<form action="{{ url_for('authors_index') }}">
+    <button type="submit" class="btn" style="color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;">Takaisin kaikkiin kirjailijoihin</button>
+</form>
 
 {% endblock %}
+</html>
