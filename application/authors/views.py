@@ -14,6 +14,7 @@ def authors_index():
     authors = db.engine.execute(stmt)
     return render_template("authors/list.html", authors=authors, user=current_user)
 
+
 # add a new author
 @app.route("/authors/new", methods=["GET", "POST"])
 @login_required(role="ANY")
@@ -27,7 +28,9 @@ def authors_create():
 
         # check if name invalid (only spaces)
         if firstname.isspace() or lastname.isspace():
-            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            flash(
+                "Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.",
+                'warning')
             return render_template("authors/new.html")
 
         # check for spaces in names
@@ -58,11 +61,25 @@ def admin_delete_author(firstname, lastname):
         return render_template("authors/deleteauthor.html", author=author)
 
     else:
-        stmt = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
-        db.engine.execute(stmt)
-        stmt2 = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
+        changebooknames = text("UPDATE book SET name = 'TO-DELETE!!'"
+                               " WHERE book.id IN (SELECT book_id FROM authors_books WHERE author_id = :authorid)") \
+            .params(authorid=author.id)
+        db.engine.execute(changebooknames)
+
+        deleteauthorconnection = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
+        db.engine.execute(deleteauthorconnection)
+
+        deleteuserconnection = text(
+            "DELETE FROM users_books WHERE book_id in (SELECT id FROM book WHERE name = 'TO-DELETE!!')")
+        db.engine.execute(deleteuserconnection)
+
+        deleteauthor = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
             .params(firstname=author.firstname, lastname=author.lastname)
-        db.engine.execute(stmt2)
+        db.engine.execute(deleteauthor)
+
+        deletebooks = text("DELETE FROM book WHERE name = 'TO-DELETE!!'")
+        db.engine.execute(deletebooks)
+
         db.session().commit()
         flash("Kirjailija poistettiin onnistuneesti.", 'success')
         return redirect(url_for('authors_index'))
@@ -81,7 +98,7 @@ def author_info(firstname, lastname):
 
     else:
         return render_template("authors/authorinfo.html", author=author,
-                                books=Author.authors_books_by_author_name(author.firstname, author.lastname))
+                               books=Author.authors_books_by_author_name(author.firstname, author.lastname))
 
 
 # edit author info
@@ -103,7 +120,9 @@ def admin_author_edit_info(firstname, lastname):
 
         # check for invalid input (only spaces)
         if firstname.isspace() or lastname.isspace():
-            flash("Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.", 'warning')
+            flash(
+                "Virheellinen syöte (kentät eivät saa sisältää pelkästään välilyöntejä). Ole hyvä ja yritä uudestaan.",
+                'warning')
             return render_template("authors/editinfo.html", author=author)
 
         # check for spaces in name
