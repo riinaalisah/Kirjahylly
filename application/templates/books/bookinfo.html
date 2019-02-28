@@ -3,11 +3,61 @@
 
 {% extends "layout.html" %}
 {% block body %}
-<h3>Kirjan <a class="font-weight-bold">{{ book.name }}</a> tiedot</h3><br>
-    <p>Kirjailija: {{ book.firstname }} {{ book.lastname }}</p><br>
-    <p>Julkaisuvuosi: {{ book.year }}</p><br>
-    <p>Sivumäärä: {{ book.pages }}</p><br>
-    <p>ISBN-koodi: {{ book.isbn }}</p><br>
+<div class="row">
+    <div class="col">
+        <h3>Kirjan <a class="font-weight-bold">{{ book.name }}</a> tiedot</h3>
+    </div>
+    <div class="col">
+        <form action="{{ url_for('admin_edit_book_info', bookname=book.name, id=book.id) }}">
+            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ book.name }}">Muokkaa tietoja</button>
+        </form>
+    </div>
+</div>
+<br>
+
+<ul class="list-group list-group flush w-75">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Kirjailija</p>
+            </div>
+            <div class="col-sm">
+                <a style="color: #000000;" href="{{ url_for('author_info', firstname = book.firstname, lastname=book.lastname) }}">
+                    <strong>{{ book.firstname }} {{ book.lastname }}</strong></a>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Julkaisuvuosi</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ book.year }}</strong></p>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Sivumäärä</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ book.pages }}</strong></p>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>ISBN-koodi</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ book.isbn }}</strong></p>
+            </div>
+        </div>
+    </li>
+</ul>
 
 {% endblock %}
 </html>

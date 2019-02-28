@@ -7,8 +7,8 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th class="align-middle" style="width: 50%" scope="col">Kirjailijan nimi</th>
-        <th class="align-middle" style="width: 50%" scope="col">Kirjoja sovelluksessa</th>
+        <th class="align-middle" style="width: 60%" scope="col">Kirjailijan nimi</th>
+        <th class="align-middle" style="width: 40%" scope="col">Kirjoja sovelluksessa</th>
       </tr>
     </thead>
 
@@ -22,11 +22,6 @@
         <td class="align-middle">{{ author.books_count }}</td>
 
         {% if user.role == 'admin' %}
-        <td>
-          <form action="{{ url_for('admin_author_edit_info', firstname = author.firstname, lastname = author.lastname) }}">
-            <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Muokkaa tietoja</button>
-          </form>
-        </td>
         <td class="align-middle">
           <form action="{{ url_for('admin_delete_author', firstname = author.firstname, lastname = author.lastname) }}">
             <button class="btn" style="color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="{{ author.firstname }} {{ author.lastname }}">Poista kirjailija</button>

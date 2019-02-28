@@ -96,7 +96,7 @@ def admin_delete_book(bookname, id):
 
 
 @app.route("/books/edit/<bookname>/<id>/", methods=["GET", "POST"])
-@login_required(role="admin")
+@login_required(role="ANY")
 def admin_edit_book_info(bookname, id):
     book = Book.book_info(id)
     currentauthor = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()

@@ -10,7 +10,7 @@
         {% if current_user.is_authenticated %}
         <th scope="col" style="width: 33%">Kirjan nimi</th>
         <th scope="col" style="width: 33%">Kirjailijan nimi</th>
-        <th scope="col" style="width: 33%">Lisää omiin kirjoihin</th>
+        <th scope="col" style="width: 21%">Lisää omiin kirjoihin</th>
         {% else %}
         <th scope="col" style="width: 50%">Kirjan nimi</th>
         <th scope="col" style="width: 50%">Kirjailijan nimi</th>
@@ -35,20 +35,15 @@
           </form>
         </td>
         {% endif %}
+
         {% if current_user.role == 'admin' %}
-
-        <td class="align-middle">
-          <form action="{{ url_for('admin_edit_book_info', bookname=book.name, id=book.book_id) }}">
-            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ book.name }}">Muokkaa tietoja</button>
-          </form>
-        </td>
-
         <td class="align-middle">
           <form action="{{ url_for('admin_delete_book', bookname=book.name, id=book.book_id) }}">
             <button class="btn" style=" color: #000000; background-color: #e1dfdf; border-color: #e1dfdf;" type="submit" name="{{ book.name }}">Poista kirja</button>
           </form>
         </td>
         {% endif %}
+
       </tr>
       {% endfor %}
     </tbody>
