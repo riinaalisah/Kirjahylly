@@ -27,17 +27,17 @@ def authors_create():
             flash("Ole hyvä ja poista välilyönnit kirjailijan etu- tai sukunimestä.", 'warning')
             return render_template("authors/new.html")
 
-        a = Author(firstname, lastname)
+        authornamequery = Author.check_if_author_in_database(firstname, lastname)
+        if authornamequery > 0:
+            flash("Kirjailija on jo lisätty tietokantaan.", 'warning')
+            return redirect(url_for('authors_create'))
 
-        try:
+        else:
+            a = Author(firstname, lastname)
             db.session().add(a)
             db.session().commit()
             flash("Kirjailija lisätty onnistuneesti!", 'success')
             return redirect(url_for("authors_index"))
-
-        except Exception as e:
-            flash("Kirjailija on jo lisätty tietokantaan.", 'warning')
-            return redirect(url_for('authors_create'))
 
 
 @app.route("/authors/delete/<firstname>/<lastname>/", methods=["GET", "POST"])
@@ -101,5 +101,3 @@ def admin_author_edit_info(firstname, lastname):
         else:
             flash("Kyseinen kirjailija on jo lisätty tietokantaan.", 'warning')
             return render_template("authors/editinfo.html", author=author)
-
-
