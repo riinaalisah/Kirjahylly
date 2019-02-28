@@ -46,7 +46,7 @@
 
 **"Käyttäjänä pystyn näkemään tilastoja kirjoistani: kuinka paljon niitä on ja montako kirjaa olen lukenut."**
 
-- Kaikkien kirjojen lukumäärä: `SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id = 1"`
+- Kaikkien kirjojen lukumäärä: `SELECT COUNT(users_books.book_id) FROM users_books WHERE user_id = 1;`
 
 **"Käyttäjänä pystyn vaihtamaan salasanani, jos olen unohtanut sen."**
 
