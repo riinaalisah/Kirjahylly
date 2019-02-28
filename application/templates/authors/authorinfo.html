@@ -27,18 +27,23 @@
                 <span class="align-middle">
                     <a style="color: #000000;" href="{{ url_for('book_info', bookname = book.name) }}">{{ book.name }}</a></span>
             </div>
-            {% if current_user.is_authenticated %}
             <div class="col-sm">
-                <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
-                    <span class="align-middle">
-                    <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
-                    </span>
-                </form>
-            </div>
+            {% if current_user.is_authenticated %}
+                {% if book.book_id in usersbooks %}
+                  <td class="align-middle">
+                    <p class="align-middle">Omassa hyllyssä!</p>
+                  </td>
+                {% else %}
+                    <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+                        <span class="align-middle">
+                        <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
+                        </span>
+                    </form>
+                {% endif %}
             {% endif %}
+            </div>
         </div>
     </li>
-
     {% endfor %}
 </ul>
 <br><br>

@@ -29,11 +29,17 @@
             {{ book.firstname }} {{ book.lastname }}</a>
         </td>
         {% if current_user.is_authenticated %}
-        <td class="align-middle">
-          <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
-            <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
-          </form>
-        </td>
+            {% if book.book_id in usersbooks %}
+              <td class="align-middle">
+                <p class="align-middle">Omassa hyllyssä!</p>
+              </td>
+            {% else %}
+              <td class="align-middle">
+                <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+                  <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
+                </form>
+              </td>
+            {% endif %}
         {% endif %}
 
         {% if current_user.role == 'admin' %}

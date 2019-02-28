@@ -1,9 +1,11 @@
 from flask import redirect, render_template, request, url_for, flash
 from flask_login import current_user
+from gunicorn.config import User
 from sqlalchemy import text
 
 from application import app, db, login_required
 from application.authors.models import Author
+from application.auth.models import User
 
 
 @app.route("/authors/", methods=["GET"])
@@ -68,9 +70,18 @@ def admin_delete_author(firstname, lastname):
 
 @app.route("/authors/<firstname>/<lastname>/", methods=["GET"])
 def author_info(firstname, lastname):
+    user = current_user
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
-    return render_template("authors/authorinfo.html", author=author,
-                           books=Author.authors_books_by_author_name(author.firstname, author.lastname))
+
+    if user.is_authenticated:
+        usersbooks = User.get_users_books(user.id)
+        return render_template("authors/authorinfo.html", author=author,
+                               books=Author.authors_books_by_author_name(author.firstname, author.lastname),
+                               usersbooks=usersbooks)
+
+    else:
+        return render_template("authors/authorinfo.html", author=author,
+                                books=Author.authors_books_by_author_name(author.firstname, author.lastname))
 
 
 # edit author info

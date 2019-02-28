@@ -11,7 +11,13 @@ from application.auth.models import User
 @app.route("/books/", methods=["GET"])
 def books_index():
     user = current_user
-    return render_template("books/list.html", books=Book.all_books(), user=user)
+    if user.is_authenticated:
+        usersbooks = User.get_users_books(user.id)
+
+        return render_template("books/list.html", books=Book.all_books(), user=user, usersbooks=usersbooks)
+
+    else:
+        return render_template("books/list.html", books=Book.all_books(), user=user)
 
 
 # add a new book
@@ -59,14 +65,9 @@ def book_add_to_user(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
 
-    if book not in user.mybooks:
-        user.mybooks.append(book)
-        db.session().commit()
-        flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
-
-    else:
-        flash("Kirja on jo lisätty omaan kirjahyllyyn!", 'warning')
-
+    user.mybooks.append(book)
+    db.session().commit()
+    flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
     return redirect(url_for("books_index"))
 
 

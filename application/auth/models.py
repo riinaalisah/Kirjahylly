@@ -105,3 +105,13 @@ class User(Base, UserMixin):
 
         res = db.engine.execute(stmt)
         return res
+
+    @staticmethod
+    def get_users_books(userid):
+        stmt = text("SELECT book_id FROM users_books WHERE user_id=:userid").params(userid=userid)
+        res = db.engine.execute(stmt).fetchall()
+        resultset = []
+        for row in res:
+            resultset.append(row[0])
+
+        return resultset
