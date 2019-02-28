@@ -1,6 +1,6 @@
-### Käyttötapaukset
+## Käyttötapaukset
 
-##### Tavallinen käyttäjä
+### Tavallinen käyttäjä
 
 **"Uutena käyttäjänä pystyn rekisteröitymään sovellukseen, jotta pääsen hyödyntämään sen tarjoamia ominaisuuksia."**
 
@@ -56,7 +56,7 @@
 - Käyttäjän tietojen päivittäminen: `UPDATE account SET username = 'myNewUsername', email = 'myNewEmail@email.com' WHERE id = 1;`
 
 
-##### Admin-käyttäjä
+### Admin-käyttäjä
 
 **"Admin-käyttäjänä pystyn poistamaan käyttäjiä, jotta käyttäjät pysyvät asiallisina."**
 
