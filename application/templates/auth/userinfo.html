@@ -1,12 +1,15 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="fi">
 
+{% extends "layout.html" %}
 {% block body %}
+
 <br>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col">
         <h2>Käyttäjän <a class="font-weight-bold">{{ user.username }}</a> tiedot</h2>
     </div>
-    <div class="col-md-3">
+    <div class="col">
         <form action="{{ url_for('auth_edit') }}">
             <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Muokkaa tietoja</button>
         </form>
@@ -14,18 +17,38 @@
 </div>
 <br>
 
-<div class="row">
-    <p class="col-8">Käyttäjänimi: {{ user.username }}</p>
-</div>
-<br>
-
-<div class="row">
-    <p class="col-8">Sähköpostiosoite: {{ user.email }}</p>
-</div>
-<br>
-
-<div class="row">
-    <p class="col-8">Liittymisaika: {{ user.date_created }}</p>
-</div>
+<ul class="list-group flush w-75">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Käyttäjänimi</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ user.username }}</strong></p>
+            </div>
+        </div
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Sähköpostiosoite</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ user.email }}</strong></p>
+            </div>
+        </div
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-sm">
+                <p>Liittymisaika</p>
+            </div>
+            <div class="col-sm">
+                <p><strong>{{ user.date_created }}</strong></p>
+            </div>
+        </div>
+    </li>
+</ul>
 
 {% endblock %}
+</html>
