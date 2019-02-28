@@ -1,6 +1,6 @@
 CREATE TABLE book (
         id INTEGER NOT NULL, 
-        date_created DATETIME, 
+        date_created DATE, 
         name VARCHAR(40) NOT NULL,
         year VARCHAR(4),
         pages VARCHAR(4),
@@ -10,7 +10,7 @@ CREATE TABLE book (
 
 CREATE TABLE author (
         id INTEGER NOT NULL, 
-        date_created DATETIME, 
+        date_created DATE, 
         firstname VARCHAR(30) NOT NULL,
         lastname VARCHAR(30) NOT NULL,
         books_count INTEGER NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE author (
 
 CREATE TABLE account (
         id INTEGER NOT NULL, 
-        date_created DATETIME, 
+        date_created DATE, 
         username VARCHAR(30) NOT NULL,
         email VARCHAR(50) NOT NULL,
         password VARCHAR(90) NOT NULL,
