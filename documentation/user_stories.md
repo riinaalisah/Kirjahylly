@@ -8,7 +8,11 @@
 
 "Käyttäjän pystyn lisäämään kirjailijan tietokantaan, jotta voin lisätä kyseisen kirjailijan kirjan tietokantaan."
 
+"Käyttäjänä pystyn muokkaamaan kirjailijan tietoja, jotta voin korjata niissä huomaamani virheet."
+
 "Käyttäjänä pystyn lisäämään uuden kirjan tietokantaan, jotta voin sitten lisätä sen omaan hyllyyni."
+
+"Käyttäjänä pystyn muokkaamaan kirjan tietoja, jotta voin korjata niissä huomaamani virheet ja lisätä puuttuvia tietoja."
 
 "Käyttäjän pystyn lisäämään kirjoja omaan hyllyyni, jotta pystyn seuraamaan omaa lukuharrastustani."
 
