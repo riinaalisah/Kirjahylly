@@ -8,7 +8,7 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom01"><strong>Käyttäjänimi</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="username" id="validationCustom01" value="{{ user.username }}" maxlength="30" minlength="5" required>
+            <input type="text" class="form-control" name="username" id="validationCustom01" placeholder="Käyttäjänimi" value="{{ user.username }}" maxlength="30" minlength="5" required>
             <div class="invalid-feedback">
                 Käyttäjänimen tulee olla 5-30 merkkiä pitkä.
             </div>
@@ -18,7 +18,7 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom02"><strong>Sähköpostiosoite</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="email" id="ValidationCustom02" value="{{ user.email }}" required maxlength="50" minlength="5">
+            <input type="text" class="form-control" name="email" id="ValidationCustom02" placeholder="Sähköpostiosoite" value="{{ user.email }}" required maxlength="50" minlength="5">
             <div class="invalid-feedback">
                 Sähköpostiosoitteen tulee olla 5-50 merkkiä pitkä.
             </div>

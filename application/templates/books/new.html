@@ -3,7 +3,7 @@
 {% block body %}
 <form class="needs-validation" method="POST" action="{{ url_for('books_new') }}" novalidate>
 <h3>Lisää kirja</h3>
-  <p>Kirjailija ja kirjan nimi ovat pakollisia kenttiä, mutta voit halutessasi syöttää myös kirjan julkaisuvuoden, sivumäärän ja ISBN-koodin. Jos haluamaasi kirjailijaa ei löydy tietokannasta, käy lisäämässä se <a style="color: #cb5555" href="{{ url_for('authors_create') }}">täältä</a>.</p>
+  <p style="width: 75%">Kirjailija ja kirjan nimi ovat pakollisia kenttiä, mutta voit halutessasi syöttää myös kirjan julkaisuvuoden, sivumäärän ja ISBN-koodin. Jos haluamaasi kirjailijaa ei löydy tietokannasta, käy lisäämässä se <a style="color: #cb5555" href="{{ url_for('authors_create') }}">täältä</a>.</p>
   <br>
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="validationCustom01">Valitse kirjailija</label>
@@ -50,9 +50,9 @@
       <div class="col-sm-5">
         <input type="text" class="form-control" name="inputIsbn" id="inputIsbn" placeholder="ISBN" maxlength="19">
       </div>
-    </div>
+    </div><br>
 
-    <div class="form-group row">
+    <div class="form-group row col-sm-3">
       <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Lisää kirja</button>
     </div>
 

@@ -10,7 +10,7 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom01"><strong>Kirjailijan etunimi</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="firstname" id="validationCustom01" value="{{ author.firstname }}" maxlength="30" minlength="1" required>
+            <input type="text" class="form-control" name="firstname" id="validationCustom01" placeholder="Etunimi" value="{{ author.firstname }}" maxlength="30" minlength="1" required>
             <div class="invalid-feedback">
                 Kirjailijan etunimen tulee olla 1-30 merkkiä pitkä.
             </div>
@@ -20,7 +20,7 @@
     <div class="form-group">
         <label class="col-form-label col-sm-3" for="ValidationCustom02"><strong>Kirjailijan sukunimi</strong></label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="lastname" id="ValidationCustom02" value="{{ author.lastname }}" required maxlength="30" minlength="1">
+            <input type="text" class="form-control" name="lastname" id="ValidationCustom02" placeholder="Sukunimi" value="{{ author.lastname }}" required maxlength="30" minlength="1">
             <div class="invalid-feedback">
                 Kirjailijan sukunimen tulee olla 1-30 merkkiä pitkä.
             </div>

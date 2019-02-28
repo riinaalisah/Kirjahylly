@@ -10,7 +10,7 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3" for="ValidationCustom01">Kirjan nimi</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="name" id="validationCustom01" value="{{ book.name }}" maxlength="40" minlength="1" required>
+            <input type="text" class="form-control" name="name" id="validationCustom01" placeholder="Kirjan nimi" value="{{ book.name }}" maxlength="40" minlength="1" required>
             <div class="invalid-feedback">
                 Kirjan nimen tulee olla 1-40 merkkiä pitkä.
             </div>
@@ -20,9 +20,12 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3">Valitse kirjailija</label>
         <div class="col-sm-5">
-          <select class="form-control" value="{{ book.firstname }} {{ book.lastname }}" name="dropdown">
+          <select class="form-control" value="" name="dropdown">
+              <option selected="selected">{{ book.firstname }} {{ book.lastname }}</option>
             {% for author in authors %}
-                <option>{{ author.firstname }} {{ author.lastname }}</option>
+                {% if author.firstname != book.firstname and author.lastname != book.lastname %}
+                    <option>{{ author.firstname }} {{ author.lastname }}</option>
+                {% endif %}
             {% endfor %}
           </select>
         </div>
@@ -31,21 +34,21 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-3">Julkaisuvuosi</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="year" value="{{ book.year }}" maxlength="4" minlength="1">
+            <input type="text" class="form-control" name="year" placeholder="Julkaisuvuosi" value="{{ book.year }}" maxlength="4" minlength="1">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-form-label col-sm-3">Sivuja</label>
+        <label class="col-form-label col-sm-3">Sivumäärä</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="pages" value="{{ book.pages }}" maxlength="4" minlength="1">
+            <input type="text" class="form-control" name="pages" placeholder="Sivuja" value="{{ book.pages }}" maxlength="4" minlength="1">
         </div>
     </div>
 
     <div class="form-group row">
         <label class="col-form-label col-sm-3">ISBN</label>
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="isbn" value="{{ book.isbn }}" maxlength="19" minlength="1">
+            <input type="text" class="form-control" name="isbn" placeholder="ISBN" value="{{ book.isbn }}" maxlength="19" minlength="1">
         </div>
     </div><br>
 

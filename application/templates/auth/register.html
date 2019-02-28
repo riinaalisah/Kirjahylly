@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
+<h3>Rekisteröidy</h3>
+<p style="width: 75%">Rekisteröidy sovellukseen syöttämällä haluamasi käyttäjänimi, sähköpostiosoite ja salasana. Sähköpostiosoitteen avulla pystyt vaihtamaan salasanasi jos olet unohtanut sen.</p>
+
+
 <form class="needs-validation" method="POST" action="{{ url_for('auth_register') }}" novalidate>
 
     <div class="form-group row">
@@ -40,9 +44,9 @@
                 Syötä salasana uudestaan.
             </div>
         </div>
-    </div>
+    </div><br>
 
-    <div class="form-group row">
+    <div class="form-group row col-sm-3">
         <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Rekisteröidy</button>
     </div>
 
