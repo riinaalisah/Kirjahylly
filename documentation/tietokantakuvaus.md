@@ -36,7 +36,7 @@ Tämä taulu yhdistää kirjat käyttäjiin: käyttäjällä voi olla useita kir
 
 ###### authors_books
 
-Tämä taulu yhdistää kirjat kirjailijoihin: kirjailijalla voi olla useita kirjoja ja yhdellä kirjalla voi olla useita kirjailijoita.
+Tämä taulu yhdistää kirjat kirjailijoihin: kirjailijalla voi olla useita kirjoja ja yhdellä kirjalla voi olla useita kirjailijoita (sovelluksen tämähetkinen toteutus tukee tosin vain yhtä kirjailijaa / kirja).
 - book_id: Kirjan id. Viitevain kirjaan.
 - author_id: Kirjailijan id. Viiteavain kirjailijaan.
 
