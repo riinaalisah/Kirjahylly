@@ -4,7 +4,7 @@
 
 **"Uutena käyttäjänä pystyn rekisteröitymään sovellukseen, jotta pääsen hyödyntämään sen tarjoamia ominaisuuksia."**
 
-- Uuden käyttäjän lisääminen: `INSERT INTO account (id, date_created, username, email, password, role) VALUES (1, CURRENT_DATE, 'myUsername', 'myEmail@email.com' 'myCryptedPassword', 'user');
+- Uuden käyttäjän lisääminen: `INSERT INTO account (id, date_created, username, email, password, role) VALUES (1, CURRENT_DATE, 'myUsername', 'myEmail@email.com' 'myCryptedPassword', 'user');`
 
 **"Käyttäjänä pystyn selaamaan tietokannan kirjoja, jotta pystyn löytämään uusia, minua kiinnostavia kirjoja."**
 
@@ -24,11 +24,12 @@
 
 **"Käyttäjänä pystyn lisäämään uuden kirjan tietokantaan, jotta voin sitten lisätä sen omaan hyllyyni."**
 
-- Kirjan lisääminen: `INSERT INTO book (id, date_created, name, year, pages, isbn) VALUES (1, CURRENT_DATE, 'MisEry', '1987', '410', '978-0-670-81364-3');` Kirja tulee myös liittää authors_books-tauluun: `INSERT INTO authors_books (book_id, author_id) VALUES (1, 1);`
+- Kirjan lisääminen: `INSERT INTO book (id, date_created, name, year, pages, isbn) VALUES (1, CURRENT_DATE, 'MisEry', '1987', '410', '978-0-670-81364-3');`
+- Kirjan liittäminen authors_books-tauluun: `INSERT INTO authors_books (book_id, author_id) VALUES (1, 1);`
 
 **"Käyttäjänä pystyn muokkaamaan kirjan tietoja, jotta voin korjata niissä huomaamani virheet ja lisätä puuttuvia tietoja."**
 
-- Kirjan tietojen muokkaus, esimerkki: `UPDATE book SET name = 'Misery', pages = '420' WHERE id = 1;`
+- Kirjan tietojen muokkaus: `UPDATE book SET name = 'Misery', pages = '420' WHERE id = 1;`
 
 **"Käyttäjän pystyn lisäämään kirjoja omaan hyllyyni, jotta pystyn seuraamaan omaa lukuharrastustani."**
 
@@ -65,9 +66,10 @@
 
 **"Admin-käyttäjänä pystyn poistamaan kirjoja ja kirjailijoita, jotta tietokanta pysyy siistinä ja asiallisena."**
 
-- Kirjan poistaminen käyttäjiltä: `DELETE FROM users_books WHERE book_id = 1;`
-- Kirjan poistaminen kirjailijalta: `DELETE FROM authors_books WHERE book_id = 1;`
-- Kirjan poistaminen: `DELETE FROM book WHERE id = 1;`
+- Kirjan poistaminen
+  - Kirjan poistaminen käyttäjiltä: `DELETE FROM users_books WHERE book_id = 1;`
+  - Kirjan poistaminen kirjailijalta: `DELETE FROM authors_books WHERE book_id = 1;`
+  - Kirjan poistaminen: `DELETE FROM book WHERE id = 1;`
 
 - Kirjailijan poistaminen:
   1. Kirjailijan kirjojen nimien muuttaminen: `UPDATE book set name = 'delete' WHERE book.id IN (SELECT book_id FROM authors_books WHERE author_id = 1);`
