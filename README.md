@@ -27,3 +27,5 @@ Sovellus Herokussa: http://tsoha-kirjahylly.herokuapp.com/
 
 [Asennusohje](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/asennusohjeet.md)
 
+[Käyttöohjeet](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/kayttoohje.md)
+
