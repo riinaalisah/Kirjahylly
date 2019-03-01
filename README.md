@@ -19,11 +19,13 @@ Nämä toiminnot ovat kaikille tavallisille käyttäjille. Admin-käyttäjillä 
 Sovellus Herokussa: http://tsoha-kirjahylly.herokuapp.com/ 
 - Testausta varten löytyy kaksi tunnusta: 
   - tavallinen käyttäjä (käyttäjänimi 'testi', salasana 'testi')
-  - admin-käyttäjä (käyttäjänimi 'testiadmin' salasana 'testiadmin')
+  - admin-käyttäjä (käyttäjänimi 'testiadmin', salasana 'testiadmin')
 
 [User storyt](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/user_stories.md)
 
 [Tietokannan kuvaus](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/tietokantakuvaus.md)
 
 [Asennusohje](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/asennusohjeet.md)
+
+[Käyttöohje](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/kayttoohje.md)
 

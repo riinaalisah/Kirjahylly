@@ -1,10 +1,10 @@
 CREATE TABLE book (
         id INTEGER NOT NULL, 
         date_created DATE, 
-        name VARCHAR(40) NOT NULL,
+        name VARCHAR(50) NOT NULL,
         year VARCHAR(4),
         pages VARCHAR(4),
-        isbn VARCHAR(19),
+        isbn VARCHAR(17),
         PRIMARY KEY (id)
 );
 
@@ -23,8 +23,8 @@ CREATE TABLE account (
         date_created DATE, 
         username VARCHAR(30) NOT NULL,
         email VARCHAR(50) NOT NULL,
-        password VARCHAR(90) NOT NULL,
-        role VARCHAR(9) NOT NULL,
+        password VARCHAR(90) NOT NULL,                  (HUOM. salanan sallittu pituus syötettäessä 20 merkkiä, 
+        role VARCHAR(9) NOT NULL,                       mutta kryptausta varten tietokannassa 90)
         PRIMARY KEY (id)
 );
 
