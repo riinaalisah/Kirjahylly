@@ -29,3 +29,4 @@ Sovellus Herokussa: http://tsoha-kirjahylly.herokuapp.com/
 
 [Käyttöohje](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/kayttoohje.md)
 
+[Kehitysideoita](https://github.com/riinaalisah/Kirjahylly/blob/master/documentation/puuttuviaominaisuuksia.md)
