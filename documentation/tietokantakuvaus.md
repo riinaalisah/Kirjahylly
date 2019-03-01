@@ -9,10 +9,10 @@ Sovelluksen tietokannassa on viisi tietokantataulua: book, account, author, user
 #### book
 - id: Kirjan id-tunnus. Käytetään tunnistamiseen. Pääavain.
 - date_created: Kirjan luontipäivämäärä.
-- name: Kirjan nimi, 5-30 merkkiä pitkä. Pakollinen.
+- name: Kirjan nimi, 1-50 merkkiä pitkä. Pakollinen.
 - year: Kirjan julkaisuvuosi. Korkeintaan 4 merkkiä. Ei pakollinen.
 - pages: Kirjan sivumäärä. Korkeintaan 4 merkkiä. Ei pakollinen.
-- isbn: Kirjan ISBN-koodi. Korkeintaan 19 merkkiä. Ei pakollinen.
+- isbn: Kirjan ISBN-koodi. Korkeintaan 17 merkkiä. Ei pakollinen.
 
 #### account
 - id: Käyttäjän id-tunnus. Käytetään tunnistamiseen. Pääavain.
