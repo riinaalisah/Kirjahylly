@@ -4,6 +4,7 @@ from flask_mail import Message
 
 from application import app, db, login_required, mail
 from application.auth.models import User
+from application.books.models import Book
 
 from sqlalchemy.sql import text
 
@@ -72,11 +73,10 @@ def auth_login():
     try:
         if request.method == "POST":
 
-            stmt = text("SELECT * FROM account WHERE username=:username").params(username=request.form['username'])
-            res = db.engine.execute(stmt)
-            data = res.fetchone()[4]
+            getuser = User.get_user_by_username(username=request.form['username'])
+            pwdata = getuser.fetchone()[4]
 
-            if sha256_crypt.verify(request.form['password'], data):
+            if sha256_crypt.verify(request.form['password'], pwdata):
                 user = User.query.filter_by(username=request.form['username']).first()
                 login_user(user)
 
@@ -88,8 +88,7 @@ def auth_login():
 
         return render_template("auth/loginform.html")
 
-
-    except Exception as e:
+    except Exception:
         flash("Käyttäjänimi tai salasana ei täsmää, yritä uudelleen.", 'warning')
         return render_template("auth/loginform.html")
 
@@ -115,20 +114,13 @@ def auth_mybooks():
 @login_required(role="ANY")
 def books_set_read_or_delete(book_id):
     if request.form["btn"] == "Merkitse luetuksi":
-
-        stmt = text("UPDATE users_books SET read = '1' WHERE book_id = :book_id AND user_id = :user_id") \
-            .params(user_id=current_user.id, book_id=book_id)
+        Book.book_set_read(current_user.id, book_id)
 
     elif request.form["btn"] == "Merkitse lukemattomaksi":
-        stmt = text("UPDATE users_books SET read = '0' WHERE book_id = :book_id AND user_id = :user_id") \
-            .params(user_id=current_user.id, book_id=book_id)
+        Book.book_set_unread(current_user.id, book_id)
 
     else:
-        stmt = text("DELETE FROM users_books WHERE user_id = :user_id AND book_id = :book_id") \
-            .params(user_id=current_user.id, book_id=book_id)
-
-    db.engine.execute(stmt)
-    db.session().commit()
+        Book.book_delete_from_user(current_user.id, book_id)
 
     return redirect(url_for("auth_mybooks"))
 
@@ -160,8 +152,7 @@ def auth_edit():
 
         # check if username is taken
         if user.username != username:
-            stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
-            res = db.engine.execute(stmt).fetchone()[0]
+            res = User.count_users_with_username(username)
             if res == 0:
                 user.username = username
                 changed = True
@@ -171,8 +162,7 @@ def auth_edit():
 
         # check if email is taken
         if user.email != email:
-            stmt = text("SELECT count(id) FROM account WHERE email=:email").params(email=email)
-            res = db.engine.execute(stmt).fetchone()[0]
+            res = User.count_users_with_email(email)
             if res == 0:
                 user.email = email
                 changed = True
@@ -233,14 +223,8 @@ def auth_delete_user():
 
     else:
         user = current_user
-
-        stmt = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
-        db.engine.execute(stmt)
-
-        stmt2 = text("DELETE FROM account WHERE username=:username").params(username=user.username)
-        db.engine.execute(stmt2)
-
-        db.session().commit()
+        User.delete_usersbooks_connection(user.id)
+        User.delete_user_by_username(user.username)
         flash("Käyttäjätili poistettiin onnistuneesti. Näkemiin!", 'success')
         return redirect(url_for('index'))
 
@@ -324,12 +308,7 @@ def admin_delete_user(username):
         return render_template("auth/deleteuser.html", user=user)
 
     else:
-        stmt = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=user.id)
-        db.engine.execute(stmt)
-
-        stmt2 = text("DELETE FROM account WHERE username=:username").params(username=username)
-        db.engine.execute(stmt2)
-
-        db.session().commit()
+        User.delete_usersbooks_connection(user.id)
+        User.delete_user_by_username(username)
         flash("Käyttäjä poistettiin onnistuneesti.", 'success')
         return redirect(url_for('auth_all'))

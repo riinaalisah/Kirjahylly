@@ -85,6 +85,12 @@ class User(Base, UserMixin):
         return res.fetchone()[0]
 
     @staticmethod
+    def get_user_by_username(username):
+        stmt = text("SELECT * FROM account WHERE username=:username").params(username=username)
+        res = db.engine.execute(stmt)
+        return res
+
+    @staticmethod
     def get_read_books(userid):
         stmt = text(
             "SELECT ub.book_id, ub.user_id, author.firstname, author.lastname, ub.read, b.name "
@@ -115,3 +121,28 @@ class User(Base, UserMixin):
             resultset.append(row[0])
 
         return resultset
+
+    @staticmethod
+    def count_users_with_username(username):
+        stmt = text("SELECT count(id) FROM account WHERE username=:username").params(username=username)
+        res = db.engine.execute(stmt).fetchone()[0]
+        return res
+
+    @staticmethod
+    def count_users_with_email(email):
+        stmt = text("SELECT count(id) FROM account WHERE email=:email").params(email=email)
+        res = db.engine.execute(stmt).fetchone()[0]
+        return res
+
+    @staticmethod
+    def delete_usersbooks_connection(userid):
+        stmt = text("DELETE FROM users_books WHERE user_id=:userid").params(userid=userid)
+        db.engine.execute(stmt)
+        db.session().commit()
+
+
+    @staticmethod
+    def delete_user_by_username(username):
+        stmt = text("DELETE FROM account WHERE username=:username").params(username=username)
+        db.engine.execute(stmt)
+        db.session().commit()

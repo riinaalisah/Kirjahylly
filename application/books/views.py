@@ -1,6 +1,5 @@
 from flask import redirect, render_template, request, url_for, flash
 from flask_login import current_user
-from sqlalchemy import text
 
 from application import app, db, login_required
 from application.books.models import Book
@@ -69,6 +68,7 @@ def book_add_to_user_from_list(book_id):
     db.session().commit()
     flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
     return redirect(url_for("books_index"))
+
 
 @app.route("/authors/<firstname>/<lastname>/<book_id>/", methods=["POST"])
 @login_required(role="ANY")
@@ -141,20 +141,14 @@ def book_edit_info(bookname, id):
                 return render_template("books/editinfo.html", book=book, authors=Author.all_authors())
 
         else:
-            stmt = text("UPDATE book SET name=:bookname, year=:year, pages=:pages, isbn=:isbn WHERE id=:bookid") \
-                .params(bookname=bookname, year=year, pages=pages, isbn=isbn, bookid=book.id)
-            db.engine.execute(stmt)
+            Book.book_update_info(bookname, year, pages, isbn, book.id)
 
             if authorchanged:
                 currentauthor.books_count = currentauthor.books_count - 1  # reduce previous author's book count
                 author.books_count = author.books_count + 1  # add to new author's book count
 
-                updateab = text("UPDATE authors_books SET author_id=:authorid"
-                                " WHERE author_id=:currentauthorid AND book_id=:bookid") \
-                    .params(authorid=author.id, currentauthorid=currentauthor.id, bookid=book.id)
-                db.engine.execute(updateab)
+                Book.update_authorsbooks(author.id, currentauthor.id, book.id)
 
-            db.session().commit()
             flash("Kirjan tiedot päivitetiin onnistuneesti!", 'success')
             return redirect(url_for("book_info", bookname=bookname))
 
@@ -170,21 +164,10 @@ def admin_delete_book(bookname, id):
     else:
         author = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
 
-        stmt = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
-        db.engine.execute(stmt)
-
-        stmt2 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
-        db.engine.execute(stmt2)
-
-        stmt3 = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
-            .params(bookname=bookname, id=id)
-        db.engine.execute(stmt3)
-
+        Book.delete_from_authorsbooks(id)
+        Book.delete_from_usersbooks(id)
+        Book.delete_book(bookname, id)
         author.books_count = author.books_count - 1
 
-        db.session().commit()
         flash("Kirja poistettiin onnistuneesti.", 'success')
         return redirect(url_for('books_index'))
-
-
-

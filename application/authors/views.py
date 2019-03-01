@@ -6,12 +6,12 @@ from sqlalchemy import text
 from application import app, db, login_required
 from application.authors.models import Author
 from application.auth.models import User
+from application.books.models import Book
 
 
 @app.route("/authors/", methods=["GET"])
 def authors_index():
-    stmt = text("SELECT * FROM author ORDER BY books_count DESC")
-    authors = db.engine.execute(stmt)
+    authors = Author.all_author_by_bookcount()
     return render_template("authors/list.html", authors=authors, user=current_user)
 
 
@@ -77,26 +77,17 @@ def admin_delete_author(firstname, lastname):
         return render_template("authors/deleteauthor.html", author=author)
 
     else:
-        changebooknames = text("UPDATE book SET name = 'TO-DELETE!!'"
-                               " WHERE book.id IN (SELECT book_id FROM authors_books WHERE author_id = :authorid)") \
-            .params(authorid=author.id)
-        db.engine.execute(changebooknames)
+        # change book names
+        Author.change_booknames_todelete(author.id)
+        # delete authorsbooks connection
+        Author.delete_authorsbooks_connection(author.id)
+        # delete usersbooks connection for books with changed name
+        Book.delete_usersbooks_connection_todelete()
+        # delete author
+        Author.delete_author(author.firstname, author.lastname)
+        # delete books with changed name
+        Book.delete_books_todelete()
 
-        deleteauthorconnection = text("DELETE FROM authors_books WHERE author_id=:authorid").params(authorid=author.id)
-        db.engine.execute(deleteauthorconnection)
-
-        deleteuserconnection = text(
-            "DELETE FROM users_books WHERE book_id in (SELECT id FROM book WHERE name = 'TO-DELETE!!')")
-        db.engine.execute(deleteuserconnection)
-
-        deleteauthor = text("DELETE FROM author WHERE firstname=:firstname AND lastname=:lastname") \
-            .params(firstname=author.firstname, lastname=author.lastname)
-        db.engine.execute(deleteauthor)
-
-        deletebooks = text("DELETE FROM book WHERE name = 'TO-DELETE!!'")
-        db.engine.execute(deletebooks)
-
-        db.session().commit()
         flash("Kirjailija poistettiin onnistuneesti.", 'success')
         return redirect(url_for('authors_index'))
 
@@ -134,10 +125,7 @@ def author_edit_info(firstname, lastname):
         authornamequery = Author.check_if_author_in_database(firstname.upper(), lastname.upper())
 
         if authornamequery == 0:
-            stmt = text("UPDATE author SET firstname=:firstname, lastname=:lastname WHERE id=:id") \
-                .params(firstname=firstname, lastname=lastname, id=author.id)
-            db.engine.execute(stmt)
-            db.session().commit()
+            Author.update_authorinfo(firstname, lastname, author.id)
             flash("Kirjailijan tiedot muutettu onnistuneesti!", 'success')
             return redirect(url_for("author_info", firstname=firstname, lastname=lastname))
 
