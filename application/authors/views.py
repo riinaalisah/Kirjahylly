@@ -18,7 +18,7 @@ def authors_index():
 # add a new author
 @app.route("/authors/new", methods=["GET", "POST"])
 @login_required(role="ANY")
-def authors_create():
+def authors_new():
     if request.method == "GET":
         return render_template("authors/new.html")
 
@@ -42,7 +42,7 @@ def authors_create():
         authornamequery = Author.check_if_author_in_database(firstname, lastname)
         if authornamequery > 0:
             flash("Kirjailija on jo lisätty tietokantaan.", 'warning')
-            return redirect(url_for('authors_create'))
+            return redirect(url_for('authors_new'))
 
         else:
             a = Author(firstname, lastname)
@@ -50,6 +50,22 @@ def authors_create():
             db.session().commit()
             flash("Kirjailija lisätty onnistuneesti!", 'success')
             return redirect(url_for("authors_index"))
+
+
+@app.route("/authors/<firstname>/<lastname>/", methods=["GET"])
+def author_info(firstname, lastname):
+    user = current_user
+    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
+
+    if user.is_authenticated:
+        usersbooks = User.get_users_books(user.id)
+        return render_template("authors/authorinfo.html", author=author,
+                               books=Author.authors_books_by_author_name(author.firstname, author.lastname),
+                               usersbooks=usersbooks)
+
+    else:
+        return render_template("authors/authorinfo.html", author=author,
+                               books=Author.authors_books_by_author_name(author.firstname, author.lastname))
 
 
 @app.route("/authors/delete/<firstname>/<lastname>/", methods=["GET", "POST"])
@@ -85,26 +101,10 @@ def admin_delete_author(firstname, lastname):
         return redirect(url_for('authors_index'))
 
 
-@app.route("/authors/<firstname>/<lastname>/", methods=["GET"])
-def author_info(firstname, lastname):
-    user = current_user
-    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
-
-    if user.is_authenticated:
-        usersbooks = User.get_users_books(user.id)
-        return render_template("authors/authorinfo.html", author=author,
-                               books=Author.authors_books_by_author_name(author.firstname, author.lastname),
-                               usersbooks=usersbooks)
-
-    else:
-        return render_template("authors/authorinfo.html", author=author,
-                               books=Author.authors_books_by_author_name(author.firstname, author.lastname))
-
-
 # edit author info
 @app.route("/authors/<firstname>/<lastname>/edit/", methods=["GET", "POST"])
 @login_required(role='ANY')
-def admin_author_edit_info(firstname, lastname):
+def author_edit_info(firstname, lastname):
     author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
     if request.method == "GET":
         return render_template("authors/editinfo.html", author=author)

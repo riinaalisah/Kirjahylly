@@ -35,7 +35,7 @@
               </td>
             {% else %}
               <td class="align-middle">
-                <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+                <form method="POST" action="{{ url_for('book_add_to_user_from_list', book_id=book.book_id) }}">
                   <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
                 </form>
               </td>

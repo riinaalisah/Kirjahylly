@@ -5,14 +5,14 @@
 {% block body %}
 <h3>Lisää kirjailija</h3>
 <p style="width: 75%">Lisää uusi kirjailija syöttämällä kirjailijan etu- ja sukunimi. Huomioithan ettei kumpikaan nimistä saa sisältää välilyöntejä!</p><br>
-<form class="needs-validation" method="POST" action="{{ url_for('authors_create') }}" novalidate>
+<form class="needs-validation" method="POST" action="{{ url_for('authors_new') }}" novalidate>
 
   <div class="form-group row">
     <label class="col-form label col-sm-3" for="ValidationCustom01">Kirjailijan etunimi</label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" name="firstname" id="ValidationCustom01" placeholder="Etunimi" required>
+      <input type="text" class="form-control" name="firstname" id="ValidationCustom01" placeholder="Etunimi" required minlength="1" maxlength="30">
       <div class="invalid-feedback">
-        Ole hyvä ja syötä kirjailijan etunimi.
+        Kirjailijan etunimen tulee olla 1-30 merkkiä pitkä.
       </div>
     </div>
   </div>
@@ -20,9 +20,9 @@
   <div class="form-group row">
     <label class="col-form label col-sm-3" for="ValidationCustom02">Kirjailijan sukunimi</label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" name="lastname" id="ValidationCustom02" placeholder="Sukunimi" required>
+      <input type="text" class="form-control" name="lastname" id="ValidationCustom02" placeholder="Sukunimi" required minlength="1" maxlength="30">
       <div class="invalid-feedback">
-        Ole hyvä ja syötä kirjailijan sukunimi.
+        Kirjailijan sukunimen tulee olla 1-30 merkkiä pitkä.
       </div>
     </div>
   </div><br>

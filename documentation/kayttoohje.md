@@ -26,32 +26,41 @@ Jos käyttäjä ei ole kirjautunut sisään, näkyy hänelle vain kirjan ja kirj
  Kirjan tai kirjailijan nimeä klikkaamalla pääsee tarkastelemaan kirjan tai kirjailijan tietoja. Admin-käyttäjille
  näkyy myös painike kirjan poistamiseen tietokannasta.
  
-###### Kirjan tiedot
-Kirjan tiedot -sivulla näkyy kaikki tiedot mitä kyseiselle kirjalle on lisätty: nimi, kirjailija, julkaisuvuosi, sivumäärä ja ISBN-koodi.
-Jos jotain kohtaa ei ole lisätty, se näkyy tyhjänä. Kirjautuneet käyttäjät pääsevät muokkaamaan kirjan tietoja 
-*Muokkaa tietoja* -painikkeesta, ja kirjailijan tietoihin pääsee klikkaamalla kirjailijan nimeä.
- 
-###### Kirjailijat
-Tällä sivulla listataan kaikki tietokantaan lisätyt kirjailijat. Kirjautumattomille ja tavallisille käyttäjille
-näytetään kirjailijan nimi ja kuinka monta kirjaa kullekin kirjailijalle on lisätty tietokantaan. Admin-käyttäjälle näkyy myös
- painike kirjailijan poistamiseen tietokannasta. Kirjailijan tietoja pääsee tarkastelemaan klikkaamalla kirjailijan
- nimeä.
- 
-###### Kirjailijan tiedot
-Kirjailijan tiedot -näkymässä käyttäjälle näytetään milloin kirjailija on lisätty tietokantaan, kuinka monta kirjaa
- tälle on lisätty tietokantaan, sekä listaus kirjailijan kirjoista. Kirjautuneet käyttäjät pystyvät tästä näkymästä 
- lisäämään kirjailijan kirjoja omaan hyllyyn (jos ne eivät jo ole siellä) ja siirtymään Muokkaa kirjailijan tietoja -näkymään 
- *Muokkaa tietoja* -painikkeesta.
-
-###### Lisää kirjailija
-Uuden kirjailijan pääsee lisäämään yläpalkin kohdasta *Lisää kirjailija*. Kirjailijalle annetaan etunimi ja
- sukunimi. Kumpikaan näistä nimistä ei saa sisältää välilyöntejä. 
-
 ###### Lisää kirja
 Uuden kirjan pystyy lisäämään siirtymällä yläpalkista kohtaan *Lisää kirja*. Kirjalle tulee valita kirjailija
  dropdown-listasta, ja jos kyseistä kirjailijaa ei ole vielä tietokannassa, tulee se käydä ensin lisäämässä
   kohdasta *Lisää kirjailija*. Kirjalle tulee myös antaa 1-30 merkkiä pitkä nimi. Muut kentät (julkaisuvuosi
   sivumäärä ja ISBN-koodi) ovat vapaaehtoisia, ja ne voi myös lisätä jälkeenpäin.
+ 
+###### Kirjan tiedot
+Kirjan tiedot -sivulla näkyy kaikki tiedot mitä kyseiselle kirjalle on lisätty: nimi, kirjailija, julkaisuvuosi, sivumäärä ja ISBN-koodi.
+Jos jotain kohtaa ei ole lisätty, se näkyy tyhjänä. Kirjautuneet käyttäjät pääsevät muokkaamaan kirjan tietoja 
+*Muokkaa tietoja* -painikkeesta, ja kirjailijan tietoihin pääsee klikkaamalla kirjailijan nimeä.
+
+###### Muokkaa kirjan tietoja
+Kirjan tietojen muokkaus -näkymässä kirjan jo olemassa olevia tietoja pystyy muuttamaan ja myös lisäämään puuttuvia
+ tietoja, kuten esimerkiksi asettamaan julkaisuvuoden, jos sitä ei ole kirjaa lisätessä määritelty. Tässäkin ainoita
+  pakollisia kenttiä ovat kirjailija ja kirjan nimi.
+ 
+###### Kirjailijat
+Tällä sivulla listataan kaikki tietokantaan lisätyt kirjailijat. Kirjautumattomille ja tavallisille käyttäjille
+näytetään kirjailijan nimi ja kuinka monta kirjaa kullekin kirjailijalle on lisätty tietokantaan. Admin-käyttäjälle näkyy myös
+ painike kirjailijan poistamiseen tietokannasta. Kirjailijat listataan laskevassa järjestyksessä tietokantaan
+  lisättyjen kirjojen määrän mukaan. Kirjailijan tietoja pääsee tarkastelemaan klikkaamalla kirjailijan nimeä.
+
+###### Lisää kirjailija
+Uuden kirjailijan pääsee lisäämään yläpalkin kohdasta *Lisää kirjailija*. Kirjailijalle annetaan etunimi ja
+ sukunimi. Kumpikaan näistä nimistä ei saa sisältää välilyöntejä. 
+  
+###### Kirjailijan tiedot
+Kirjailijan tiedot -näkymässä käyttäjälle näytetään milloin kirjailija on lisätty tietokantaan, kuinka monta kirjaa
+ tälle on lisätty tietokantaan, sekä listaus kirjailijan kirjoista. Kirjautuneet käyttäjät pystyvät tästä näkymästä 
+ lisäämään kirjailijan kirjoja omaan hyllyyn (jos ne eivät jo ole siellä) ja siirtymään Muokkaa kirjailijan tietoja -näkymään 
+ *Muokkaa tietoja* -painikkeesta.
+ 
+###### Muokkaa kirjailijan tietoja
+Tässä näkymässä pystyy vaihtamaan tai päivittämään kirjailijan etu- ja/tai sukunimen. Nimien tulee olla 1-30
+ merkkiä pitkät.
 
 ###### Omat kirjat
 Tällä sivulla käyttäjä näkee kirjat, jotka hän on lisännyt omaan hyllyynsä. Käyttäjä näkee myös kaksi
@@ -83,3 +92,12 @@ Admin-käyttäjille yläpalkissa näkyy myös *Käyttäjät*, josta pääsee tar
  ja poistamaan heitä tarvittaessa. Jokaisen käyttäjän (paitsi admin-käyttäjien) kohdalla on painike *Poista käyttäjä*, 
  josta pääsee poistonäkymään. Tässäkin tapauksessa käyttäjän poistaa kaikki tämän tiedot tietokannasta. Admin-käyttäjiä
   ei voi poistaa, vaan se tulee tehdä tietokannan kautta. 
+  
+---
+
+Aina kun tietokantaan lisätään jotain uutta (kirja, kirjailija, käyttäjä) tai jo olemassa olevia tietoja muokataan,
+ sovellus varmistaa ettei kyseistä tietokohdetta löydy jo tietokannasta. Käyttäjillä ei voi olla sama nimimerkki tai 
+ sähköpostiosoite, ja kirjan nimen ja kirjailijan nimen yhdistelmän tulee olla uniikki, samoin kuin kirjailijan etu-
+  ja sukunimen yhdistelmä.
+  
+Sovellus varmistaa myös, etteivät käyttäjän syötteet sisällä pelkkiä välilyöntejä. 

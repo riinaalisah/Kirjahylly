@@ -61,7 +61,7 @@ def books_new():
 
 @app.route("/books/<book_id>/", methods=["POST"])
 @login_required(role="ANY")
-def book_add_to_user(book_id):
+def book_add_to_user_from_list(book_id):
     book = Book.query.filter_by(id=book_id).first()
     user = User.query.filter_by(username=current_user.username).first()
 
@@ -69,6 +69,18 @@ def book_add_to_user(book_id):
     db.session().commit()
     flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
     return redirect(url_for("books_index"))
+
+@app.route("/authors/<firstname>/<lastname>/<book_id>/", methods=["POST"])
+@login_required(role="ANY")
+def book_add_to_user_from_authorinfo(firstname, lastname, book_id):
+    author = Author.query.filter_by(firstname=firstname, lastname=lastname).first()
+    book = Book.query.filter_by(id=book_id).first()
+    user = User.query.filter_by(username=current_user.username).first()
+
+    user.mybooks.append(book)
+    db.session().commit()
+    flash("Kirja lisätty onnistuneesti omaan kirjahyllyyn!", 'success')
+    return redirect(url_for("author_info", firstname=author.firstname, lastname=author.lastname))
 
 
 @app.route("/books/info/<bookname>", methods=["GET", "POST"])
@@ -79,37 +91,9 @@ def book_info(bookname):
     return render_template("books/bookinfo.html", book=book)
 
 
-@app.route("/books/delete/<bookname>/<id>/", methods=["GET", "POST"])
-@login_required(role='admin')
-def admin_delete_book(bookname, id):
-    book = Book.book_info(id)
-
-    if request.method == "GET":
-        return render_template("books/deletebook.html", book=book)
-
-    else:
-        author = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
-
-        stmt = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
-        db.engine.execute(stmt)
-
-        stmt2 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
-        db.engine.execute(stmt2)
-
-        stmt3 = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
-            .params(bookname=bookname, id=id)
-        db.engine.execute(stmt3)
-
-        author.books_count = author.books_count - 1
-
-        db.session().commit()
-        flash("Kirja poistettiin onnistuneesti.", 'success')
-        return redirect(url_for('books_index'))
-
-
 @app.route("/books/edit/<bookname>/<id>/", methods=["GET", "POST"])
 @login_required(role="ANY")
-def admin_edit_book_info(bookname, id):
+def book_edit_info(bookname, id):
     book = Book.book_info(id)
     currentauthor = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
 
@@ -172,4 +156,35 @@ def admin_edit_book_info(bookname, id):
 
             db.session().commit()
             flash("Kirjan tiedot päivitetiin onnistuneesti!", 'success')
-            return redirect(url_for("books_index"))
+            return redirect(url_for("book_info", bookname=bookname))
+
+
+@app.route("/books/delete/<bookname>/<id>/", methods=["GET", "POST"])
+@login_required(role='admin')
+def admin_delete_book(bookname, id):
+    book = Book.book_info(id)
+
+    if request.method == "GET":
+        return render_template("books/deletebook.html", book=book)
+
+    else:
+        author = Author.query.filter_by(firstname=book.firstname, lastname=book.lastname).first()
+
+        stmt = text("DELETE FROM authors_books WHERE book_id=:id").params(id=id)
+        db.engine.execute(stmt)
+
+        stmt2 = text("DELETE FROM users_books WHERE book_id=:id").params(id=id)
+        db.engine.execute(stmt2)
+
+        stmt3 = text("DELETE FROM book WHERE name=:bookname AND id=:id") \
+            .params(bookname=bookname, id=id)
+        db.engine.execute(stmt3)
+
+        author.books_count = author.books_count - 1
+
+        db.session().commit()
+        flash("Kirja poistettiin onnistuneesti.", 'success')
+        return redirect(url_for('books_index'))
+
+
+

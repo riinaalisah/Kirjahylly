@@ -5,7 +5,7 @@
 
 {% block body %}
 <form method="POST" class="needs-validation" novalidate>
-    <h2>Muokkaa kirjan <strong>{{ book.name }}</strong> tietoja</h2><br>
+    <h3>Muokkaa kirjan <strong>{{ book.name }}</strong> tietoja</h3><br>
 
     <div class="form-group row">
         <label class="col-form-label col-sm-3" for="ValidationCustom01">Kirjan nimi</label>
@@ -55,7 +55,7 @@
 
     <div class="form-group row">
         <div class="col-sm-3">
-            <form method="POST" action="{{ url_for('admin_edit_book_info', bookname=book.name, id=book.id) }}">
+            <form method="POST" action="{{ url_for('book_edit_info', bookname=book.name, id=book.id) }}">
                 <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" name="btn" value="tallenna">Tallenna muutokset</button>
             </form>
         </div>

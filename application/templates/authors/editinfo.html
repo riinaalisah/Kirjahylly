@@ -5,10 +5,10 @@
 
 {% block body %}
 <form method="POST" class="needs-validation" novalidate>
-    <h2>Muokkaa kirjailijan <strong>{{ author.firstname }} {{ author.lastname }}</strong> tietoja</h2><br>
+    <h3>Muokkaa kirjailijan <strong>{{ author.firstname }} {{ author.lastname }}</strong> tietoja</h3><br>
 
-    <div class="form-group">
-        <label class="col-form-label col-sm-3" for="ValidationCustom01"><strong>Kirjailijan etunimi</strong></label>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom01">Kirjailijan etunimi</label>
         <div class="col-sm-5">
             <input type="text" class="form-control" name="firstname" id="validationCustom01" placeholder="Etunimi" value="{{ author.firstname }}" maxlength="30" minlength="1" required>
             <div class="invalid-feedback">
@@ -17,8 +17,8 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-form-label col-sm-3" for="ValidationCustom02"><strong>Kirjailijan sukunimi</strong></label>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-3" for="ValidationCustom02">Kirjailijan sukunimi</label>
         <div class="col-sm-5">
             <input type="text" class="form-control" name="lastname" id="ValidationCustom02" placeholder="Sukunimi" value="{{ author.lastname }}" required maxlength="30" minlength="1">
             <div class="invalid-feedback">
@@ -29,7 +29,7 @@
 
     <div class="form-group row">
         <div class="col-sm-3">
-            <form method="POST" action="{{ url_for('admin_author_edit_info', firstname=author.firstname, lastname=author.lastname) }}">
+            <form method="POST" action="{{ url_for('author_edit_info', firstname=author.firstname, lastname=author.lastname) }}">
                 <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" name="btn" value="tallenna">Tallenna muutokset</button>
             </form>
         </div>

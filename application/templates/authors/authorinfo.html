@@ -9,7 +9,7 @@
         <h3>Kirjailijan <a class="font-weight-bold">{{ author.firstname }} {{ author.lastname }}</a> tiedot</h3>
     </div>
     <div class="col">
-        <form action="{{ url_for('admin_author_edit_info', firstname = author.firstname, lastname = author.lastname) }}">
+        <form action="{{ url_for('author_edit_info', firstname = author.firstname, lastname = author.lastname) }}">
             <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Muokkaa tietoja</button>
         </form>
     </div>
@@ -34,7 +34,8 @@
                     <p class="align-middle">Omassa hyllyssä!</p>
                   </td>
                 {% else %}
-                    <form method="POST" action="{{ url_for('book_add_to_user', book_id=book.book_id) }}">
+                    <form method="POST" action="{{ url_for('book_add_to_user_from_authorinfo',firstname=author.firstname,
+                     lastname=author.lastname, book_id=book.book_id) }}">
                         <span class="align-middle">
                         <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit">Lisää omiin kirjoihin</button>
                         </span>
