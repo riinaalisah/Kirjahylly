@@ -8,11 +8,13 @@
     <div class="col">
         <h3>Kirjailijan <a class="font-weight-bold">{{ author.firstname }} {{ author.lastname }}</a> tiedot</h3>
     </div>
+    {% if current_user.is_authenticated %}
     <div class="col">
         <form action="{{ url_for('author_edit_info', firstname = author.firstname, lastname = author.lastname) }}">
             <button type="submit" class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37">Muokkaa tietoja</button>
         </form>
     </div>
+    {% endif %}
 </div><br>
 
 <p>Kirjailija lisätty: {{ author.date_created }}</p>

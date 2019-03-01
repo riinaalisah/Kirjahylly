@@ -7,11 +7,13 @@
     <div class="col">
         <h3>Kirjan <a class="font-weight-bold">{{ book.name }}</a> tiedot</h3>
     </div>
+    {% if current_user.is_authenticated %}
     <div class="col">
         <form action="{{ url_for('book_edit_info', bookname=book.name, id=book.id) }}">
             <button class="btn" style="color: #ffffff ; background-color: #b34d37; border-color: #b34d37" type="submit" name="{{ book.name }}">Muokkaa tietoja</button>
         </form>
     </div>
+    {% endif %}
 </div>
 <br>
 <p style="width: 75%">Tässä näet kaikki kirjalle lisätyt tiedot. Jos koet tiedot virheellisiksi, tai haluat lisätä puuttuvia tietoja, voit kirjautuneena päivittää tietoja painamalla nappia "Muokkaa tietoja".</p>
