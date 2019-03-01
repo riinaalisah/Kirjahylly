@@ -1,6 +1,9 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="fi">
 
+{% extends "layout.html" %}
 {% block body %}
+
 <h3>Kirjaudu sisään</h3><br>
 <form class="needs-validation" method="POST" action= "{{ url_for('auth_login') }}" novalidate>
 
@@ -8,9 +11,9 @@
     <label class="col-form label col-sm-2" for="validationCustom01">Käyttäjänimi</label>
     <div class="col-sm-5">
       <input type="text" class="form-control" name="username" id="validationCustom01" placeholder="Käyttäjänimi" required minlength="1" maxlength="30">
-    </div>
-    <div class="invalid-feedback">
-      Syötä käyttäjänimi.
+      <div class="invalid-feedback">
+        Syötä käyttäjänimi.
+      </div>
     </div>
   </div>
 
@@ -18,10 +21,9 @@
     <label class="col-form label col-sm-2" for="validationCustom02">Salasana</label>
     <div class="col-sm-5">
       <input type="password" class="form-control" name="password" id="validationCustom02" placeholder="Salasana" required minlength="1" maxlength="20">
-    </div>
-    <div class="invalid-feedback">
-      Syötä salasana.
-    </div>
+      <div class="invalid-feedback">
+        Syötä salasana.
+      </div></div>
   </div><br>
 
   <div class="form-group row">
@@ -33,13 +35,7 @@
         <a style="color: #cb5555;" href="{{ url_for('auth_reset_request') }}">Unohditko salasanasi?</a>
       </small>
     </div>
-
   </div>
-
-  <div class="form-group col-sm-6">
-
-  </div>
-
 
 </form>
 
@@ -62,4 +58,4 @@
   })();
 </script>
 {% endblock %}
-      
+</html>
