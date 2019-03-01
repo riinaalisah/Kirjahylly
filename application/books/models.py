@@ -5,10 +5,10 @@ from application.models import Base
 
 
 class Book(Base):
-    name = db.Column(db.String(40), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     year = db.Column(db.String(4), nullable=True)
     pages = db.Column(db.String(4), nullable=True)
-    isbn = db.Column(db.String(19), nullable=True)
+    isbn = db.Column(db.String(17), nullable=True)
 
     def __init__(self, name, year, pages, isbn):
         self.name = name

@@ -1,7 +1,6 @@
 from flask import redirect, render_template, request, url_for, flash
 from flask_login import current_user
 from gunicorn.config import User
-from sqlalchemy import text
 
 from application import app, db, login_required
 from application.authors.models import Author
